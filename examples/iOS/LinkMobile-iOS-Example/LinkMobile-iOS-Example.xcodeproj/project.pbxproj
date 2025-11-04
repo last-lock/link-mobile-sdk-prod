@@ -6,10 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		AD0ACBA92EBA7C7800DDCCDA /* LinkMobile in Frameworks */ = {isa = PBXBuildFile; productRef = AD0ACBA82EBA7C7800DDCCDA /* LinkMobile */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
 		AD96C1672EB01AC1000764AE /* LinkMobile-iOS-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LinkMobile-iOS-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -40,7 +36,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AD0ACBA92EBA7C7800DDCCDA /* LinkMobile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +78,6 @@
 			);
 			name = "LinkMobile-iOS-Example";
 			packageProductDependencies = (
-				AD0ACBA82EBA7C7800DDCCDA /* LinkMobile */,
 			);
 			productName = "LinkMobile-iOS-Example";
 			productReference = AD96C1672EB01AC1000764AE /* LinkMobile-iOS-Example.app */;
@@ -114,7 +108,6 @@
 			mainGroup = AD96C15E2EB01AC1000764AE;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				AD0ACBA72EBA7C7800DDCCDA /* XCRemoteSwiftPackageReference "link-mobile-sdk-dev" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AD96C1682EB01AC1000764AE /* Products */;
@@ -350,25 +343,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		AD0ACBA72EBA7C7800DDCCDA /* XCRemoteSwiftPackageReference "link-mobile-sdk-dev" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/last-lock/link-mobile-sdk-dev";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = "1.5.1-1";
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		AD0ACBA82EBA7C7800DDCCDA /* LinkMobile */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AD0ACBA72EBA7C7800DDCCDA /* XCRemoteSwiftPackageReference "link-mobile-sdk-dev" */;
-			productName = LinkMobile;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AD96C15F2EB01AC1000764AE /* Project object */;
 }
