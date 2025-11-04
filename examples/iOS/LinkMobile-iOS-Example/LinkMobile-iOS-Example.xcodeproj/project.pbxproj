@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		AD962C452EBA8B0500698DE2 /* LinkMobile in Frameworks */ = {isa = PBXBuildFile; productRef = AD962C442EBA8B0500698DE2 /* LinkMobile */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		AD96C1672EB01AC1000764AE /* LinkMobile-iOS-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LinkMobile-iOS-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD962C452EBA8B0500698DE2 /* LinkMobile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = "LinkMobile-iOS-Example";
 			packageProductDependencies = (
+				AD962C442EBA8B0500698DE2 /* LinkMobile */,
 			);
 			productName = "LinkMobile-iOS-Example";
 			productReference = AD96C1672EB01AC1000764AE /* LinkMobile-iOS-Example.app */;
@@ -108,6 +114,7 @@
 			mainGroup = AD96C15E2EB01AC1000764AE;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				AD962C432EBA8B0500698DE2 /* XCRemoteSwiftPackageReference "link-mobile-sdk-staging" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AD96C1682EB01AC1000764AE /* Products */;
@@ -343,6 +350,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AD962C432EBA8B0500698DE2 /* XCRemoteSwiftPackageReference "link-mobile-sdk-staging" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/last-lock/link-mobile-sdk-staging";
+			requirement = {
+				kind = exactVersion;
+				version = "1.5.1-1";
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AD962C442EBA8B0500698DE2 /* LinkMobile */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AD962C432EBA8B0500698DE2 /* XCRemoteSwiftPackageReference "link-mobile-sdk-staging" */;
+			productName = LinkMobile;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AD96C15F2EB01AC1000764AE /* Project object */;
 }
