@@ -24,13 +24,13 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "LinkMobile",
-            url: "https://api.github.com/repos/last-lock/link-mobile-sdk-staging/releases/assets/312512315.zip",
-            checksum: "f635c2088cd2a581ce2109d9dbb27606ce21d86dc079487233841cafba239f61"
+            url: "https://api.github.com/repos/last-lock/link-mobile-sdk-staging/releases/assets/336609932.zip",
+            checksum: "6f93e354831a3cfc04510400093600b72cbbe0ccb5531ba75d683cf5fd566eaf"
         ),
         .binaryTarget(
             name: "bridge",
-            url: "https://api.github.com/repos/last-lock/link-mobile-sdk-staging/releases/assets/312512304.zip",
-            checksum: "9112321702822c441cd8857b31c3bb73ab6343612f3d6c54672744996fc110de"
+            url: "https://api.github.com/repos/last-lock/link-mobile-sdk-staging/releases/assets/336609931.zip",
+            checksum: "e842a2932a292d722ee4c063abee376b4fa3259cac91b8b13ecb7bb3f79f42f2"
         ),
         .target(
             name: "iOSBridgeWrapper",
