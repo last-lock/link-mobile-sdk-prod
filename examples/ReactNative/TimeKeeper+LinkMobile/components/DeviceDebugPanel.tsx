@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Text, Card, Title, Paragraph, Chip, Divider, useTheme } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useDeviceDiscovery } from '../app/useDeviceDiscovery';
+import { useDeviceDiscovery } from '../hooks/useDeviceDiscovery';
 import { useBridgeContext } from '../context/BridgeContext';
 
 interface Device {

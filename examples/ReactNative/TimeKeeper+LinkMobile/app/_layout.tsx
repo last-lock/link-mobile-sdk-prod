@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { withLayoutContext } from "expo-router";
-import { StatusBar } from "react-native";
+import { StatusBar, PermissionsAndroid, Platform } from "react-native";
 import { MD3LightTheme, MD3DarkTheme, PaperProvider } from "react-native-paper";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BridgeModule from '../modules/BridgeModule';
@@ -18,8 +18,8 @@ import { BridgeProvider, useBridgeContext } from "@/context/BridgeContext";
 const { Navigator } = createStackNavigator();
 
 // TODO: Replace with the correct server address / UUID
-const BRIDGE_SERVER = "api.test.example.com";
-const BRIDGE_UUID = "AAAA";
+const BRIDGE_SERVER = "api.external.seamless.lastlock.com";
+const BRIDGE_UUID = "FC5A";
 
 export const Stack = withLayoutContext<
   StackNavigationOptions,
@@ -28,8 +28,42 @@ export const Stack = withLayoutContext<
   StackNavigationEventMap
 >(Navigator);
 
+const requestBlePermissions = async (): Promise<boolean> => {
+  if (Platform.OS !== "android") return true;
+
+  const sdk = Platform.Version as number;
+  const perms: string[] = [];
+
+  if (sdk >= 31) {
+    perms.push(
+      PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN as PermissionsAndroid.Permission,
+      PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT as PermissionsAndroid.Permission,
+      PermissionsAndroid.PERMISSIONS.BLUETOOTH_ADVERTISE as PermissionsAndroid.Permission
+    );
+  } else {
+    // Legacy location requirement for BLE scan on < 31
+    perms.push(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION as PermissionsAndroid.Permission);
+  }
+
+  const results = await PermissionsAndroid.requestMultiple(perms);
+  const allGranted = Object.values(results).every((r) => r === PermissionsAndroid.RESULTS.GRANTED);
+  if (!allGranted) {
+    Alert.alert(
+      "Permissions required",
+      "Bluetooth permissions are required to scan and connect to devices."
+    );
+  }
+  return allGranted;
+};
+
 const handleInitialize = async (setScanning: (value: boolean) => void) => {
   try {
+    const ok = await requestBlePermissions();
+    if (!ok) {
+      console.warn("[Bridge] Permissions not granted; skipping init");
+      return;
+    }
+
     console.log('[Bridge] Initializing bridge...');
     const result = await BridgeModule.initialize(BRIDGE_SERVER, BRIDGE_UUID);
     console.log('[Bridge] Initialize result:', result);
