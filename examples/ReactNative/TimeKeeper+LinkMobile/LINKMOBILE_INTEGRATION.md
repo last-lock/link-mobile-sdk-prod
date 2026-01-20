@@ -300,6 +300,137 @@ export default function Index() {
 }
 ```
 
+## Android Integration
+
+### 1. Add dependency
+In `android/app/build.gradle`:
+```gradle
+dependencies {
+  implementation "com.lastlock.prod:bridge-android:1.7.0"
+}
+```
+
+### 1b. Add the GitHub Packages repository
+In `android/build.gradle`, ensure the repository is added (and supply credentials via env or `gradle.properties`):
+```gradle
+allprojects {
+  repositories {
+    google()
+    mavenCentral()
+    maven { url 'https://www.jitpack.io' }
+    maven {
+      url "https://maven.pkg.github.com/last-lock/link-mobile-sdk-prod"
+      credentials {
+        username = System.getenv("GITHUB_ACTOR") ?: (findProperty("gpr.user") ?: "")
+        password = System.getenv("GITHUB_TOKEN") ?: (findProperty("gpr.key") ?: "")
+      }
+    }
+  }
+}
+```
+
+Set credentials (one option):
+```
+export GITHUB_ACTOR=<your-gh-username>
+export GITHUB_TOKEN=<a PAT with read:packages>
+```
+or in `android/gradle.properties`:
+```
+gpr.user=<your-gh-username>
+gpr.key=<your-token>
+```
+
+### 1c. Compile SDK and AGP version
+Update `android/build.gradle` to use:
+```
+compileSdkVersion = 36
+classpath("com.android.tools.build:gradle:8.9.1")
+```
+This satisfies the `androidx.activity` / `androidx.core` requirements pulled in by the Android bridge.
+
+### 1a. Android SDK location
+Create/update `android/local.properties` so Gradle can find the SDK:
+```
+sdk.dir=/Users/<your-username>/Library/Android/sdk
+```
+Adjust the path if your SDK is elsewhere, or set `ANDROID_HOME` in your shell.
+
+### 2. Add required permissions
+In `android/app/src/main/AndroidManifest.xml` (add alongside existing permissions):
+```xml
+<uses-permission android:name="android.permission.BLUETOOTH"/>
+<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+<uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+<uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" android:maxSdkVersion="30"/>
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+```
+
+### 3. Native module
+Create `android/app/src/main/java/com/cody669/TimeKeeper/BridgeModule.kt`:
+```kotlin
+package com.cody669.TimeKeeper
+
+import com.facebook.react.bridge.*
+import com.lastlock.bridge.Bridge
+
+class BridgeModule(ctx: ReactApplicationContext) : ReactContextBaseJavaModule(ctx) {
+  override fun getName() = "BridgeModule"
+
+  @ReactMethod
+  fun initialize(serverAddress: String, uuid: String, promise: Promise) {
+    try {
+      Bridge.init(reactApplicationContext, serverAddress)
+      Bridge.setLogsEnabled(true)
+      promise.resolve("Bridge initialized")
+    } catch (e: Exception) { promise.reject("INIT_ERROR", e) }
+  }
+
+  @ReactMethod
+  fun start(uuid: String, promise: Promise) {
+    try {
+      Bridge.start(uuid)
+      promise.resolve("Bridge started with UUID: $uuid")
+    } catch (e: Exception) { promise.reject("START_ERROR", e) }
+  }
+}
+```
+
+Create `BridgePackage.kt`:
+```kotlin
+package com.cody669.TimeKeeper
+
+import com.facebook.react.*
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.uimanager.ViewManager
+
+class BridgePackage : ReactPackage {
+  override fun createNativeModules(ctx: ReactApplicationContext) = listOf(BridgeModule(ctx))
+  override fun createViewManagers(ctx: ReactApplicationContext): List<ViewManager<*, *>> = emptyList()
+}
+```
+
+### 4. Register the package
+In `MainApplication.kt`, add the package inside `getPackages()`:
+```kotlin
+val packages = PackageList(this).packages
+packages.add(BridgePackage())
+return packages
+```
+
+### 5. JS usage (same as iOS)
+Call from JS with both params:
+```ts
+await BridgeModule.initialize("api.test.example.com", "AAAA");
+await BridgeModule.start("AAAA");
+```
+
+### 6. Runtime permissions
+Before calling `start`, request the BLE/location/notification permissions appropriate for the device SDK level (e.g., with `react-native-permissions`). Only start scanning after the user grants them.
+
 ## Key Integration Patterns
 
 ### 1. Event-Driven Architecture
