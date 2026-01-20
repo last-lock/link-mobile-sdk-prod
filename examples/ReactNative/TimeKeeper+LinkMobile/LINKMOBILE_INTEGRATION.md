@@ -360,7 +360,7 @@ cd ..
 
 ### 2. Build and Run
 ```bash
-npx expo run:ios
+npx expo run:ios --device "example device name"
 ```
 
 ### 3. Verify Integration
