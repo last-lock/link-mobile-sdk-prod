@@ -1,4 +1,4 @@
-package com.cody669.TimeKeeper
+package com.lastlock.sampleapp1
 
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
@@ -7,7 +7,7 @@ import com.facebook.react.bridge.ReactMethod
 import com.lastlock.bridge.Bridge
 
 class BridgeModule(reactContext: ReactApplicationContext) :
-  ReactContextBaseJavaModule(reactContext) {
+        ReactContextBaseJavaModule(reactContext) {
 
   override fun getName() = "BridgeModule"
 

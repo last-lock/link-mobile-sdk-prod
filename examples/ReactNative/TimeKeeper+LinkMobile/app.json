@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.cody669.TimeKeeper"
+      "bundleIdentifier": "com.lastlock.sampleapp1"
     },
     "android": {
       "softwareKeyboardLayoutMode": "pan",
@@ -18,7 +18,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "package": "com.cody669.TimeKeeper",
+      "package": "com.lastlock.sampleapp1",
       "splash": {
         "image": "./assets/images/splash-icon.png",
         "resizeMode": "cover",

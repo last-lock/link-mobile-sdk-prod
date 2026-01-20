@@ -372,7 +372,7 @@ In `android/app/src/main/AndroidManifest.xml` (add alongside existing permission
 ### 3. Native module
 Create `android/app/src/main/java/com/cody669/TimeKeeper/BridgeModule.kt`:
 ```kotlin
-package com.cody669.TimeKeeper
+package com.lastlock.sampleapp1
 
 import com.facebook.react.bridge.*
 import com.lastlock.bridge.Bridge
@@ -401,7 +401,7 @@ class BridgeModule(ctx: ReactApplicationContext) : ReactContextBaseJavaModule(ct
 
 Create `BridgePackage.kt`:
 ```kotlin
-package com.cody669.TimeKeeper
+package com.lastlock.sampleapp1
 
 import com.facebook.react.*
 import com.facebook.react.bridge.ReactApplicationContext
