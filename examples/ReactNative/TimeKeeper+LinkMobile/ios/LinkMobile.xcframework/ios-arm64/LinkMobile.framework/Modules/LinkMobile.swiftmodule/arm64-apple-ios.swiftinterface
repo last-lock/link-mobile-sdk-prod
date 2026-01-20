@@ -1,0 +1,178 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.0.3 effective-5.10 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)
+// swift-module-flags: -target arm64-apple-ios16.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name LinkMobile
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface
+import Combine
+import CoreBluetooth
+import CryptoKit
+import Darwin
+import DeviceCheck
+import Foundation
+import Security
+import Swift
+import UIKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@_exported import bridge
+public class AttestationObject {
+  public var keyId: Swift.String
+  public var nonce: Foundation.Data
+  public init(keyId: Swift.String, nonce: Foundation.Data)
+  public init(_ keyId: Swift.String, _ nonce: Foundation.Data)
+  @objc deinit
+}
+public class AssertionObject {
+  public var nonce: Foundation.Data
+  public var assertion: Foundation.Data
+  public var clientDataHash: Foundation.Data
+  public var attestationObject: LinkMobile.AttestationObject
+  public init(nonce: Foundation.Data, assertion: Foundation.Data, clientDataHash: Foundation.Data, attestationObject: LinkMobile.AttestationObject)
+  @objc deinit
+}
+public protocol AppCrashHandler {
+  func handleAppCrash(message: Swift.String, stackTrace: Swift.String, context: Swift.String)
+}
+@objc public class Bridge : bridge.BlueLinkEventListener, bridge.IBridge {
+  public init(serverAddress: Swift.String, uuid: Swift.String)
+  @objc override dynamic public func onBLEStateChanged(newState: Swift.Bool)
+  public func start(UUID: Swift.String)
+  @objc public func getBlueLink() -> bridge.BlueLink
+  public func getCredLink() -> LinkMobile.CredLinkManager
+  @objc public func getBLEProxy() -> bridge.BLEProxy
+  @objc public func getDFUService() -> bridge.DFUService
+  @objc public func setLogsEnabled(isEnabled: Swift.Bool)
+  public func setAppCrashHandler(_ appCrashHandler: any LinkMobile.AppCrashHandler)
+  public func sendTelemetry(_ data: bridge.KotlinByteArray) async throws
+  public func sendPersistedCrashLogs() async
+  @objc deinit
+}
+extension Foundation.Data {
+  public var hexString: Swift.String {
+    get
+  }
+}
+public class CredLinkManager : Combine.ObservableObject, bridge.ConnectivityListener {
+  public var credentialExchangeDelegate: (any LinkMobile.CredentialExchangeDelegate)?
+  public var CredLinkBlueLinkListener: LinkMobile.CredLinkBlueLinkEventListener {
+    get
+    set
+  }
+  @Combine.Published @_projectedValueProperty($networkAvailable) public var networkAvailable: Swift.Bool? {
+    get
+  }
+  public var $networkAvailable: Combine.Published<Swift.Bool?>.Publisher {
+    get
+  }
+  @objc public func didChangeConnectivity(isConnected: Swift.Bool)
+  public init(blueLink: bridge.BlueLink, networkConnectivityMonitor: bridge.NetworkConnectivityMonitor)
+  public func copyPublicKeyHex() -> Swift.String?
+  public func resetKeys()
+  public func updateDynamicKeyTags(userId: Swift.String, serverAddress: Swift.String)
+  public func performCredLinkOperation(for peripheral: bridge.BluetoothDevice, friendlyName: Swift.String? = nil, isTimeSync: Swift.Bool = false)
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+extension LinkMobile.CredLinkManager {
+  public func resetPersistedLongTermPhoneKeys(userId _: Swift.String) -> Swift.Bool
+  public func validatePhoneKeys(userId: Swift.String, serverAddress: Swift.String, forceGeneration: Swift.Bool = false, completionHandler: (Swift.Result<LinkMobile.ValidatePhoneKeysResult, any Swift.Error>) -> Swift.Void)
+  public func resetCredLink(for device: LinkMobile.CredLinkDevice?)
+  public func YedqppztkOmgDLJLQEf8e3bN8fZIwzXQ(device: LinkMobile.CredLinkDevice)
+}
+@objc @_hasMissingDesignatedInitializers public class CredLinkBlueLinkEventListener : bridge.BlueLinkEventListener {
+  @objc override dynamic public func onHeartbeat(device: bridge.BluetoothDevice, heartbeatData: bridge.KotlinByteArray)
+  @objc override dynamic public func onDeviceDiscovered(device: bridge.BluetoothDevice, advertisementData: bridge.BluetoothAdvertisement, rssi _: Swift.Int32, signalStrength _: bridge.SignalStrength?, connectionStatus _: bridge.BlueLinkDeviceConnectionStatus)
+  @objc override dynamic public func onOperationStart(device: bridge.BluetoothDevice, operation: bridge.BlueLinkOperation)
+  @objc override dynamic public func onCharacteristicWrite(device: bridge.BluetoothDevice, characteristic: bridge.BluetoothGattCharacteristic, error: bridge.KotlinBoolean?, operationType _: bridge.BlueLinkOperationType)
+  @objc override dynamic public func onNotificationReceived(device: bridge.BluetoothDevice, characteristic: bridge.BluetoothGattCharacteristic, payload: bridge.KotlinByteArray)
+  @objc override dynamic public func onCharacteristicRead(device: bridge.BluetoothDevice, characteristic: bridge.BluetoothGattCharacteristic, payload: bridge.KotlinByteArray, error _: bridge.KotlinInt?)
+  @objc override dynamic public func onDeviceDisconnected(device: bridge.BluetoothDevice, reason _: bridge.KotlinInt?)
+  @objc deinit
+}
+public enum CredentialExchangeResult : Swift.CustomStringConvertible {
+  case ACCESS_GRANTED
+  case ACCESS_DENIED
+  case CRYPTOGRAPHIC_ERROR
+  case OTHER
+  case DEVICE_DISCONNECTED_DURING_OPERATION
+  case MISSING_LONG_TERM_KEY
+  case CREDENTIAL_EXCHANGE_BUSY
+  case OUT_OF_SCHEDULE
+  case CREDENTIAL_NOT_FOUND
+  case TIMEOUT
+  public var description: Swift.String {
+    get
+  }
+  public static func == (a: LinkMobile.CredentialExchangeResult, b: LinkMobile.CredentialExchangeResult) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol CredentialExchangeDelegate : AnyObject {
+  func credExchangeCallback(for peripheral: bridge.BluetoothDevice, operationResult result: LinkMobile.CredentialExchangeResult)
+}
+public class CredLinkDevice {
+  public var peripheral: bridge.BluetoothDevice
+  public var friendlyName: Swift.String
+  public var readerIdentifier: [Swift.UInt8]?
+  public var siteIdentifier: [Swift.UInt8]?
+  public var firmwareVersion: bridge.DeviceFirmwareVersion?
+  public var hasOngoingCredExchangeOperation: Swift.Bool
+  public var hasBackloggedCredExchangeOp: Swift.Bool
+  public var activeBlueLinkOperation: bridge.BlueLinkOperation?
+  public var staticIV: [Swift.UInt8]
+  public init(peripheral: bridge.BluetoothDevice, friendlyName: Swift.String? = nil)
+  public func setEphemeralPublicKeySignatureFromDevice(_ signature: Foundation.Data)
+  public func getEphemeralPublicKeySignatureFromDevice() -> Foundation.Data?
+  public func isFirmwareLessThan1499() -> Swift.Bool
+  public func updateFirmwareVersion(_ version: bridge.DeviceFirmwareVersion)
+  @objc deinit
+}
+public class IOSHeartbeatParser : bridge.IHeartbeatParser {
+  @objc public func parseHeartbeat(data: bridge.KotlinByteArray) -> bridge.HeartbeatData
+  @objc public func getMfrId(heartbeatData: bridge.HeartbeatData) -> bridge.KotlinUInt?
+  @objc public func getDevId(heartbeatData: bridge.HeartbeatData) -> Swift.UInt32
+  @objc public func getTimestamp(heartbeatData: bridge.HeartbeatData) -> bridge.KotlinUInt?
+  @objc public func getRssi(heartbeatData: bridge.HeartbeatData) -> bridge.KotlinInt?
+  @objc public func getSigBmp(heartbeatData: bridge.HeartbeatData) -> Swift.UInt32
+  @objc public func getFirmwareVersion(heartbeatData: bridge.HeartbeatData) -> bridge.DeviceFirmwareVersion
+  @objc public func getLastOOBServerTimestamp(heartbeatData: bridge.HeartbeatData) -> bridge.KotlinLong?
+  public init()
+  @objc deinit
+}
+extension bridge.PersistedLibraryCrashLog {
+  public func toDictionary() -> [Swift.String : Any]
+}
+public func convertAnyToUInt8Arr(from any: Any) -> [Swift.UInt8]?
+extension Swift.Array where Element == Swift.UInt8 {
+  public func printAsHexString() -> Swift.String
+}
+extension Swift.Sequence {
+  public func asArray() -> [Self.Element]
+}
+#if compiler(>=5.3) && $NoncopyableGenerics
+extension Swift.Optional : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+#else
+extension Swift.Optional : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+#endif
+extension bridge.KotlinByteArray {
+  public func toData() -> Foundation.Data
+}
+extension bridge.KotlinByteArray {
+  convenience public init(from array: [Swift.UInt8])
+}
+public enum ValidatePhoneKeysResult {
+  case publicKey(Foundation.Data)
+  case error(any Swift.Error)
+}
+extension LinkMobile.CredentialExchangeResult : Swift.Equatable {}
+extension LinkMobile.CredentialExchangeResult : Swift.Hashable {}

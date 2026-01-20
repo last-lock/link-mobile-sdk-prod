@@ -17,6 +17,10 @@ import { BridgeProvider, useBridgeContext } from "@/context/BridgeContext";
 
 const { Navigator } = createStackNavigator();
 
+// TODO: Replace with the correct server address / UUID
+const BRIDGE_SERVER = "api.test.example.com";
+const BRIDGE_UUID = "AAAA";
+
 export const Stack = withLayoutContext<
   StackNavigationOptions,
   typeof Navigator,
@@ -27,16 +31,14 @@ export const Stack = withLayoutContext<
 const handleInitialize = async (setScanning: (value: boolean) => void) => {
   try {
     console.log('[Bridge] Initializing bridge...');
-    // TODO: Replace with the correct server address
-    const result = await BridgeModule.initialize("api.test.example.com");
+    const result = await BridgeModule.initialize(BRIDGE_SERVER, BRIDGE_UUID);
     console.log('[Bridge] Initialize result:', result);
     
     // Start scanning after a short delay to ensure initialization is complete
     setTimeout(async () => {
       try {
         console.log('[Bridge] Starting bridge...');
-        // TODO: Replace with the correct UUID
-        const result2 = await BridgeModule.start("AAAA");
+        const result2 = await BridgeModule.start(BRIDGE_UUID);
         console.log('[Bridge] Start result:', result2);
         console.log('[Bridge] Bridge is now scanning for devices');
         setScanning(true);

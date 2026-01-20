@@ -24,11 +24,12 @@ class BridgeModule: RCTEventEmitter {
     @objc
     func initialize(
         _ serverAddress: String,
+        uuid: String,
         resolver: @escaping RCTPromiseResolveBlock,
         rejecter: @escaping RCTPromiseRejectBlock
     ) {
         DispatchQueue.main.async {
-            self.seamlessBridge = Bridge(serverAddress: serverAddress)
+            self.seamlessBridge = Bridge(serverAddress: serverAddress, uuid: uuid)
             guard let blueLink = self.seamlessBridge?.getBlueLink() else {
                 rejecter("ERROR", "Failed to get BlueLink from Bridge", nil)
                 return

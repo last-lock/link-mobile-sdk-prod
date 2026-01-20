@@ -79,23 +79,33 @@ class BridgeModule: RCTEventEmitter {
     private var bridge: Bridge?
     
     @objc
-    func initialize(_ serverAddress: String, resolver: @escaping RCTPromiseResolveBlock, rejecter: @escaping RCTPromiseRejectBlock) {
-        // Initialize LinkMobile SDK with server address
-        bridge = Bridge()
-        bridge?.initialize(serverAddress: serverAddress)
-        resolver("Bridge initialized successfully")
+    func initialize(_ serverAddress: String, uuid: String, resolver: @escaping RCTPromiseResolveBlock, rejecter: @escaping RCTPromiseRejectBlock) {
+        // Initialize LinkMobile SDK with server address and UUID, then attach listeners
+        bridge = Bridge(serverAddress: serverAddress, uuid: uuid)
+        guard let blueLink = bridge?.getBlueLink() else {
+            rejecter("ERROR", "Failed to get BlueLink from Bridge", nil)
+            return
+        }
+
+        // Attach listener bridge so events stream to JS
+        blueLink.addListener(listener: BlueLinkListenerBridge(eventEmitter: self), prependListener: false)
+        resolver("Bridge initialized and listener attached")
     }
     
     @objc
     func start(_ uuid: String, resolver: @escaping RCTPromiseResolveBlock, rejecter: @escaping RCTPromiseRejectBlock) {
-        // Start device discovery with UUID
-        bridge?.start(uuid: uuid) { [weak self] device in
-            self?.sendEvent(withName: "onDeviceDiscovered", body: device)
+        // Start scanning with the provided UUID (events are emitted via the attached listener)
+        guard let bridge = bridge else {
+            rejecter("ERROR", "Bridge not initialized. Call initialize first.", nil)
+            return
         }
+        bridge.start(UUID: uuid)
         resolver("Bridge started successfully")
     }
 }
 ```
+
+**Supported native events:** `onDeviceDiscovered`, `onDeviceConnected`, `onDeviceDisconnected`, `onBLEStateChanged`
 
 #### BridgeModule.m
 The Objective-C bridge exposes the Swift module to React Native:
@@ -107,16 +117,17 @@ The Objective-C bridge exposes the Swift module to React Native:
 @interface RCT_EXTERN_MODULE(BridgeModule, RCTEventEmitter)
 
 RCT_EXTERN_METHOD(initialize:(NSString *)serverAddress
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
+                  uuid:(NSString *)uuid
+                  resolver:(RCTPromiseResolveBlock)resolver
+                  rejecter:(RCTPromiseRejectBlock)rejecter)
 
 RCT_EXTERN_METHOD(start:(NSString *)uuid
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
+                  resolver:(RCTPromiseResolveBlock)resolver
+                  rejecter:(RCTPromiseRejectBlock)rejecter)
 
 + (BOOL)requiresMainQueueSetup
 {
-    return NO;
+    return YES;
 }
 
 @end
@@ -125,40 +136,23 @@ RCT_EXTERN_METHOD(start:(NSString *)uuid
 ### 2. TypeScript Interface Layer
 
 #### BridgeModule.ts
-Provides type-safe access to native functionality:
-
 ```typescript
-import { NativeModules, NativeEventEmitter } from 'react-native';
+import { NativeModules } from 'react-native';
+
+interface BridgeModuleInterface {
+  initialize(serverAddress: string, uuid: string): Promise<string>;
+  start(uuid: string): Promise<string>;
+}
 
 const { BridgeModule } = NativeModules;
 
-export interface Device {
-  identifier: string;
-  name?: string;
-  rssi?: number;
-  connectionStatus?: string;
-  signalStrength?: string;
+if (!BridgeModule) {
+  throw new Error(
+    'BridgeModule native module is not available. Make sure you have run pod install and rebuilt the app.'
+  );
 }
 
-class BridgeModuleInterface {
-  /**
-   * Be sure to provide the correct serverAddress as issued by Last Lock. 
-   * For development/testing, you might use "api.test.example.com".
-   */
-  async initialize(serverAddress: string): Promise<string> {
-    return BridgeModule.initialize(serverAddress);
-  }
-
-  /**
-   * UUID is issued by Last Lock for your integration.
-   * For testing, use "AAAA" if you have been given that as a demo/test UUID.
-   */
-  async start(uuid: string): Promise<string> {
-    return BridgeModule.start(uuid);
-  }
-}
-
-export default new BridgeModuleInterface();
+export default BridgeModule as BridgeModuleInterface;
 ```
 
 ### 3. Context Provider Layer
@@ -262,8 +256,8 @@ import BridgeModule from '../modules/BridgeModule';
  */
 const handleInitialize = async (setScanning: (value: boolean) => void) => {
   try {
-    // Initialize with server address
-    await BridgeModule.initialize("api.test.example.com");
+    // Initialize with server address and UUID
+    await BridgeModule.initialize("api.test.example.com", "AAAA");
 
     // Start scanning after initialization
     setTimeout(async () => {
@@ -313,13 +307,14 @@ The integration uses React Native's event emitter system to handle real-time dev
 - Native events are emitted from Swift/Objective-C
 - JavaScript listeners update React state
 - UI automatically re-renders with new device data
+- Supported native events: `onDeviceDiscovered`, `onDeviceConnected`, `onDeviceDisconnected`, `onBLEStateChanged`
 
 ### 2. Promise-Based API
 All native method calls return promises for proper error handling:
 ```typescript
 try {
   // Use the correct server address and UUID here (see example above)
-  await BridgeModule.initialize("api.test.example.com");
+  await BridgeModule.initialize("api.test.example.com", "AAAA");
   await BridgeModule.start("AAAA");
 } catch (error) {
   // Handle errors gracefully
@@ -358,6 +353,7 @@ This implementation uses xcframeworks as an example rather than Swift Package Ma
 ### 1. Install Dependencies
 ```bash
 cd ios
+npm install
 pod install
 cd ..
 ```

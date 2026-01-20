@@ -1,0 +1,4 @@
+framework module LinkMobile {
+  header "LinkMobile-Swift.h"
+  requires objc
+}
