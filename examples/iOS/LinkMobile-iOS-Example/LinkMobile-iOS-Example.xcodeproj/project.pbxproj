@@ -114,7 +114,7 @@
 			mainGroup = AD96C15E2EB01AC1000764AE;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				AD962C432EBA8B0500698DE2 /* XCRemoteSwiftPackageReference "link-mobile-sdk-staging" */,
+				AD962C432EBA8B0500698DE2 /* XCRemoteSwiftPackageReference "link-mobile-sdk-prod" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AD96C1682EB01AC1000764AE /* Products */;
@@ -352,12 +352,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		AD962C432EBA8B0500698DE2 /* XCRemoteSwiftPackageReference "link-mobile-sdk-staging" */ = {
+		AD962C432EBA8B0500698DE2 /* XCRemoteSwiftPackageReference "link-mobile-sdk-prod" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/last-lock/link-mobile-sdk-staging";
+			repositoryURL = "https://github.com/last-lock/link-mobile-sdk-prod";
 			requirement = {
 				kind = exactVersion;
-				version = "1.5.1-1";
+				version = 1.7.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -365,7 +365,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		AD962C442EBA8B0500698DE2 /* LinkMobile */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = AD962C432EBA8B0500698DE2 /* XCRemoteSwiftPackageReference "link-mobile-sdk-staging" */;
+			package = AD962C432EBA8B0500698DE2 /* XCRemoteSwiftPackageReference "link-mobile-sdk-prod" */;
 			productName = LinkMobile;
 		};
 /* End XCSwiftPackageProductDependency section */

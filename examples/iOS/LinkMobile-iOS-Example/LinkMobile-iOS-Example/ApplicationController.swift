@@ -20,7 +20,7 @@ class ApplicationController: BlueLinkEventListener, ObservableObject {
     // Configs
     let serverAddress: String = "enter_server_url"
     let businessServerUrl: String = "enter_business_server_url"
-    let serviceUUID: CBUUID = CBUUID(string: "BF01")
+    let serviceUUID: String = "BF01"
 
     @Published var allDevices: [BluetoothDevice] = []
 
@@ -28,7 +28,7 @@ class ApplicationController: BlueLinkEventListener, ObservableObject {
         didSet {
             if isBleConnected == .poweredOn {
                 print("starting scanning for devices")
-                self.bridge.start(UUID: serviceUUID.uuidString)
+                self.bridge.start(UUID: serviceUUID)
             } else {
                 self.bridge.getBlueLink().stopBLEScan()
             }
@@ -42,8 +42,8 @@ class ApplicationController: BlueLinkEventListener, ObservableObject {
 
     // overriding and invoking super.init() to allow BlueLinkEventListener to get setup
     override init() {
-        print("Initializing ApplicationController and starting BLE Proxy with serverAdd: \(serverAddress) and UUID: \(serviceUUID.uuidString)")
-        self.bridge = Bridge(serverAddress: self.serverAddress)
+        print("Initializing ApplicationController and starting BLE Proxy with serverAdd: \(serverAddress) and UUID: \(serviceUUID)")
+        self.bridge = Bridge(serverAddress: self.serverAddress, uuid: serviceUUID)
         self.blueLink = bridge.getBlueLink()
         self.credLinkManager = bridge.getCredLink()
         super.init()
