@@ -30,6 +30,7 @@ class BridgeModule: RCTEventEmitter {
     ) {
         DispatchQueue.main.async {
             self.seamlessBridge = Bridge(serverAddress: serverAddress, uuid: uuid)
+            self.seamlessBridge?.setLogsEnabled(isEnabled: true)
             guard let blueLink = self.seamlessBridge?.getBlueLink() else {
                 rejecter("ERROR", "Failed to get BlueLink from Bridge", nil)
                 return
