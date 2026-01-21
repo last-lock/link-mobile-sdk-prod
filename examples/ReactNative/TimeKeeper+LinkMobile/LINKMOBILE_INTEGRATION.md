@@ -590,6 +590,7 @@ Bridge.setLogsEnabled(true)
 - Use Android Studio Logcat
 - Filter by tag: `BridgeModule` for React Native bridge events
 - Filter by tag: `Bridge`, `BlueLink`, or `Attestation` for SDK-level events
+- ex: adb logcat -c adb logcat --pid=$(adb shell pidof -s com.cody669.TimeKeeper) -v time
 
 ### Log Output Examples
 
