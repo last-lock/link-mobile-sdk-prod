@@ -576,6 +576,7 @@ self.seamlessBridge?.setLogsEnabled(isEnabled: true)
 - Use Xcode Console while running the app
 - Use `Console.app` on macOS and filter by your app name
 - Filter by tags like `Bridge`, `BlueLink`, or `Attestation`
+- OR open your xcworkspace in Xcode and run the app from there, ensuring the expo dev-cli is running
 
 ### Android
 
