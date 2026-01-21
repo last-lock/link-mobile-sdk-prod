@@ -10,7 +10,7 @@ RCT_EXTERN_METHOD(initialize:(NSString *)serverAddress
 
 RCT_EXTERN_METHOD(start:(NSString *)uuid
                   resolver:(RCTPromiseResolveBlock)resolver
-                  rejecter:(RCTPromiseRejectBlock)rejecter)
+                  rejecter:(RCTPromiseRejectBlock)rejecter
 
 + (BOOL)requiresMainQueueSetup
 {
