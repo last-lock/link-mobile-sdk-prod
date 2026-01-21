@@ -22,6 +22,8 @@
 	<string>1</string>
 	<key>MinimumOSVersion</key>
 	<string>12.0</string>
+	<key>RCTNewArchEnabled</key>
+	<true/>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>

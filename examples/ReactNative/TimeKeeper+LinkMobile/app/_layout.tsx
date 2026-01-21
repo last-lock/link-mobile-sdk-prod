@@ -18,8 +18,8 @@ import { BridgeProvider, useBridgeContext } from "@/context/BridgeContext";
 const { Navigator } = createStackNavigator();
 
 // TODO: Replace with the correct server address / UUID
-const BRIDGE_SERVER = "api.internal.seamless.lastlock.com";
-const BRIDGE_UUID = "FC5A";
+const BRIDGE_SERVER = "allison-lee-mac.tail7a0e92.ts.net";
+const BRIDGE_UUID = "4801";
 
 export const Stack = withLayoutContext<
   StackNavigationOptions,

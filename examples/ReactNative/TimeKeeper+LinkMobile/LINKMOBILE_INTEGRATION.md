@@ -491,7 +491,22 @@ cd ..
 
 ### 2. Build and Run
 ```bash
-npx expo run:ios --device "example device name"
+ npx expo run:ios --device "example device name"
+```
+
+### Android: build, install, and run
+```bash
+cd android
+./gradlew :app:assembleDebug
+./gradlew installDebug
+cd ..
+npx expo start --dev-client
+# then press "a" (option a) in the Expo prompt to launch on Android
+```
+
+You can view device logs with:
+```
+@zsh (5-6)
 ```
 
 ### 3. Verify Integration
