@@ -11,6 +11,7 @@ The LinkMobile SDK integration exposes device discovery and connection functiona
 
 **Key Components:**
 - Native iOS Swift/Objective-C bridge module
+- Native Android Kotlin bridge module
 - TypeScript interface layer
 - React Native context providers
 - Device discovery hooks
@@ -28,7 +29,7 @@ The integration follows a layered architecture:
                   │
 ┌─────────────────▼───────────────────┐
 │        Context Providers            │
-│    (BridgeContext, ThemeContext)   │
+│    (BridgeContext, ThemeContext)    │
 └─────────────────┬───────────────────┘
                   │
 ┌─────────────────▼───────────────────┐
@@ -41,15 +42,17 @@ The integration follows a layered architecture:
 │      (BridgeModule.ts)              │
 └─────────────────┬───────────────────┘
                   │
-┌─────────────────▼───────────────────┐
-│    Native iOS Bridge Layer          │
-│  (BridgeModule.swift, BridgeModule.m)│
-└─────────────────┬───────────────────┘
-                  │
-┌─────────────────▼───────────────────┐
-│        LinkMobile SDK               │
-│        (xcframeworks)               │
-└─────────────────────────────────────┘
+        ┌─────────┴─────────┐
+        │                   │
+┌───────▼───────┐   ┌───────▼───────┐
+│   iOS Bridge  │   │ Android Bridge│
+│ (Swift + ObjC)│   │   (Kotlin)    │
+└───────┬───────┘   └───────┬───────┘
+        │                   │
+┌───────▼───────┐   ┌───────▼───────┐
+│  LinkMobile   │   │  LinkMobile   │
+│ (xcframeworks)│   │    (Maven)    │
+└───────────────┘   └───────────────┘
 ```
 
 ## Pre-Integration Requirements
@@ -300,6 +303,332 @@ export default function Index() {
 }
 ```
 
+## Android Integration
+
+### 1. Native Android Bridge Layer
+
+#### BridgeModule.kt
+The Kotlin implementation provides the core functionality by wrapping the LinkMobile SDK:
+
+```kotlin
+package com.cody669.TimeKeeper
+
+import com.facebook.react.bridge.Arguments
+import com.facebook.react.bridge.Promise
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.ReactContextBaseJavaModule
+import com.facebook.react.bridge.ReactMethod
+import com.facebook.react.bridge.WritableMap
+import com.facebook.react.modules.core.DeviceEventManagerModule
+import com.lastlock.bridge.Bridge
+import android.util.Log
+import com.lastlock.bridge.bluelink.BluetoothAdvertisement
+import com.lastlock.bridge.bluelink.BluetoothDevice
+import com.lastlock.bridge.bluelink.BlueLinkDeviceConnectionStatus
+import com.lastlock.bridge.bluelink.interfaces.BlueLinkEventListener
+import com.lastlock.bridge.bluelink.interfaces.SignalStrength
+
+class BridgeModule(reactContext: ReactApplicationContext) :
+        ReactContextBaseJavaModule(reactContext) {
+
+  override fun getName() = "BridgeModule"
+
+  private fun sendEvent(eventName: String, params: WritableMap?) {
+    reactApplicationContext
+      .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+      .emit(eventName, params)
+  }
+
+  @ReactMethod
+  fun initialize(serverAddress: String, uuid: String, promise: Promise) {
+    try {
+      Bridge.init(reactApplicationContext, serverAddress)
+      Bridge.setLogsEnabled(true)
+
+      // Attach listener to receive device discovery events
+      val blueLink = Bridge.getBlueLink()
+      blueLink?.addListener(object : BlueLinkEventListener() {
+        override fun onDeviceDiscovered(
+          device: BluetoothDevice,
+          advertisementData: BluetoothAdvertisement,
+          rssi: Int,
+          signalStrength: SignalStrength,
+          connectionStatus: BlueLinkDeviceConnectionStatus
+        ) {
+          Log.d("BridgeModule", "onDeviceDiscovered called! deviceId=${device.deviceId}")
+
+          val params = Arguments.createMap().apply {
+            putString("name", device.name ?: "Unknown")
+            putString("identifier", device.deviceId.toString())
+            putInt("rssi", rssi)
+            putString("connectionStatus", connectionStatus.name)
+            putString("signalStrength", signalStrength.toString())
+          }
+          sendEvent("onDeviceDiscovered", params)
+        }
+
+        override fun onDeviceConnected(device: BluetoothDevice) {
+          val params = Arguments.createMap().apply {
+            putString("name", device.name ?: "Unknown")
+            putString("identifier", device.deviceId.toString())
+          }
+          sendEvent("onDeviceConnected", params)
+        }
+
+        override fun onDeviceDisconnected(device: BluetoothDevice, reason: Int?) {
+          val params = Arguments.createMap().apply {
+            putString("name", device.name ?: "Unknown")
+            putString("identifier", device.deviceId.toString())
+          }
+          sendEvent("onDeviceDisconnected", params)
+        }
+
+        override fun onBLEStateChanged(newState: Boolean) {
+          val params = Arguments.createMap().apply {
+            putBoolean("state", newState)
+          }
+          sendEvent("onBLEStateChanged", params)
+        }
+      }, false)
+
+      promise.resolve("Bridge initialized")
+    } catch (e: Exception) {
+      promise.reject("INIT_ERROR", e)
+    }
+  }
+
+  @ReactMethod
+  fun start(uuid: String, promise: Promise) {
+    try {
+      Bridge.start(uuid)
+      promise.resolve("Bridge started with UUID: $uuid")
+    } catch (e: Exception) {
+      promise.reject("START_ERROR", e)
+    }
+  }
+
+  // Required for NativeEventEmitter
+  @ReactMethod
+  fun addListener(eventName: String) {
+    // Keep: Required for RN built-in Event Emitter Calls
+  }
+
+  @ReactMethod
+  fun removeListeners(count: Int) {
+    // Keep: Required for RN built-in Event Emitter Calls
+  }
+}
+```
+
+**Supported native events:** `onDeviceDiscovered`, `onDeviceConnected`, `onDeviceDisconnected`, `onBLEStateChanged`
+
+#### BridgePackage.kt
+The package class exposes the module to React Native:
+
+```kotlin
+package com.cody669.TimeKeeper
+
+import com.facebook.react.ReactPackage
+import com.facebook.react.bridge.NativeModule
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.uimanager.ViewManager
+
+class BridgePackage : ReactPackage {
+  override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> =
+          listOf(BridgeModule(reactContext))
+
+  override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> =
+          emptyList()
+}
+```
+
+#### MainApplication.kt
+Register the package in your application:
+
+```kotlin
+override fun getPackages(): List<ReactPackage> {
+  val packages = PackageList(this).packages
+  // Add the BridgePackage manually
+  packages.add(BridgePackage())
+  return packages
+}
+```
+
+### 2. Android Dependency Setup
+
+Add the LinkMobile SDK dependency to `android/app/build.gradle`:
+
+```gradle
+dependencies {
+    implementation("com.facebook.react:react-android")
+    implementation("com.lastlock.dev:bridge-android:1.8.0") // Use your version
+    // ... other dependencies
+}
+```
+
+### 3. Add the GitHub Packages Repository
+
+In `android/build.gradle`, ensure the repository is added (and supply credentials via env or `gradle.properties`):
+
+```gradle
+allprojects {
+  repositories {
+    google()
+    mavenCentral()
+    maven { url 'https://www.jitpack.io' }
+    maven {
+      url "https://maven.pkg.github.com/last-lock/link-mobile-sdk-prod"
+      credentials {
+        username = System.getenv("GITHUB_ACTOR") ?: (findProperty("gpr.user") ?: "")
+        password = System.getenv("GITHUB_TOKEN") ?: (findProperty("gpr.key") ?: "")
+      }
+    }
+  }
+}
+```
+
+Set credentials (one option):
+```bash
+export GITHUB_ACTOR=<your-gh-username>
+export GITHUB_TOKEN=<a PAT with read:packages>
+```
+
+Or in `android/gradle.properties`:
+```properties
+gpr.user=<your-gh-username>
+gpr.key=<your-token>
+```
+
+### 4. Compile SDK and AGP Version
+
+Update `android/build.gradle` to use compatible versions:
+
+```gradle
+buildscript {
+    ext {
+        compileSdkVersion = 36
+        targetSdkVersion = 36
+        kotlinVersion = '2.1.20'
+    }
+    dependencies {
+        classpath('com.android.tools.build:gradle:8.9.2')
+    }
+}
+```
+
+This satisfies the `androidx.activity` / `androidx.core` requirements pulled in by the Android bridge.
+
+### 5. Android SDK Location
+
+Create/update `android/local.properties` so Gradle can find the SDK:
+
+```properties
+sdk.dir=/Users/<your-username>/Library/Android/sdk
+```
+
+Adjust the path if your SDK is elsewhere, or set `ANDROID_HOME` in your shell.
+
+### 6. Add Required Permissions
+
+In `android/app/src/main/AndroidManifest.xml` (add alongside existing permissions):
+
+```xml
+<uses-permission android:name="android.permission.BLUETOOTH"/>
+<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+<uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+<uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" android:maxSdkVersion="30"/>
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+```
+
+### 7. JS Usage (Same as iOS)
+
+Call from JS with both params:
+
+```typescript
+await BridgeModule.initialize("api.test.example.com", "AAAA");
+await BridgeModule.start("AAAA");
+```
+
+### 8. Runtime Permissions
+
+Before calling `start`, request the BLE/location/notification permissions appropriate for the device SDK level (e.g., with `react-native-permissions`). Only start scanning after the user grants them.
+
+---
+
+## Enabling SDK Logs
+
+Logs can be enabled on both platforms to help with debugging device discovery, attestation, and connection issues.
+
+### iOS
+
+Enable logs after initializing the Bridge in `BridgeModule.swift`:
+
+```swift
+self.seamlessBridge = Bridge(serverAddress: serverAddress, uuid: uuid)
+self.seamlessBridge?.setLogsEnabled(isEnabled: true)
+```
+
+**Viewing iOS logs:**
+- Use Xcode Console while running the app
+- Use `Console.app` on macOS and filter by your app name
+- Filter by tags like `Bridge`, `BlueLink`, or `Attestation`
+
+### Android
+
+Enable logs after initializing the Bridge in `BridgeModule.kt`:
+
+```kotlin
+Bridge.init(reactApplicationContext, serverAddress)
+Bridge.setLogsEnabled(true)
+```
+
+**Viewing Android logs:**
+- Use Android Studio Logcat
+- Filter by tag: `BridgeModule` for React Native bridge events
+- Filter by tag: `Bridge`, `BlueLink`, or `Attestation` for SDK-level events
+
+### Log Output Examples
+
+When logs are enabled, you'll see output like:
+
+```
+[Bridge] Initializing with server: api.test.example.com
+[Attestation] Starting attestation flow...
+[Attestation] Attestation successful
+[BlueLink] Starting scan with UUID: AAAA
+[BlueLink] Device discovered: identifier=ABC123, rssi=-45
+[BridgeModule] onDeviceDiscovered called! deviceId=ABC123
+```
+
+### Debugging Common Issues
+
+| Issue | What to Look For in Logs |
+|-------|-------------------------|
+| No devices discovered | Check for `BlueLink` scan start messages and BLE state changes |
+| Attestation failures | Look for `Attestation` errors with GRPC status codes |
+| Connection drops | Check `onDeviceDisconnected` events and reason codes |
+| Permission issues | iOS: Check for CBCentralManager state; Android: Check for permission denial messages |
+
+---
+
+## Platform Differences
+
+| Aspect | iOS | Android |
+|--------|-----|---------|
+| SDK Format | xcframeworks | Maven/Gradle dependency |
+| Bridge Language | Swift + Objective-C | Kotlin |
+| Module Registration | Automatic via `@objc` decorator | Manual via `BridgePackage` |
+| Event Emitter | `RCTEventEmitter` subclass | `DeviceEventManagerModule` |
+| Logging API | `setLogsEnabled(isEnabled: Bool)` | `Bridge.setLogsEnabled(Boolean)` |
+| Bluetooth Permissions | `Info.plist` keys | `AndroidManifest.xml` + runtime |
+| Attestation | App Attest (DeviceCheck) | Play Integrity API |
+
+---
+
 ## Key Integration Patterns
 
 ### 1. Event-Driven Architecture
@@ -370,11 +699,29 @@ npx expo run:ios --device "example device name"
 
 ## Troubleshooting
 
-### Common Issues:
+### Common Issues (iOS):
 1. **Module not found**: Ensure `pod install` was run and app was rebuilt
 2. **Linker errors**: Verify xcframework is properly embedded in Xcode project
 3. **Event not received**: Check event listener setup and native event emission
 4. **TypeScript errors**: Ensure proper type definitions in BridgeModule.ts
+5. **BLE not working**: Verify `NSBluetoothAlwaysUsageDescription` is in `Info.plist`
+6. **Attestation failures**: Ensure App Attest capability is enabled in Xcode and app is enrolled with Last Lock
 
-This integration provides a complete reference for integrating native iOS SDKs into React Native applications using xcframeworks and demonstrates best practices for maintaining clean, maintainable code architecture.
+### Common Issues (Android):
+1. **Dependency not found**: Verify GitHub Packages credentials are set correctly
+2. **Gradle sync failures**: Check AGP version compatibility (requires 8.9.1+)
+3. **Kotlin version mismatch**: Ensure `kotlinVersion` matches SDK requirements (2.1.20)
+4. **BLE not working**: Verify runtime permissions are requested and granted
+5. **Module not registered**: Ensure `BridgePackage` is added in `MainApplication.kt`
+6. **Metadata version errors**: Clean Gradle cache with `cd android && ./gradlew clean`
+
+### Debug Checklist:
+- [ ] SDK logs enabled (`setLogsEnabled(true)`)
+- [ ] App enrolled for attestation with Last Lock
+- [ ] Correct server address and UUID configured
+- [ ] All required permissions declared and granted
+- [ ] Native module properly registered
+- [ ] Event listeners attached before starting scan
+
+This integration provides a complete reference for integrating the LinkMobile SDK into React Native applications on both iOS and Android, demonstrating best practices for maintaining clean, maintainable code architecture.
 
