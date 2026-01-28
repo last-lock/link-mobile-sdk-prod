@@ -144,39 +144,12 @@ __attribute__((swift_name("KotlinBoolean")))
 + (instancetype)numberWithBool:(BOOL)value;
 @end
 
-
-/**
- * IBridge provides a unified interface for accessing core Bluetooth-related services
- * within the Bridge architecture. Implementations of this interface are responsible
- * for managing the lifecycle and providing access to BlueLink, BLEProxy, and DFUService instances.
- *
- * Note: PKOC services are not included in this interface due to differing types across platforms.
- *
- * Implementations are typically provided via a Koin isolated context to ensure proper dependency
- * management and lifecycle isolation for each bridge instance.
- */
 __attribute__((swift_name("IBridge")))
 @protocol BridgeIBridge
 @required
-
-/**
- * Returns the BLEProxy service instance.
- */
 - (BridgeBLEProxy *)getBLEProxy __attribute__((swift_name("getBLEProxy()")));
-
-/**
- * Returns the BlueLink service instance.
- */
 - (BridgeBlueLink *)getBlueLink __attribute__((swift_name("getBlueLink()")));
-
-/**
- * Returns the DFUService instance.
- */
 - (BridgeDFUService *)getDFUService __attribute__((swift_name("getDFUService()")));
-
-/**
- * Enable or disable library logs
- */
 - (void)setLogsEnabledIsEnabled:(BOOL)isEnabled __attribute__((swift_name("setLogsEnabled(isEnabled:)")));
 @end
 
@@ -227,18 +200,6 @@ __attribute__((swift_name("BLEStaticValues")))
 @property (readonly) int32_t value __attribute__((swift_name("value")));
 @end
 
-
-/**
- * BlueLink class - Acts as an interface between the BlueLink library and implementers.
- *
- * Handles device discovery, connection management, and BLE read/write operations,
- * abstracting the details of BLE communication and fragmentation.
- *
- * If a read or write operation is performed for a characteristic that is not present in the device,
- * an appropriate BlueLinkOpFailReason will be returned. Implementation on handling of these failed
- * scenarios is left up to the implementors. Once the implementor has handled the failing operation,
- * it must call completeOperation() to mark the failed operation as complete
- */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("BlueLink")))
 @interface BridgeBlueLink : BridgeBase
@@ -253,63 +214,17 @@ __attribute__((swift_name("BlueLink")))
 - (id _Nullable)getiOSCentralManager __attribute__((swift_name("getiOSCentralManager()")));
 - (void)operationCompleteDevice:(BridgeBluetoothDevice *)device operation:(BridgeBlueLinkOperation *)operation __attribute__((swift_name("operationComplete(device:operation:)")));
 - (void)queueOperationDevice:(BridgeBluetoothDevice *)device operation:(BridgeBlueLinkOperation *)operation __attribute__((swift_name("queueOperation(device:operation:)")));
-
-/**
- * Reads data from a characteristic on the specified peripheral. Performs a BLE read operation
- * from the peripheral while also maintaining an active BLE Read operation. To be used in places
- * where multiple BLE reads are required for an operation to complete (eg: fragmented proxy
- * read)
- * @return BlueLinkOperationFailReason if the operation fails, otherwise null
- */
 - (BridgeBlueLinkOperationError * _Nullable)readFromPeripheralAndAssignActiveOperationDevice:(BridgeBluetoothDevice *)device characteristicUUID:(BridgeUUID *)characteristicUUID fragmentation:(BOOL)fragmentation operationType:(BridgeBlueLinkOperationType *)operationType __attribute__((swift_name("readFromPeripheralAndAssignActiveOperation(device:characteristicUUID:fragmentation:operationType:)")));
 - (void)removeListenerListener:(BridgeBlueLinkEventListener *)listener __attribute__((swift_name("removeListener(listener:)")));
 - (void)removeOperationsDeviceId:(uint32_t)deviceId credentialExchangeOp:(BOOL)credentialExchangeOp proxyOp:(BOOL)proxyOp credLinkTimeSyncOp:(BridgeBoolean * _Nullable)credLinkTimeSyncOp __attribute__((swift_name("removeOperations(deviceId:credentialExchangeOp:proxyOp:credLinkTimeSyncOp:)")));
-
-/**
- * Configures indications for a given characteristic.
- * @return BlueLinkOperationFailReason if the operation fails, otherwise null
- */
 - (BridgeBlueLinkOperationError * _Nullable)setIndicationConfigDevice:(BridgeBluetoothDevice *)device characteristicUUID:(NSString *)characteristicUUID __attribute__((swift_name("setIndicationConfig(device:characteristicUUID:)")));
-
-/**
- * Configures notifications for a given characteristic.
- * @return BlueLinkOperationFailReason if the operation fails
- */
 - (BridgeBlueLinkOperationError * _Nullable)setNotificationConfigDevice:(BridgeBluetoothDevice *)device characteristicUUID:(NSString *)characteristicUUID __attribute__((swift_name("setNotificationConfig(device:characteristicUUID:)")));
 - (void)setPersistConnectionDeviceId:(uint32_t)deviceId persistConnection:(BOOL)persistConnection __attribute__((swift_name("setPersistConnection(deviceId:persistConnection:)")));
-
-/**
- * Writes data to a characteristic on the specified peripheral, provided characteristic exists
- * on peripheral to write
- * @return BlueLinkOperationFailReason if the operation fails, otherwise null
- */
 - (BridgeBlueLinkOperationError * _Nullable)startActiveWriteOperationDevice:(BridgeBluetoothDevice *)device characteristicUUID:(BridgeUUID *)characteristicUUID payload:(BridgeKotlinByteArray *)payload fragmentation:(BOOL)fragmentation operationType:(BridgeBlueLinkOperationType *)operationType __attribute__((swift_name("startActiveWriteOperation(device:characteristicUUID:payload:fragmentation:operationType:)")));
-
-/** Starts scanning for BLE peripherals. */
 - (void)startBLEScanServiceUUIDs:(NSArray<BridgeUUID *> *)serviceUUIDs extraOptions:(NSDictionary<id, id> * _Nullable)extraOptions __attribute__((swift_name("startBLEScan(serviceUUIDs:extraOptions:)")));
-
-/**
- * Actively begins the heartbeat procedure for all connected devices at an interval specified in BlueLink.
- *
- * Note: The role of this function is to ONLY queue Heartbeat operations in BlueLink. Execution
- * of the operations will be controlled by BlueLink and will happen over the course of its
- * operation
- */
 - (void)startHeartbeatJob __attribute__((swift_name("startHeartbeatJob()")));
-
-/** Stops scanning for BLE peripherals. */
 - (void)stopBLEScan __attribute__((swift_name("stopBLEScan()")));
-
-/**
- * To be invoked when all devices are disconnected from the bridge; stops any ongoing heartbeat job
- */
 - (void)stopHeartbeatJob __attribute__((swift_name("stopHeartbeatJob()")));
-
-/**
- * Purely writes the payloads to the provided device, provided that the characteristic to write
- * exists on the device. To be used or simple write operations (write single payload to char)
- * @return BlueLinkOperationFailReason if the operation fails, otherwise null
- */
 - (BridgeBlueLinkOperationError * _Nullable)writeToPeripheralDevice:(BridgeBluetoothDevice *)device charUUID:(NSString *)charUUID payload:(BridgeKotlinByteArray *)payload operationType:(BridgeBlueLinkOperationType *)operationType __attribute__((swift_name("writeToPeripheral(device:charUUID:payload:operationType:)")));
 @property id<BridgeKotlinx_coroutines_coreJob> _Nullable heartbeatJob __attribute__((swift_name("heartbeatJob")));
 @property (readonly) id<BridgeIHeartbeatParser> heartbeatParser __attribute__((swift_name("heartbeatParser")));
@@ -325,14 +240,10 @@ __attribute__((swift_name("BlueLink.Companion")))
 @property (readonly) NSString *TAG __attribute__((swift_name("TAG")));
 @end
 
-
-/** Enum to represent the connection status of a device. */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("BlueLinkDeviceConnectionStatus")))
 @interface BridgeBlueLinkDeviceConnectionStatus : BridgeKotlinEnum<BridgeBlueLinkDeviceConnectionStatus *>
 + (instancetype)alloc __attribute__((unavailable));
-
-/** Enum to represent the connection status of a device. */
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 - (instancetype)initWithName:(NSString *)name ordinal:(int32_t)ordinal __attribute__((swift_name("init(name:ordinal:)"))) __attribute__((objc_designated_initializer)) __attribute__((unavailable));
 @property (class, readonly) BridgeBlueLinkDeviceConnectionStatus *connected __attribute__((swift_name("connected")));
@@ -400,36 +311,8 @@ __attribute__((swift_name("BluetoothAdvertisement.Companion")))
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 + (instancetype)companion __attribute__((swift_name("init()")));
 @property (class, readonly, getter=shared) BridgeBluetoothAdvertisementCompanion *shared __attribute__((swift_name("shared")));
-
-/**
- * Detects packet version based on size and structure.
- * Heartbeat packets always use 1.4 format (16-bit counters).
- * Advertising packets use 1.5 format (4-bit counters) if they're 6 bytes.
- *
- * Version Detection Logic:
- * - Heartbeat packets: Always V1_4 (16-bit counters)
- * - 6-byte packets: V1_5 (4-bit counters in single byte)
- * - 9+ byte packets: V1_4 (16-bit counters)
- * - Default: V1_4 for backward compatibility
- */
 - (BridgePacketVersion * _Nullable)detectPacketVersionBytes:(BridgeKotlinByteArray *)bytes isHeartbeat:(BOOL)isHeartbeat __attribute__((swift_name("detectPacketVersion(bytes:isHeartbeat:)")));
 - (int32_t)extractValueBytes:(BridgeKotlinByteArray *)bytes start:(int32_t)start end:(int32_t)end __attribute__((swift_name("extractValue(bytes:start:end:)")));
-
-/**
- * Parses advertising packet data into BluetoothAdvertisement.
- * Supports both V1_4 (16-bit counters) and V1_5 (4-bit counters) formats.
- *
- * Example V1_4 advertising format (9+ bytes):
- * [0-3]: deviceId (4 bytes, little-endian)
- * [4-5]: deviceStateCounter (2 bytes, little-endian)
- * [6-7]: serverStateCounter (2 bytes, little-endian)
- * [8]: signalingByte (1 byte)
- *
- * Example V1_5 advertising format (6 bytes):
- * [0-3]: deviceId (4 bytes, little-endian)
- * [4]: combinedStateCounter (1 byte: DSC[0-3], SSC[4-7])
- * [5]: signalingByte (1 byte)
- */
 - (BridgeBluetoothAdvertisement * _Nullable)fromAdvPktBytes:(BridgeKotlinByteArray *)bytes __attribute__((swift_name("fromAdvPkt(bytes:)")));
 - (BridgeBluetoothAdvertisement *)fromHeartbeatPayloadBytes:(BridgeKotlinByteArray *)bytes __attribute__((swift_name("fromHeartbeatPayload(bytes:)")));
 - (BridgeKotlinByteArray *)toByteArrayAdvertisement:(BridgeBluetoothAdvertisement *)advertisement __attribute__((swift_name("toByteArray(advertisement:)")));
@@ -500,22 +383,7 @@ __attribute__((swift_name("DeviceFirmwareVersion.Companion")))
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 + (instancetype)companion __attribute__((swift_name("init()")));
 @property (class, readonly, getter=shared) BridgeDeviceFirmwareVersionCompanion *shared __attribute__((swift_name("shared")));
-
-/**
- * Parse a firmware version string in the format "x.y.z-b" (e.g., "1.2.3-4").
- *
- * @param str The string to parse.
- * @return The DeviceFirmwareVersion object, or null if the string is invalid.
- */
 - (BridgeDeviceFirmwareVersion * _Nullable)fromStringStr:(NSString *)str __attribute__((swift_name("fromString(str:)")));
-
-/**
- * Returns true if [a] is less than [b] according to version precedence.
- *
- * @param a The first DeviceFirmwareVersion to compare.
- * @param b The second DeviceFirmwareVersion to compare.
- * @return Boolean result of the comparison.
- */
 - (BOOL)isLessThanA:(BridgeDeviceFirmwareVersion *)a b:(BridgeDeviceFirmwareVersion *)b __attribute__((swift_name("isLessThan(a:b:)")));
 @end
 
@@ -531,18 +399,10 @@ __attribute__((swift_name("PacketVersion")))
 @property (class, readonly) NSArray<BridgePacketVersion *> *entries __attribute__((swift_name("entries")));
 @end
 
-
-/**
- * Enum to represent the type of active operation.
- */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("BlueLinkActiveOperationType")))
 @interface BridgeBlueLinkActiveOperationType : BridgeKotlinEnum<BridgeBlueLinkActiveOperationType *>
 + (instancetype)alloc __attribute__((unavailable));
-
-/**
- * Enum to represent the type of active operation.
- */
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 - (instancetype)initWithName:(NSString *)name ordinal:(int32_t)ordinal __attribute__((swift_name("init(name:ordinal:)"))) __attribute__((objc_designated_initializer)) __attribute__((unavailable));
 @property (class, readonly) BridgeBlueLinkActiveOperationType *read __attribute__((swift_name("read")));
@@ -551,19 +411,13 @@ __attribute__((swift_name("BlueLinkActiveOperationType")))
 @property (class, readonly) NSArray<BridgeBlueLinkActiveOperationType *> *entries __attribute__((swift_name("entries")));
 @end
 
-
-/** Represents an operation that can be performed on a BLE device. */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("BlueLinkOperation")))
 @interface BridgeBlueLinkOperation : BridgeBase
 - (instancetype)initWithId:(BridgeUUID *)id operationType:(BridgeBlueLinkOperationType *)operationType state:(BridgeOperationState *)state fragmentationRequired:(BOOL)fragmentationRequired whenServer:(BridgeLong * _Nullable)whenServer __attribute__((swift_name("init(id:operationType:state:fragmentationRequired:whenServer:)"))) __attribute__((objc_designated_initializer));
 @property (class, readonly, getter=companion) BridgeBlueLinkOperationCompanion *companion __attribute__((swift_name("companion")));
 - (BridgeBlueLinkOperation *)doCopyId:(BridgeUUID *)id operationType:(BridgeBlueLinkOperationType *)operationType state:(BridgeOperationState *)state fragmentationRequired:(BOOL)fragmentationRequired whenServer:(BridgeLong * _Nullable)whenServer __attribute__((swift_name("doCopy(id:operationType:state:fragmentationRequired:whenServer:)")));
-
-/** Represents an operation that can be performed on a BLE device. */
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
-
-/** Represents an operation that can be performed on a BLE device. */
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
 - (NSString *)description __attribute__((swift_name("description()")));
 @property (readonly) BOOL fragmentationRequired __attribute__((swift_name("fragmentationRequired")));
@@ -583,41 +437,23 @@ __attribute__((swift_name("BlueLinkOperation.Companion")))
 - (BridgeBlueLinkOperation *)createOperationType:(BridgeBlueLinkOperationType *)operationType state:(BridgeOperationState *)state fragmentationRequired:(BOOL)fragmentationRequired __attribute__((swift_name("create(operationType:state:fragmentationRequired:)")));
 @end
 
-
-/** Queue to manage BlueLinkOperations. */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("BlueLinkOperationQueue")))
 @interface BridgeBlueLinkOperationQueue : BridgeBase
-
-/** Queue to manage BlueLinkOperations. */
 - (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer));
-
-/** Queue to manage BlueLinkOperations. */
 + (instancetype)new __attribute__((availability(swift, unavailable, message="use object initializers instead")));
-
-/** Clears all operations from the queue. */
 - (void)clear __attribute__((swift_name("clear()")));
-
-/** Removes and returns a specific operation from the queue. */
 - (BridgeBlueLinkOperation * _Nullable)dequeueOperation:(BridgeBlueLinkOperation *)operation __attribute__((swift_name("dequeue(operation:)")));
-
-/** Adds a single operation to the queue. */
 - (void)enqueueOperation:(BridgeBlueLinkOperation *)operation __attribute__((swift_name("enqueue(operation:)")));
-
-/** Returns the full queue as a list. */
 - (NSArray<BridgeBlueLinkOperation *> *)fullQueue __attribute__((swift_name("fullQueue()")));
 - (void)replaceWithNewQueue:(NSMutableArray<BridgeBlueLinkOperation *> *)newQueue __attribute__((swift_name("replaceWith(newQueue:)")));
 - (NSString *)description __attribute__((swift_name("description()")));
 @end
 
-
-/** Represents the type of a BlueLinkOperation. */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("BlueLinkOperationType")))
 @interface BridgeBlueLinkOperationType : BridgeKotlinEnum<BridgeBlueLinkOperationType *>
 + (instancetype)alloc __attribute__((unavailable));
-
-/** Represents the type of a BlueLinkOperation. */
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 - (instancetype)initWithName:(NSString *)name ordinal:(int32_t)ordinal __attribute__((swift_name("init(name:ordinal:)"))) __attribute__((objc_designated_initializer)) __attribute__((unavailable));
 @property (class, readonly) BridgeBlueLinkOperationType *deviceInformation __attribute__((swift_name("deviceInformation")));
@@ -641,14 +477,10 @@ __attribute__((swift_name("BlueLinkOperationType")))
 @property (readonly) BOOL isProxy __attribute__((swift_name("isProxy")));
 @end
 
-
-/** Represents the state of a BlueLinkOperation. */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("OperationState")))
 @interface BridgeOperationState : BridgeKotlinEnum<BridgeOperationState *>
 + (instancetype)alloc __attribute__((unavailable));
-
-/** Represents the state of a BlueLinkOperation. */
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 - (instancetype)initWithName:(NSString *)name ordinal:(int32_t)ordinal __attribute__((swift_name("init(name:ordinal:)"))) __attribute__((objc_designated_initializer)) __attribute__((unavailable));
 @property (class, readonly) BridgeOperationState *scheduled __attribute__((swift_name("scheduled")));
@@ -659,13 +491,6 @@ __attribute__((swift_name("OperationState")))
 - (NSString *)description __attribute__((swift_name("description()")));
 @end
 
-
-/**
- * Listener for central-level BLE events.
- *
- * This interface provides callbacks for central BLE events,
- * such as state updates and device connection status changes.
- */
 __attribute__((swift_name("BlueLinkCentralListener")))
 @protocol BridgeBlueLinkCentralListener
 @required
@@ -677,42 +502,17 @@ __attribute__((swift_name("BlueLinkCentralListener")))
 - (void)onLocationStateChangedIsLocationEnabled:(BOOL)isLocationEnabled __attribute__((swift_name("onLocationStateChanged(isLocationEnabled:)")));
 @end
 
-
-/**
- * Listener for general BLE events with optional callbacks.
- *
- * Default implementations are provided for all methods, allowing implementors
- * to override only the methods they need.
- */
 __attribute__((swift_name("BlueLinkEventListener")))
 @interface BridgeBlueLinkEventListener : BridgeBase
-
-/**
- * Listener for general BLE events with optional callbacks.
- *
- * Default implementations are provided for all methods, allowing implementors
- * to override only the methods they need.
- */
 - (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer));
-
-/**
- * Listener for general BLE events with optional callbacks.
- *
- * Default implementations are provided for all methods, allowing implementors
- * to override only the methods they need.
- */
 + (instancetype)new __attribute__((availability(swift, unavailable, message="use object initializers instead")));
 - (void)onBLEStateChangedNewState:(BOOL)newState __attribute__((swift_name("onBLEStateChanged(newState:)")));
-
-/**
- * Error if returned will correspond to the BLE GATT error thrown by the device
- */
 - (void)onCharacteristicReadDevice:(BridgeBluetoothDevice *)device characteristic:(BridgeBluetoothGattCharacteristic *)characteristic payload:(BridgeKotlinByteArray *)payload error:(BridgeInt * _Nullable)error __attribute__((swift_name("onCharacteristicRead(device:characteristic:payload:error:)")));
 - (void)onCharacteristicWriteDevice:(BridgeBluetoothDevice *)device characteristic:(BridgeBluetoothGattCharacteristic *)characteristic error:(BridgeBoolean * _Nullable)error operationType:(BridgeBlueLinkOperationType *)operationType __attribute__((swift_name("onCharacteristicWrite(device:characteristic:error:operationType:)")));
 - (void)onDeviceConnectedDevice:(BridgeBluetoothDevice *)device __attribute__((swift_name("onDeviceConnected(device:)")));
 - (void)onDeviceConnectionFailedDevice:(BridgeBluetoothDevice *)device reason:(BridgeInt * _Nullable)reason __attribute__((swift_name("onDeviceConnectionFailed(device:reason:)")));
 - (void)onDeviceDisconnectedDevice:(BridgeBluetoothDevice *)device reason:(BridgeInt * _Nullable)reason __attribute__((swift_name("onDeviceDisconnected(device:reason:)")));
-- (void)onDeviceDiscoveredDevice:(BridgeBluetoothDevice *)device advertisementData:(BridgeBluetoothAdvertisement *)advertisementData rssi:(int32_t)rssi signalStrength:(BridgeSignalStrength * _Nullable)signalStrength connectionStatus:(BridgeBlueLinkDeviceConnectionStatus *)connectionStatus __attribute__((swift_name("onDeviceDiscovered(device:advertisementData:rssi:signalStrength:connectionStatus:)")));
+- (void)onDeviceDiscoveredDevice:(BridgeBluetoothDevice *)device advertisementData:(BridgeBluetoothAdvertisement *)advertisementData rssi:(int32_t)rssi signalStrength:(BridgeSignalStrength *)signalStrength connectionStatus:(BridgeBlueLinkDeviceConnectionStatus *)connectionStatus __attribute__((swift_name("onDeviceDiscovered(device:advertisementData:rssi:signalStrength:connectionStatus:)")));
 - (void)onHeartbeatDevice:(BridgeBluetoothDevice *)device heartbeatData:(BridgeKotlinByteArray *)heartbeatData __attribute__((swift_name("onHeartbeat(device:heartbeatData:)")));
 - (void)onLocationStateUpdateNewState:(BOOL)newState __attribute__((swift_name("onLocationStateUpdate(newState:)")));
 - (void)onNotificationReceivedDevice:(BridgeBluetoothDevice *)device characteristic:(BridgeBluetoothGattCharacteristic *)characteristic payload:(BridgeKotlinByteArray *)payload __attribute__((swift_name("onNotificationReceived(device:characteristic:payload:)")));
@@ -720,51 +520,19 @@ __attribute__((swift_name("BlueLinkEventListener")))
 - (void)onOperationStartDevice:(BridgeBluetoothDevice *)device operation:(BridgeBlueLinkOperation *)operation __attribute__((swift_name("onOperationStart(device:operation:)")));
 @end
 
-
-/**
- * For accepting RSSI values for devices and computing hysteresis and maintaining normalized
- * values to minimize the spikes in the RSSI data set for a device. Maintains a sample size of 4
- * (number found through experimentation which yielded best results)
- *
- * Ensure unique RssiSignalManager instance is maintained per device
- */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("RssiSignalManager")))
 @interface BridgeRssiSignalManager : BridgeBase
-
-/**
- * For accepting RSSI values for devices and computing hysteresis and maintaining normalized
- * values to minimize the spikes in the RSSI data set for a device. Maintains a sample size of 4
- * (number found through experimentation which yielded best results)
- *
- * Ensure unique RssiSignalManager instance is maintained per device
- */
 - (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer));
-
-/**
- * For accepting RSSI values for devices and computing hysteresis and maintaining normalized
- * values to minimize the spikes in the RSSI data set for a device. Maintains a sample size of 4
- * (number found through experimentation which yielded best results)
- *
- * Ensure unique RssiSignalManager instance is maintained per device
- */
 + (instancetype)new __attribute__((availability(swift, unavailable, message="use object initializers instead")));
 - (BridgeSignalStrength *)getSignalStrength __attribute__((swift_name("getSignalStrength()")));
 - (void)updateRssiNewRssi:(int32_t)newRssi __attribute__((swift_name("updateRssi(newRssi:)")));
 @end
 
-
-/**
- * Signal Strength levels
- */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("SignalStrength")))
 @interface BridgeSignalStrength : BridgeKotlinEnum<BridgeSignalStrength *>
 + (instancetype)alloc __attribute__((unavailable));
-
-/**
- * Signal Strength levels
- */
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 - (instancetype)initWithName:(NSString *)name ordinal:(int32_t)ordinal __attribute__((swift_name("init(name:ordinal:)"))) __attribute__((objc_designated_initializer)) __attribute__((unavailable));
 @property (class, readonly) BridgeSignalStrength *excellent __attribute__((swift_name("excellent")));
@@ -787,33 +555,14 @@ __attribute__((swift_name("FragmentedPayloadType")))
 @property (class, readonly) NSArray<BridgeFragmentedPayloadType *> *entries __attribute__((swift_name("entries")));
 @end
 
-
-/**
- * Data class representing parsed heartbeat data with optional fields
- * This provides type safety and eliminates the need for string-based field access
- */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("HeartbeatData")))
 @interface BridgeHeartbeatData : BridgeBase
 - (instancetype)initWithMfrId:(BridgeUInt * _Nullable)mfrId devId:(uint32_t)devId dsc:(uint32_t)dsc ssc:(uint32_t)ssc sigBmp:(uint32_t)sigBmp semVer:(BridgeDeviceFirmwareVersion *)semVer timestamp:(BridgeUInt * _Nullable)timestamp rssi:(BridgeInt * _Nullable)rssi lastOobServerTimestamp:(BridgeLong * _Nullable)lastOobServerTimestamp __attribute__((swift_name("init(mfrId:devId:dsc:ssc:sigBmp:semVer:timestamp:rssi:lastOobServerTimestamp:)"))) __attribute__((objc_designated_initializer));
 - (BridgeHeartbeatData *)doCopyMfrId:(BridgeUInt * _Nullable)mfrId devId:(uint32_t)devId dsc:(uint32_t)dsc ssc:(uint32_t)ssc sigBmp:(uint32_t)sigBmp semVer:(BridgeDeviceFirmwareVersion *)semVer timestamp:(BridgeUInt * _Nullable)timestamp rssi:(BridgeInt * _Nullable)rssi lastOobServerTimestamp:(BridgeLong * _Nullable)lastOobServerTimestamp __attribute__((swift_name("doCopy(mfrId:devId:dsc:ssc:sigBmp:semVer:timestamp:rssi:lastOobServerTimestamp:)")));
-
-/**
- * Data class representing parsed heartbeat data with optional fields
- * This provides type safety and eliminates the need for string-based field access
- */
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
-
-/**
- * Data class representing parsed heartbeat data with optional fields
- * This provides type safety and eliminates the need for string-based field access
- */
+- (BOOL)equalsIgnoringRssiOther:(BridgeHeartbeatData * _Nullable)other __attribute__((swift_name("equalsIgnoringRssi(other:)")));
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
-
-/**
- * Data class representing parsed heartbeat data with optional fields
- * This provides type safety and eliminates the need for string-based field access
- */
 - (NSString *)description __attribute__((swift_name("description()")));
 @property (readonly) uint32_t devId __attribute__((swift_name("devId")));
 @property (readonly) uint32_t dsc __attribute__((swift_name("dsc")));
@@ -826,55 +575,16 @@ __attribute__((swift_name("HeartbeatData")))
 @property (readonly) BridgeUInt * _Nullable timestamp __attribute__((swift_name("timestamp")));
 @end
 
-
-/**
- * Interface for parsing heartbeat protobuf messages in KMM
- * Bridges platform-specific protobuf implementations to common KMM code
- */
 __attribute__((swift_name("IHeartbeatParser")))
 @protocol BridgeIHeartbeatParser
 @required
-
-/**
- * Get the device ID from parsed heartbeat data
- */
 - (uint32_t)getDevIdHeartbeatData:(BridgeHeartbeatData *)heartbeatData __attribute__((swift_name("getDevId(heartbeatData:)")));
-
-/**
- * Get the firmware version from parsed heartbeat data
- */
 - (BridgeDeviceFirmwareVersion *)getFirmwareVersionHeartbeatData:(BridgeHeartbeatData *)heartbeatData __attribute__((swift_name("getFirmwareVersion(heartbeatData:)")));
-
-/**
- * Get the last OOB server timestamp
- */
 - (BridgeLong * _Nullable)getLastOOBServerTimestampHeartbeatData:(BridgeHeartbeatData *)heartbeatData __attribute__((swift_name("getLastOOBServerTimestamp(heartbeatData:)")));
-
-/**
- * Get the manufacturer ID from parsed heartbeat data
- */
 - (BridgeUInt * _Nullable)getMfrIdHeartbeatData:(BridgeHeartbeatData *)heartbeatData __attribute__((swift_name("getMfrId(heartbeatData:)")));
-
-/**
- * Get the RSSI value from parsed heartbeat data
- */
 - (BridgeInt * _Nullable)getRssiHeartbeatData:(BridgeHeartbeatData *)heartbeatData __attribute__((swift_name("getRssi(heartbeatData:)")));
-
-/**
- * Get the signal bitmap from parsed heartbeat data
- */
 - (uint32_t)getSigBmpHeartbeatData:(BridgeHeartbeatData *)heartbeatData __attribute__((swift_name("getSigBmp(heartbeatData:)")));
-
-/**
- * Get the timestamp from parsed heartbeat data
- */
 - (BridgeUInt * _Nullable)getTimestampHeartbeatData:(BridgeHeartbeatData *)heartbeatData __attribute__((swift_name("getTimestamp(heartbeatData:)")));
-
-/**
- * Parse heartbeat data from byte array
- * @param data Raw heartbeat protobuf bytes
- * @return Parsed heartbeat data as a structured data class
- */
 - (BridgeHeartbeatData *)parseHeartbeatData:(BridgeKotlinByteArray *)data __attribute__((swift_name("parseHeartbeat(data:)")));
 @end
 
@@ -892,8 +602,7 @@ __attribute__((swift_name("ThreadSafeMap")))
 @end
 
 
-/** Data structure for crash information sent to Link via BridgeTelemetry
- *
+/**
  * @note annotations
  *   kotlinx.serialization.Serializable
 */
@@ -903,14 +612,8 @@ __attribute__((swift_name("CrashData")))
 - (instancetype)initWithTimestamp:(int64_t)timestamp library:(NSString *)library context:(NSString *)context message:(NSString *)message stackTrace:(NSString *)stackTrace platform:(BridgePlatform *)platform version:(NSString *)version __attribute__((swift_name("init(timestamp:library:context:message:stackTrace:platform:version:)"))) __attribute__((objc_designated_initializer));
 @property (class, readonly, getter=companion) BridgeCrashDataCompanion *companion __attribute__((swift_name("companion")));
 - (BridgeCrashData *)doCopyTimestamp:(int64_t)timestamp library:(NSString *)library context:(NSString *)context message:(NSString *)message stackTrace:(NSString *)stackTrace platform:(BridgePlatform *)platform version:(NSString *)version __attribute__((swift_name("doCopy(timestamp:library:context:message:stackTrace:platform:version:)")));
-
-/** Data structure for crash information sent to Link via BridgeTelemetry */
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
-
-/** Data structure for crash information sent to Link via BridgeTelemetry */
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
-
-/** Data structure for crash information sent to Link via BridgeTelemetry */
 - (NSString *)description __attribute__((swift_name("description()")));
 @property (readonly) NSString *context __attribute__((swift_name("context")));
 @property (readonly) NSString *library __attribute__((swift_name("library")));
@@ -921,79 +624,34 @@ __attribute__((swift_name("CrashData")))
 @property (readonly) NSString *version __attribute__((swift_name("version")));
 @end
 
-
-/** Data structure for crash information sent to Link via BridgeTelemetry */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("CrashData.Companion")))
 @interface BridgeCrashDataCompanion : BridgeBase
 + (instancetype)alloc __attribute__((unavailable));
-
-/** Data structure for crash information sent to Link via BridgeTelemetry */
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 + (instancetype)companion __attribute__((swift_name("init()")));
 @property (class, readonly, getter=shared) BridgeCrashDataCompanion *shared __attribute__((swift_name("shared")));
-
-/** Data structure for crash information sent to Link via BridgeTelemetry */
 - (id<BridgeKotlinx_serialization_coreKSerializer>)serializer __attribute__((swift_name("serializer()")));
 @end
 
-
-/**
- * Interface for handling crashes from internal libraries Sends crash data to Link via
- * BridgeTelemetry
- */
 __attribute__((swift_name("LibraryCrashHandler")))
 @protocol BridgeLibraryCrashHandler
 @required
-
-/**
- * Get the telemetry service used by this crash handler
- * @return The telemetry service instance
- */
 - (id<BridgeBridgeTelemetryService> _Nullable)getTelemetryService __attribute__((swift_name("getTelemetryService()")));
-
-/**
- * Handle a crash from an internal library
- * @param message The message of the crash
- * @param stackTrace The stack trace of the crash
- * @param library The name of the library where the crash occurred
- * @param context Additional context about the crash
- */
 - (void)handleCrashMessage:(NSString *)message stackTrace:(NSString *)stackTrace library:(NSString *)library context:(NSString *)context __attribute__((swift_name("handleCrash(message:stackTrace:library:context:)")));
-
-/** Initialize the crash handler (for iOS where telemetry service is set up separately) */
 - (void)initialize __attribute__((swift_name("initialize()")));
-
-/**
- * Initialize the crash handler with telemetry service
- * @param telemetryService The service to use for sending crash data
- */
 - (void)initializeTelemetryService:(id<BridgeBridgeTelemetryService>)telemetryService __attribute__((swift_name("initialize(telemetryService:)")));
-
-/** Shutdown the crash handler and cleanup resources */
 - (void)shutdown __attribute__((swift_name("shutdown()")));
 @end
 
-
-/**
- * Service for persisting and sending library crash logs Follows the same pattern as the main
- * LoggingService
- */
 __attribute__((swift_name("LibraryCrashPersistenceService")))
 @protocol BridgeLibraryCrashPersistenceService
 @required
-
-/** Clear all persisted crash logs (for testing or cleanup) */
 - (void)clearPersistedCrashLogs __attribute__((swift_name("clearPersistedCrashLogs()")));
-
-/** Get count of persisted crash logs */
 - (int32_t)getPersistedCrashLogCount __attribute__((swift_name("getPersistedCrashLogCount()")));
-
-/** Persist a crash log to file system for later retry */
 - (void)persistCrashLogCrashData:(BridgeCrashData *)crashData __attribute__((swift_name("persistCrashLog(crashData:)")));
 
-/** Send all persisted crash logs to Link
- *
+/**
  * @note This method converts instances of CancellationException to errors.
  * Other uncaught Kotlin exceptions are fatal.
 */
@@ -1001,8 +659,7 @@ __attribute__((swift_name("LibraryCrashPersistenceService")))
 @end
 
 
-/** Data class for persisted library crash logs
- *
+/**
  * @note annotations
  *   kotlinx.serialization.Serializable
 */
@@ -1012,32 +669,20 @@ __attribute__((swift_name("PersistedLibraryCrashLog")))
 - (instancetype)initWithCrashData:(BridgeCrashData *)crashData timestamp:(BridgeKotlinx_datetimeInstant *)timestamp __attribute__((swift_name("init(crashData:timestamp:)"))) __attribute__((objc_designated_initializer));
 @property (class, readonly, getter=companion) BridgePersistedLibraryCrashLogCompanion *companion __attribute__((swift_name("companion")));
 - (BridgePersistedLibraryCrashLog *)doCopyCrashData:(BridgeCrashData *)crashData timestamp:(BridgeKotlinx_datetimeInstant *)timestamp __attribute__((swift_name("doCopy(crashData:timestamp:)")));
-
-/** Data class for persisted library crash logs */
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
-
-/** Data class for persisted library crash logs */
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
-
-/** Data class for persisted library crash logs */
 - (NSString *)description __attribute__((swift_name("description()")));
 @property (readonly) BridgeCrashData *crashData __attribute__((swift_name("crashData")));
 @property (readonly) BridgeKotlinx_datetimeInstant *timestamp __attribute__((swift_name("timestamp")));
 @end
 
-
-/** Data class for persisted library crash logs */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("PersistedLibraryCrashLog.Companion")))
 @interface BridgePersistedLibraryCrashLogCompanion : BridgeBase
 + (instancetype)alloc __attribute__((unavailable));
-
-/** Data class for persisted library crash logs */
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 + (instancetype)companion __attribute__((swift_name("init()")));
 @property (class, readonly, getter=shared) BridgePersistedLibraryCrashLogCompanion *shared __attribute__((swift_name("shared")));
-
-/** Data class for persisted library crash logs */
 - (id<BridgeKotlinx_serialization_coreKSerializer>)serializer __attribute__((swift_name("serializer()")));
 @end
 
@@ -1157,19 +802,11 @@ __attribute__((swift_name("StreamState")))
 @property (class, readonly) NSArray<BridgeStreamState *> *entries __attribute__((swift_name("entries")));
 @end
 
-
-/**
- * Service for sending telemetry data to Link via BridgeTelemetryRequest Used for sending crash logs
- * from internal libraries
- */
 __attribute__((swift_name("BridgeTelemetryService")))
 @protocol BridgeBridgeTelemetryService
 @required
 
 /**
- * Send telemetry data synchronously
- * @param data The telemetry data to send
- *
  * @note This method converts instances of CancellationException to errors.
  * Other uncaught Kotlin exceptions are fatal.
 */
@@ -1211,37 +848,13 @@ __attribute__((swift_name("Logger")))
 @property BOOL isEnabled __attribute__((swift_name("isEnabled")));
 @end
 
-
-/**
- * Allows multiple listeners to respond to BLE events.
- */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("MulticastListener")))
 @interface BridgeMulticastListener<T> : BridgeBase
-
-/**
- * Allows multiple listeners to respond to BLE events.
- */
 - (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer));
-
-/**
- * Allows multiple listeners to respond to BLE events.
- */
 + (instancetype)new __attribute__((availability(swift, unavailable, message="use object initializers instead")));
-
-/**
- * Adds a listener to the list.
- */
 - (void)addListenerListener:(T)listener prependListener:(BOOL)prependListener __attribute__((swift_name("addListener(listener:prependListener:)")));
-
-/**
- * Invokes a method on all active listeners.
- */
 - (void)invokeListenersAction:(void (^)(T))action __attribute__((swift_name("invokeListeners(action:)")));
-
-/**
- * Removes a listener from the list.
- */
 - (void)removeListenerListener:(T)listener __attribute__((swift_name("removeListener(listener:)")));
 @end
 
@@ -1273,9 +886,6 @@ __attribute__((swift_name("UUIDUtils")))
 @property (class, readonly, getter=shared) BridgeUUIDUtils *shared __attribute__((swift_name("shared")));
 
 /**
- * Converts a short-form UUID (16-bit or 32-bit) into a full 128-bit UUID.
- * If already a full UUID, it simply parses and returns it.
- *
  * @note annotations
  *   kotlin.jvm.JvmStatic
 */
@@ -1301,33 +911,13 @@ __attribute__((swift_name("WeakRef")))
 - (T _Nullable)get __attribute__((swift_name("get()")));
 @end
 
-
-/**
- * Device object pertaining to DFU library. Stores device information along with an optional
- * parsed binary file representation used for performing DFU
- */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("DFUDevice")))
 @interface BridgeDFUDevice : BridgeBase
 - (instancetype)initWithDeviceId:(uint32_t)deviceId peripheral:(BridgeBluetoothDevice *)peripheral parsedManifest:(BridgeParsedManifest * _Nullable)parsedManifest oobRequestPayload:(BridgeKotlinByteArray * _Nullable)oobRequestPayload __attribute__((swift_name("init(deviceId:peripheral:parsedManifest:oobRequestPayload:)"))) __attribute__((objc_designated_initializer));
 - (BridgeDFUDevice *)doCopyDeviceId:(uint32_t)deviceId peripheral:(BridgeBluetoothDevice *)peripheral parsedManifest:(BridgeParsedManifest * _Nullable)parsedManifest oobRequestPayload:(BridgeKotlinByteArray * _Nullable)oobRequestPayload __attribute__((swift_name("doCopy(deviceId:peripheral:parsedManifest:oobRequestPayload:)")));
-
-/**
- * Device object pertaining to DFU library. Stores device information along with an optional
- * parsed binary file representation used for performing DFU
- */
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
-
-/**
- * Device object pertaining to DFU library. Stores device information along with an optional
- * parsed binary file representation used for performing DFU
- */
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
-
-/**
- * Device object pertaining to DFU library. Stores device information along with an optional
- * parsed binary file representation used for performing DFU
- */
 - (NSString *)description __attribute__((swift_name("description()")));
 @property (readonly) uint32_t deviceId __attribute__((swift_name("deviceId")));
 @property BridgeKotlinByteArray * _Nullable oobRequestPayload __attribute__((swift_name("oobRequestPayload")));
@@ -1335,34 +925,17 @@ __attribute__((swift_name("DFUDevice")))
 @property BridgeBluetoothDevice *peripheral __attribute__((swift_name("peripheral")));
 @end
 
-
-/**
- * Defines the interface that implementors implementing DFUDriver for their respective
- * bridgeOS need to implement
- *
- * Implementors also need to define their respective ZipPackage definitions in order
- * to extract the DFU image files from the Link provided zip
- */
 __attribute__((swift_name("DFUDriverImplementation")))
 @protocol BridgeDFUDriverImplementation
 @required
 
 /**
- * Sends an SMP identify command to group 64 (custom group) for devices in DFU mode
- * @param device The Bluetooth device to send the command to
- * @param payload Optional payload data (can be empty for identify command)
- * @return true if command was sent successfully, false otherwise
- *
  * @note This method converts instances of CancellationException to errors.
  * Other uncaught Kotlin exceptions are fatal.
 */
 - (void)sendSMPIdentifyDevice:(BridgeBluetoothDevice *)device payload:(BridgeKotlinByteArray *)payload completionHandler:(void (^)(BridgeBoolean * _Nullable, NSError * _Nullable))completionHandler __attribute__((swift_name("sendSMPIdentify(device:payload:completionHandler:)")));
 
 /**
- * Sends an SMP reboot command to group 1 (OS management group) to exit install mode
- * @param device The Bluetooth device to send the command to
- * @return true if command was sent successfully, false otherwise
- *
  * @note This method converts instances of CancellationException to errors.
  * Other uncaught Kotlin exceptions are fatal.
 */
@@ -1431,21 +1004,6 @@ __attribute__((swift_name("DFUProvider")))
 @property (readonly) BridgeDFUService *dfuModule __attribute__((swift_name("dfuModule")));
 @end
 
-
-/**
- * Matches the DFU object from link.proto
- *
- * Copy has to be created since protos cannot be used in commonMain declarations since protos aren't
- * present natively in iOSMain side of KMM. Hopefully by end of Summer 2025, update is released to resolve
- * this issue
- *
- * Reference DFU proto:
- * message DFU {
- * 	optional uint32 device_id = 1;
- * 	optional string firmware_name = 2;
- * 	optional bytes firmware = 3;
- * }
- */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("DFUResponse")))
 @interface BridgeDFUResponse : BridgeBase
@@ -1453,21 +1011,6 @@ __attribute__((swift_name("DFUResponse")))
 - (BridgeDFUResponse *)doCopyDeviceId:(uint32_t)deviceId dfuVersion:(NSString *)dfuVersion dfuImage:(BridgeKotlinByteArray *)dfuImage oobRequest:(BridgeKotlinByteArray *)oobRequest __attribute__((swift_name("doCopy(deviceId:dfuVersion:dfuImage:oobRequest:)")));
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
-
-/**
- * Matches the DFU object from link.proto
- *
- * Copy has to be created since protos cannot be used in commonMain declarations since protos aren't
- * present natively in iOSMain side of KMM. Hopefully by end of Summer 2025, update is released to resolve
- * this issue
- *
- * Reference DFU proto:
- * message DFU {
- * 	optional uint32 device_id = 1;
- * 	optional string firmware_name = 2;
- * 	optional bytes firmware = 3;
- * }
- */
 - (NSString *)description __attribute__((swift_name("description()")));
 @property uint32_t deviceId __attribute__((swift_name("deviceId")));
 @property BridgeKotlinByteArray *dfuImage __attribute__((swift_name("dfuImage")));
@@ -1475,59 +1018,21 @@ __attribute__((swift_name("DFUResponse")))
 @property BridgeKotlinByteArray *oobRequest __attribute__((swift_name("oobRequest")));
 @end
 
-
-/**
- * Exposes performing functionality for Device Firmware Upgrades on supported Last Lock BLE devices
- * Class handles the entire bridge - device DFU process including DFU image fetching and validation,
- * and conducting the firmware upgrade.
- *
- * Validate and fetch
- *
- * Assumption: As of internal-libs v1.2, only multi-image DFUs are supported. A .zip file is expected
- * that contains the individual DFU images (application_core and network_core) along with a manifest.json.
- * Failure to include manifest.json will result in the entire process getting aborted.
- *
- * Note: To avoid deadlocking Last Lock device in DFU mode, enable DFU mode only if the DFU images pass
- * the validation checks
- */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("DFUService")))
 @interface BridgeDFUService : BridgeBlueLinkEventListener
 - (instancetype)initWithIOSDFUDriver:(id<BridgeDFUDriverImplementation> _Nullable)iOSDFUDriver iOSDFUImageManager:(id<BridgeGRPCDFUImageManager> _Nullable)iOSDFUImageManager iOSZipProvider:(id<BridgeZipPackageInterface> _Nullable)iOSZipProvider blueLink:(BridgeBlueLink *)blueLink proxy:(BridgeBLEProxy *)proxy __attribute__((swift_name("init(iOSDFUDriver:iOSDFUImageManager:iOSZipProvider:blueLink:proxy:)"))) __attribute__((objc_designated_initializer));
-
-/**
- * Listener for general BLE events with optional callbacks.
- *
- * Default implementations are provided for all methods, allowing implementors
- * to override only the methods they need.
- */
 - (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer)) __attribute__((unavailable));
 + (instancetype)new __attribute__((unavailable));
 @property (class, readonly, getter=companion) BridgeDFUServiceCompanion *companion __attribute__((swift_name("companion")));
 
 /**
- * Exits install mode by sending a reboot command.
- * If device has DFU service available, uses SMP group 1 (reboot).
- * Otherwise, this method should not be called (device is not in install mode).
- *
- * @param deviceId The device ID to reboot
- * @return true if command was sent successfully
- *
  * @note This method converts instances of CancellationException to errors.
  * Other uncaught Kotlin exceptions are fatal.
 */
 - (void)exitInstallModeDevice:(BridgeBluetoothDevice *)device completionHandler:(void (^)(BridgeBoolean * _Nullable, NSError * _Nullable))completionHandler __attribute__((swift_name("exitInstallMode(device:completionHandler:)")));
 
 /**
- * Fetches firmware image for the provided device and assigns it to the internal states of that DFU Device.
- * On successful retrieval of the image, true is returned and on absence of any image or error in
- * fetching the image, false is the return value.
- *
- * Under the hood this function also persists the DFU Image to be used for initiating DFU as well as performs
- * validation checks against the image to ensure healthy DFU
- *
- * @return DFUResponse for device or null if no updates avail from Link
- *
  * @note This method converts instances of CancellationException to errors.
  * Other uncaught Kotlin exceptions are fatal.
 */
@@ -1535,32 +1040,11 @@ __attribute__((swift_name("DFUService")))
 - (BridgeDeviceFirmwareVersion * _Nullable)getFirmwareVersionDevice:(BridgeBluetoothDevice *)device __attribute__((swift_name("getFirmwareVersion(device:)")));
 
 /**
- * Sends an identify command to the device.
- * If device has DFU service available, uses SMP group 64.
- * Otherwise, uses OOB characteristic.
- *
- * @param deviceId The device ID to identify
- * @param oobPayload The OOB payload to send if DFU service is not available
- * @return true if command was sent successfully
- *
  * @note This method converts instances of CancellationException to errors.
  * Other uncaught Kotlin exceptions are fatal.
 */
 - (void)identifyDeviceDevice:(BridgeBluetoothDevice *)device oobPayload:(BridgeKotlinByteArray *)oobPayload completionHandler:(void (^)(BridgeBoolean * _Nullable, NSError * _Nullable))completionHandler __attribute__((swift_name("identifyDevice(device:oobPayload:completionHandler:)")));
-
-/**
- * Starts the DFU process for the provided Device. This is called when the device is already in DFU mode.
- * It sets states and allows for DFU to begin.
- *
- * Precursor: DFUService.fetchFirmwareUpdateImage() has been called successfully before running this fn
- *
- * @return DFUResult or null if no errors
- */
 - (BridgeDFUErrors * _Nullable)initiateDFUDevice:(BridgeBluetoothDevice *)device __attribute__((swift_name("initiateDFU(device:)")));
-
-/**
- * Resets all internal states, to be called after DFU completion or abort
- */
 - (void)resetDFUStates __attribute__((swift_name("resetDFUStates()")));
 @property id<BridgeDFUServiceListener> _Nullable dfuListener __attribute__((swift_name("dfuListener")));
 @end
@@ -1672,8 +1156,6 @@ __attribute__((swift_name("GRPCDFUImageManager")))
 
 
 /**
- * Manifest FileEntry definitions used for parsing through manifest.json in the DFU zip files
- *
  * @note annotations
  *   kotlinx.serialization.Serializable
 */
@@ -1683,20 +1165,8 @@ __attribute__((swift_name("Manifest")))
 - (instancetype)initWithFormatVersion:(int32_t)formatVersion files:(NSArray<BridgeFileEntry *> *)files __attribute__((swift_name("init(formatVersion:files:)"))) __attribute__((objc_designated_initializer));
 @property (class, readonly, getter=companion) BridgeManifestCompanion *companion __attribute__((swift_name("companion")));
 - (BridgeManifest *)doCopyFormatVersion:(int32_t)formatVersion files:(NSArray<BridgeFileEntry *> *)files __attribute__((swift_name("doCopy(formatVersion:files:)")));
-
-/**
- * Manifest FileEntry definitions used for parsing through manifest.json in the DFU zip files
- */
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
-
-/**
- * Manifest FileEntry definitions used for parsing through manifest.json in the DFU zip files
- */
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
-
-/**
- * Manifest FileEntry definitions used for parsing through manifest.json in the DFU zip files
- */
 - (NSString *)description __attribute__((swift_name("description()")));
 @property (readonly) NSArray<BridgeFileEntry *> *files __attribute__((swift_name("files")));
 
@@ -1707,59 +1177,23 @@ __attribute__((swift_name("Manifest")))
 @property (readonly) int32_t formatVersion __attribute__((swift_name("formatVersion")));
 @end
 
-
-/**
- * Manifest FileEntry definitions used for parsing through manifest.json in the DFU zip files
- */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("Manifest.Companion")))
 @interface BridgeManifestCompanion : BridgeBase
 + (instancetype)alloc __attribute__((unavailable));
-
-/**
- * Manifest FileEntry definitions used for parsing through manifest.json in the DFU zip files
- */
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 + (instancetype)companion __attribute__((swift_name("init()")));
 @property (class, readonly, getter=shared) BridgeManifestCompanion *shared __attribute__((swift_name("shared")));
-
-/**
- * Manifest FileEntry definitions used for parsing through manifest.json in the DFU zip files
- */
 - (id<BridgeKotlinx_serialization_coreKSerializer>)serializer __attribute__((swift_name("serializer()")));
 @end
 
-
-/**
- * Used for storing DFU image parsed in a usable format. FileEntries are listed out by each file
- * where each entry is a Pair with the key being the imageIndex of that DFU image and value being the raw bytes.
- * Firmware version parsed from manifest.json is also included here as well
- */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("ParsedManifest")))
 @interface BridgeParsedManifest : BridgeBase
 - (instancetype)initWithFileEntries:(NSArray<BridgeKotlinPair<BridgeInt *, BridgeFilePayload *> *> *)fileEntries firmwareVersion:(NSString *)firmwareVersion __attribute__((swift_name("init(fileEntries:firmwareVersion:)"))) __attribute__((objc_designated_initializer));
 - (BridgeParsedManifest *)doCopyFileEntries:(NSArray<BridgeKotlinPair<BridgeInt *, BridgeFilePayload *> *> *)fileEntries firmwareVersion:(NSString *)firmwareVersion __attribute__((swift_name("doCopy(fileEntries:firmwareVersion:)")));
-
-/**
- * Used for storing DFU image parsed in a usable format. FileEntries are listed out by each file
- * where each entry is a Pair with the key being the imageIndex of that DFU image and value being the raw bytes.
- * Firmware version parsed from manifest.json is also included here as well
- */
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
-
-/**
- * Used for storing DFU image parsed in a usable format. FileEntries are listed out by each file
- * where each entry is a Pair with the key being the imageIndex of that DFU image and value being the raw bytes.
- * Firmware version parsed from manifest.json is also included here as well
- */
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
-
-/**
- * Used for storing DFU image parsed in a usable format. FileEntries are listed out by each file
- * where each entry is a Pair with the key being the imageIndex of that DFU image and value being the raw bytes.
- * Firmware version parsed from manifest.json is also included here as well
- */
 - (NSString *)description __attribute__((swift_name("description()")));
 @property (readonly) NSArray<BridgeKotlinPair<BridgeInt *, BridgeFilePayload *> *> *fileEntries __attribute__((swift_name("fileEntries")));
 @property (readonly) NSString *firmwareVersion __attribute__((swift_name("firmwareVersion")));
@@ -1800,12 +1234,6 @@ __attribute__((swift_name("BLEProxy")))
 - (void)isStreamAliveWithCompletionHandler:(void (^)(BridgeBoolean * _Nullable, NSError * _Nullable))completionHandler __attribute__((swift_name("isStreamAlive(completionHandler:)")));
 - (BOOL)purgePersistedPayloadsDeviceId:(uint32_t)deviceId __attribute__((swift_name("purgePersistedPayloads(deviceId:)")));
 - (void)sendIdentifyOOBDeviceId:(uint32_t)deviceId payload:(BridgeKotlinByteArray *)payload __attribute__((swift_name("sendIdentifyOOB(deviceId:payload:)")));
-
-/**
- * Allows implementors to write payloads to the OOB Characteristic bypassing Link
- * Note: This feature is to be used with utmost care as wrong / malformed operations could
- * negatively impact the device
- */
 - (void)sendOOBToDeviceDeviceId:(uint32_t)deviceId payload:(BridgeKotlinByteArray *)payload __attribute__((swift_name("sendOOBToDevice(deviceId:payload:)")));
 - (void)setProxyPausedIsPaused:(BOOL)isPaused __attribute__((swift_name("setProxyPaused(isPaused:)")));
 - (void)startStreaming __attribute__((swift_name("startStreaming()")));
@@ -1921,63 +1349,23 @@ __attribute__((swift_name("OOBWrapper")))
 @property (readonly) BridgeDeviceOperation *type __attribute__((swift_name("type")));
 @end
 
-
-/** Represents a BLE Device and its associated properties and operations. */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("ProxyDevice")))
 @interface BridgeProxyDevice : BridgeBase
-- (instancetype)initWithPeripheral:(BridgeBluetoothDevice * _Nullable)peripheral deviceId:(uint32_t)deviceId proxyTaskQueue:(BridgeTaskQueue *)proxyTaskQueue internalCache:(BridgeBridgeCache *)internalCache taskExecutor:(BridgeDeviceTaskExecutor *)taskExecutor batteryStatusLow:(BOOL)batteryStatusLow cachedDevicePayloads:(NSMutableArray<BridgeKotlinByteArray *> *)cachedDevicePayloads lastInstallOOBTimestamp:(BridgeLong * _Nullable)lastInstallOOBTimestamp lastTimeSyncOOBTimestamp:(BridgeLong * _Nullable)lastTimeSyncOOBTimestamp lastResetOOBTimestamp:(BridgeLong * _Nullable)lastResetOOBTimestamp lastUnknownOOBTimestamp:(BridgeLong * _Nullable)lastUnknownOOBTimestamp lastIdentifyOOBTimestamp:(BridgeLong * _Nullable)lastIdentifyOOBTimestamp outstandingInstallDFU:(BridgeDeviceFirmwareVersion * _Nullable)outstandingInstallDFU lastRecoveryOOBTimestamp:(BridgeLong * _Nullable)lastRecoveryOOBTimestamp __attribute__((swift_name("init(peripheral:deviceId:proxyTaskQueue:internalCache:taskExecutor:batteryStatusLow:cachedDevicePayloads:lastInstallOOBTimestamp:lastTimeSyncOOBTimestamp:lastResetOOBTimestamp:lastUnknownOOBTimestamp:lastIdentifyOOBTimestamp:outstandingInstallDFU:lastRecoveryOOBTimestamp:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithPeripheral:(BridgeBluetoothDevice * _Nullable)peripheral deviceId:(uint32_t)deviceId proxyTaskQueue:(BridgeTaskQueue *)proxyTaskQueue internalCache:(BridgeBridgeCache *)internalCache taskExecutor:(BridgeDeviceTaskExecutor *)taskExecutor batteryStatusLow:(BOOL)batteryStatusLow cachedDevicePayloads:(NSMutableArray<BridgeKotlinByteArray *> *)cachedDevicePayloads lastInstallOOBTimestamp:(BridgeLong * _Nullable)lastInstallOOBTimestamp lastTimeSyncOOBTimestamp:(BridgeLong * _Nullable)lastTimeSyncOOBTimestamp lastResetOOBTimestamp:(BridgeLong * _Nullable)lastResetOOBTimestamp lastUnknownOOBTimestamp:(BridgeLong * _Nullable)lastUnknownOOBTimestamp lastIdentifyOOBTimestamp:(BridgeLong * _Nullable)lastIdentifyOOBTimestamp outstandingInstallDFU:(BridgeDeviceFirmwareVersion * _Nullable)outstandingInstallDFU lastRecoveryOOBTimestamp:(BridgeLong * _Nullable)lastRecoveryOOBTimestamp performingProxyOperation:(BOOL)performingProxyOperation lastDiscoveryTime:(BridgeKotlinx_datetimeInstant * _Nullable)lastDiscoveryTime isBlacklisted:(BOOL)isBlacklisted lastHeartbeatSentTime:(BridgeLong * _Nullable)lastHeartbeatSentTime lastHeartbeatAdvData:(BridgeKotlinByteArray * _Nullable)lastHeartbeatAdvData __attribute__((swift_name("init(peripheral:deviceId:proxyTaskQueue:internalCache:taskExecutor:batteryStatusLow:cachedDevicePayloads:lastInstallOOBTimestamp:lastTimeSyncOOBTimestamp:lastResetOOBTimestamp:lastUnknownOOBTimestamp:lastIdentifyOOBTimestamp:outstandingInstallDFU:lastRecoveryOOBTimestamp:performingProxyOperation:lastDiscoveryTime:isBlacklisted:lastHeartbeatSentTime:lastHeartbeatAdvData:)"))) __attribute__((objc_designated_initializer));
 @property (class, readonly, getter=companion) BridgeProxyDeviceCompanion *companion __attribute__((swift_name("companion")));
 - (void)addCachedPayloadPayload:(BridgeKotlinByteArray *)payload __attribute__((swift_name("addCachedPayload(payload:)")));
-
-/** Adds an event to the device's task queue */
 - (BOOL)addProxyQueueEventEvent:(BridgeTaskElement *)event __attribute__((swift_name("addProxyQueueEvent(event:)")));
-
-/**
- * Clears accepted payloads from the map based on their type:
- * - ACKs are cleared when DSC <= currentDSC
- * - Writes are cleared when PSC <= currentSSC
- * This matches the logic in PersistenceManager.removeStaleServerStateUpdatesForDevice
- */
 - (void)clearAcceptedPayloadsCurrentDSC:(int32_t)currentDSC currentSSC:(int32_t)currentSSC __attribute__((swift_name("clearAcceptedPayloads(currentDSC:currentSSC:)")));
 - (void)clearCachedPayloads __attribute__((swift_name("clearCachedPayloads()")));
-
-/** Removes all events of specific operation types */
 - (void)clearEventsByTypesOperations:(NSArray<BridgeDeviceOperation *> *)operations __attribute__((swift_name("clearEventsByTypes(operations:)")));
-
-/** Deletes a specific event from the task queue. */
 - (BOOL)deleteEventFromProxyQueueEvent:(BridgeTaskElement *)event __attribute__((swift_name("deleteEventFromProxyQueue(event:)")));
 - (NSArray<BridgeKotlinByteArray *> *)fetchCachedPayloads __attribute__((swift_name("fetchCachedPayloads()")));
-
-/** Helper function to fetch the corresponding event from the proxy queue */
 - (BridgeTaskElement * _Nullable)fetchCurrentEventFromQueueOperation:(BridgeBlueLinkOperation *)operation __attribute__((swift_name("fetchCurrentEventFromQueue(operation:)")));
-
-/** Fetches events from the task queue based on their state and operation type. */
 - (NSArray<BridgeTaskElement *> *)getQueueEventsOperation:(BridgeDeviceOperation * _Nullable)operation state:(BridgeTaskElementState * _Nullable)state __attribute__((swift_name("getQueueEvents(operation:state:)")));
 - (BOOL)hasScheduledOOB __attribute__((swift_name("hasScheduledOOB()")));
-
-/**
- * Increments a payload count.
- * If the payload isn't yet tracked, it logs a warning and returns 0 (this is an error)
- * If already tracked, increments the count.
- *
- * @param payload The payload to increment
- * @return The count after incrementing (if already tracked), or 0 (if not found)
- */
 - (int32_t)incrementPayloadCountPayload:(BridgeKotlinByteArray *)payload __attribute__((swift_name("incrementPayloadCount(payload:)")));
-
-/** Logs out the current state of the device, including its task queue and properties. */
 - (NSString *)toLog __attribute__((swift_name("toLog()")));
-
-/**
- * Tracks a payload count.
- * If the payload isn't yet tracked, adds it at 0 (does NOT increment it), else does nothing.
- *
- * @param payload The payload to track/increment
- * @param isAck Whether this is an ACK payload (only used if payload doesn't exist yet)
- * @param dsc Device state counter (for ACKs, null for writes, only used if payload doesn't exist yet)
- * @param psc Payload state counter (for writes, or for ACKs that have PSC, only used if payload doesn't exist yet)
- */
 - (void)trackPayloadPayload:(BridgeKotlinByteArray *)payload isAck:(BOOL)isAck dsc:(BridgeInt * _Nullable)dsc psc:(int32_t)psc __attribute__((swift_name("trackPayload(payload:isAck:dsc:psc:)")));
 @property BOOL batteryStatusLow __attribute__((swift_name("batteryStatusLow")));
 @property NSMutableArray<BridgeKotlinByteArray *> *cachedDevicePayloads __attribute__((swift_name("cachedDevicePayloads")));
@@ -1985,6 +1373,8 @@ __attribute__((swift_name("ProxyDevice")))
 @property BridgeBridgeCache *internalCache __attribute__((swift_name("internalCache")));
 @property BOOL isBlacklisted __attribute__((swift_name("isBlacklisted")));
 @property BridgeKotlinx_datetimeInstant * _Nullable lastDiscoveryTime __attribute__((swift_name("lastDiscoveryTime")));
+@property BridgeKotlinByteArray * _Nullable lastHeartbeatAdvData __attribute__((swift_name("lastHeartbeatAdvData")));
+@property BridgeLong * _Nullable lastHeartbeatSentTime __attribute__((swift_name("lastHeartbeatSentTime")));
 @property BridgeLong * _Nullable lastIdentifyOOBTimestamp __attribute__((swift_name("lastIdentifyOOBTimestamp")));
 @property BridgeLong * _Nullable lastInstallOOBTimestamp __attribute__((swift_name("lastInstallOOBTimestamp")));
 @property BridgeLong * _Nullable lastRecoveryOOBTimestamp __attribute__((swift_name("lastRecoveryOOBTimestamp")));
@@ -2016,8 +1406,7 @@ __attribute__((swift_name("ProxyProvider")))
 @end
 
 
-/** Represents the full server response.
- *
+/**
  * @note annotations
  *   kotlinx.serialization.Serializable
 */
@@ -2027,37 +1416,24 @@ __attribute__((swift_name("ServerResponse")))
 - (instancetype)initWithStateUpdates:(NSMutableArray<BridgeServerResponseStateUpdate *> *)stateUpdates __attribute__((swift_name("init(stateUpdates:)"))) __attribute__((objc_designated_initializer));
 @property (class, readonly, getter=companion) BridgeServerResponseCompanion *companion __attribute__((swift_name("companion")));
 - (BridgeServerResponse *)doCopyStateUpdates:(NSMutableArray<BridgeServerResponseStateUpdate *> *)stateUpdates __attribute__((swift_name("doCopy(stateUpdates:)")));
-
-/** Represents the full server response. */
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
-
-/** Represents the full server response. */
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
-
-/** Represents the full server response. */
 - (NSString *)description __attribute__((swift_name("description()")));
 @property (readonly) NSMutableArray<BridgeServerResponseStateUpdate *> *stateUpdates __attribute__((swift_name("stateUpdates")));
 @end
 
-
-/** Represents the full server response. */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("ServerResponse.Companion")))
 @interface BridgeServerResponseCompanion : BridgeBase
 + (instancetype)alloc __attribute__((unavailable));
-
-/** Represents the full server response. */
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 + (instancetype)companion __attribute__((swift_name("init()")));
 @property (class, readonly, getter=shared) BridgeServerResponseCompanion *shared __attribute__((swift_name("shared")));
-
-/** Represents the full server response. */
 - (id<BridgeKotlinx_serialization_coreKSerializer>)serializer __attribute__((swift_name("serializer()")));
 @end
 
 
-/** Represents an update within the server response.
- *
+/**
  * @note annotations
  *   kotlinx.serialization.Serializable
 */
@@ -2069,8 +1445,6 @@ __attribute__((swift_name("ServerResponseStateUpdate")))
 - (BridgeServerResponseStateUpdate *)doCopyPsc:(int32_t)psc payload:(BridgeKotlinByteArray *)payload dsc:(BridgeInt * _Nullable)dsc isAck:(BOOL)isAck __attribute__((swift_name("doCopy(psc:payload:dsc:isAck:)")));
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
-
-/** Represents an update within the server response. */
 - (NSString *)description __attribute__((swift_name("description()")));
 @property BridgeInt * _Nullable dsc __attribute__((swift_name("dsc")));
 @property BOOL isAck __attribute__((swift_name("isAck")));
@@ -2078,34 +1452,20 @@ __attribute__((swift_name("ServerResponseStateUpdate")))
 @property (readonly) int32_t psc __attribute__((swift_name("psc")));
 @end
 
-
-/** Represents an update within the server response. */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("ServerResponseStateUpdate.Companion")))
 @interface BridgeServerResponseStateUpdateCompanion : BridgeBase
 + (instancetype)alloc __attribute__((unavailable));
-
-/** Represents an update within the server response. */
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 + (instancetype)companion __attribute__((swift_name("init()")));
 @property (class, readonly, getter=shared) BridgeServerResponseStateUpdateCompanion *shared __attribute__((swift_name("shared")));
-
-/** Represents an update within the server response. */
 - (id<BridgeKotlinx_serialization_coreKSerializer>)serializer __attribute__((swift_name("serializer()")));
 @end
 
-
-/**
- * Defines the list of operations that can be performed by the library with the device.
- */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("DeviceOperation")))
 @interface BridgeDeviceOperation : BridgeKotlinEnum<BridgeDeviceOperation *>
 + (instancetype)alloc __attribute__((unavailable));
-
-/**
- * Defines the list of operations that can be performed by the library with the device.
- */
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 - (instancetype)initWithName:(NSString *)name ordinal:(int32_t)ordinal __attribute__((swift_name("init(name:ordinal:)"))) __attribute__((objc_designated_initializer)) __attribute__((unavailable));
 @property (class, readonly) BridgeDeviceOperation *deviceRead __attribute__((swift_name("deviceRead")));
@@ -2121,16 +1481,11 @@ __attribute__((swift_name("DeviceOperation")))
 @property (class, readonly) NSArray<BridgeDeviceOperation *> *entries __attribute__((swift_name("entries")));
 - (BridgeBlueLinkOperationType *)blueLinkOperationType __attribute__((swift_name("blueLinkOperationType()")));
 - (BOOL)isOOBOperation __attribute__((swift_name("isOOBOperation()")));
-
-/**
- * Provides a string representation of the operation.
- */
 - (NSString *)description __attribute__((swift_name("description()")));
 @end
 
 
-/** Data classes for persisted payloads.
- *
+/**
  * @note annotations
  *   kotlinx.serialization.Serializable
 */
@@ -2140,14 +1495,8 @@ __attribute__((swift_name("DeviceGeneratedPersistedPayload")))
 - (instancetype)initWithDeviceId:(uint32_t)deviceId payload:(NSArray<BridgeKotlinByteArray *> *)payload creationTimestamp:(BridgeKotlinx_datetimeInstant *)creationTimestamp __attribute__((swift_name("init(deviceId:payload:creationTimestamp:)"))) __attribute__((objc_designated_initializer));
 @property (class, readonly, getter=companion) BridgeDeviceGeneratedPersistedPayloadCompanion *companion __attribute__((swift_name("companion")));
 - (BridgeDeviceGeneratedPersistedPayload *)doCopyDeviceId:(uint32_t)deviceId payload:(NSArray<BridgeKotlinByteArray *> *)payload creationTimestamp:(BridgeKotlinx_datetimeInstant *)creationTimestamp __attribute__((swift_name("doCopy(deviceId:payload:creationTimestamp:)")));
-
-/** Data classes for persisted payloads. */
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
-
-/** Data classes for persisted payloads. */
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
-
-/** Data classes for persisted payloads. */
 - (NSString *)description __attribute__((swift_name("description()")));
 
 /**
@@ -2159,69 +1508,30 @@ __attribute__((swift_name("DeviceGeneratedPersistedPayload")))
 @property (readonly) NSArray<BridgeKotlinByteArray *> *payload __attribute__((swift_name("payload")));
 @end
 
-
-/** Data classes for persisted payloads. */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("DeviceGeneratedPersistedPayload.Companion")))
 @interface BridgeDeviceGeneratedPersistedPayloadCompanion : BridgeBase
 + (instancetype)alloc __attribute__((unavailable));
-
-/** Data classes for persisted payloads. */
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 + (instancetype)companion __attribute__((swift_name("init()")));
 @property (class, readonly, getter=shared) BridgeDeviceGeneratedPersistedPayloadCompanion *shared __attribute__((swift_name("shared")));
-
-/** Data classes for persisted payloads. */
 - (id<BridgeKotlinx_serialization_coreKSerializer>)serializer __attribute__((swift_name("serializer()")));
 @end
 
-
-/** Singleton persistence manager for managing persisted payloads. */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("PersistenceManager")))
 @interface BridgePersistenceManager : BridgeBase
-
-/** Singleton persistence manager for managing persisted payloads. */
 - (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer));
-
-/** Singleton persistence manager for managing persisted payloads. */
 + (instancetype)new __attribute__((availability(swift, unavailable, message="use object initializers instead")));
 @property (class, readonly, getter=companion) BridgePersistenceManagerCompanion *companion __attribute__((swift_name("companion")));
-
-/** Delete the persisted payload from the device for a specific device ID. */
 - (BOOL)deleteAllPersistedPayloadFromDeviceDeviceId:(NSString *)deviceId __attribute__((swift_name("deleteAllPersistedPayloadFromDevice(deviceId:)")));
-
-/** Delete the persisted payload from the server for a specific device ID. */
 - (BOOL)deletePersistedPayloadFromServerDeviceId:(NSString *)deviceId __attribute__((swift_name("deletePersistedPayloadFromServer(deviceId:)")));
-
-/** Fetch all device-generated persisted payloads. */
 - (NSArray<BridgeDeviceGeneratedPersistedPayload *> *)fetchAllDeviceGeneratedPersistedPayload __attribute__((swift_name("fetchAllDeviceGeneratedPersistedPayload()")));
-
-/** Fetch all persisted server-issued payloads. */
 - (NSArray<BridgeServerGeneratedPersistedPayload *> *)fetchAllServerIssuedPayloads __attribute__((swift_name("fetchAllServerIssuedPayloads()")));
-
-/** Fetch persisted payloads from the server for a specific device ID. */
 - (BridgeServerGeneratedPersistedPayload * _Nullable)fetchPersistedPayloadsFromServerDeviceId:(NSString *)deviceId __attribute__((swift_name("fetchPersistedPayloadsFromServer(deviceId:)")));
-
-/** Persist payloads sent from the device for a specific device ID. */
 - (BOOL)persistPayloadFromDeviceDeviceId:(uint32_t)deviceId payload:(NSArray<BridgeKotlinByteArray *> *)payload __attribute__((swift_name("persistPayloadFromDevice(deviceId:payload:)")));
-
-/** Persist payloads sent from the server for a specific device ID. */
 - (BOOL)persistPayloadFromServerDeviceId:(uint32_t)deviceId payload:(BridgeServerResponse *)payload __attribute__((swift_name("persistPayloadFromServer(deviceId:payload:)")));
-
-/**
- * Removes stale server state updates for a device, based on its current DSC and SSC.
- *
- * Returns the updated persisted payload if changes were made, null if:
- *  - no payload file exists,
- *  - no updates were removed,
- *  - or an error occurred during decode/encode.
- *
- * If all updates are stale, the file is deleted and null is returned.
- */
 - (BridgeServerGeneratedPersistedPayload * _Nullable)removeStaleServerStateUpdatesForDeviceDeviceId:(uint32_t)deviceId deviceDSC:(int32_t)deviceDSC deviceSSC:(int32_t)deviceSSC __attribute__((swift_name("removeStaleServerStateUpdatesForDevice(deviceId:deviceDSC:deviceSSC:)")));
-
-/** Reset all persisted data by deleting the directory contents. */
 - (void)resetPersistedData __attribute__((swift_name("resetPersistedData()")));
 @end
 
@@ -2323,10 +1633,6 @@ __attribute__((swift_name("States.Companion")))
 
 
 /**
- * TaskElement - Defines an interface for actions performed on a Device including Writing and Reading data.
- *
- * Handles failures during payload transfer between the Device and the Bridge.
- *
  * @note annotations
  *   kotlinx.serialization.Serializable
 */
@@ -2354,46 +1660,20 @@ __attribute__((swift_name("TaskElement")))
 @property BridgeKotlinx_datetimeInstant *timestamp __attribute__((swift_name("timestamp")));
 @end
 
-
-/**
- * TaskElement - Defines an interface for actions performed on a Device including Writing and Reading data.
- *
- * Handles failures during payload transfer between the Device and the Bridge.
- */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("TaskElement.Companion")))
 @interface BridgeTaskElementCompanion : BridgeBase
 + (instancetype)alloc __attribute__((unavailable));
-
-/**
- * TaskElement - Defines an interface for actions performed on a Device including Writing and Reading data.
- *
- * Handles failures during payload transfer between the Device and the Bridge.
- */
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 + (instancetype)companion __attribute__((swift_name("init()")));
 @property (class, readonly, getter=shared) BridgeTaskElementCompanion *shared __attribute__((swift_name("shared")));
-
-/**
- * TaskElement - Defines an interface for actions performed on a Device including Writing and Reading data.
- *
- * Handles failures during payload transfer between the Device and the Bridge.
- */
 - (id<BridgeKotlinx_serialization_coreKSerializer>)serializer __attribute__((swift_name("serializer()")));
 @end
 
-
-/**
- * To track the state of the TaskElement event as it propagates through the pipeline system.
- */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("TaskElementState")))
 @interface BridgeTaskElementState : BridgeKotlinEnum<BridgeTaskElementState *>
 + (instancetype)alloc __attribute__((unavailable));
-
-/**
- * To track the state of the TaskElement event as it propagates through the pipeline system.
- */
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 - (instancetype)initWithName:(NSString *)name ordinal:(int32_t)ordinal __attribute__((swift_name("init(name:ordinal:)"))) __attribute__((objc_designated_initializer)) __attribute__((unavailable));
 @property (class, readonly) BridgeTaskElementState *scheduled __attribute__((swift_name("scheduled")));
@@ -2405,62 +1685,27 @@ __attribute__((swift_name("TaskElementState")))
 
 
 /**
- * TaskQueue - A queue implementation for managing TaskElement instances.
- *
  * @note annotations
  *   kotlinx.serialization.Serializable
 */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("TaskQueue")))
 @interface BridgeTaskQueue : BridgeBase
-
-/**
- * TaskQueue - A queue implementation for managing TaskElement instances.
- */
 - (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer));
-
-/**
- * TaskQueue - A queue implementation for managing TaskElement instances.
- */
 + (instancetype)new __attribute__((availability(swift, unavailable, message="use object initializers instead")));
 @property (class, readonly, getter=companion) BridgeTaskQueueCompanion *companion __attribute__((swift_name("companion")));
-
-/**
- * Removes and returns the specified TaskElement from the queue.
- * If the element is not found, logs a warning and returns null.
- */
 - (BridgeTaskElement * _Nullable)dequeueElement:(BridgeTaskElement *)element __attribute__((swift_name("dequeue(element:)")));
-
-/**
- * Adds a TaskElement to the queue.
- */
 - (void)enqueueElement:(BridgeTaskElement *)element __attribute__((swift_name("enqueue(element:)")));
-
-/**
- * Returns a copy of the full queue.
- */
 - (NSArray<BridgeTaskElement *> *)fullQueue __attribute__((swift_name("fullQueue()")));
 @end
 
-
-/**
- * TaskQueue - A queue implementation for managing TaskElement instances.
- */
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("TaskQueue.Companion")))
 @interface BridgeTaskQueueCompanion : BridgeBase
 + (instancetype)alloc __attribute__((unavailable));
-
-/**
- * TaskQueue - A queue implementation for managing TaskElement instances.
- */
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 + (instancetype)companion __attribute__((swift_name("init()")));
 @property (class, readonly, getter=shared) BridgeTaskQueueCompanion *shared __attribute__((swift_name("shared")));
-
-/**
- * TaskQueue - A queue implementation for managing TaskElement instances.
- */
 - (id<BridgeKotlinx_serialization_coreKSerializer>)serializer __attribute__((swift_name("serializer()")));
 @end
 
@@ -2542,38 +1787,18 @@ __attribute__((swift_name("DFUModuleKt")))
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("DataManipulationKt")))
 @interface BridgeDataManipulationKt : BridgeBase
-
-/**
- * Converts any compatible data type to a `ByteArray` in Little-Endian format.
- */
 + (BridgeKotlinByteArray * _Nullable)convertAnyToUInt8ArrayInput:(id _Nullable)input __attribute__((swift_name("convertAnyToUInt8Array(input:)")));
 + (BridgeKotlinByteArray * _Nullable)convertIntToUInt8Value:(int32_t)value byteCount:(int32_t)byteCount __attribute__((swift_name("convertIntToUInt8(value:byteCount:)")));
 + (int32_t)convertUInt8ArrayToIntValue:(BridgeKotlinByteArray *)value __attribute__((swift_name("convertUInt8ArrayToInt(value:)")));
 + (uint32_t)convertUInt8ArrayToUIntValue:(BridgeKotlinByteArray *)value __attribute__((swift_name("convertUInt8ArrayToUInt(value:)")));
-
-/**
- * Converts an `Int` to a 4-byte Little-Endian `ByteArray`.
- */
 + (BridgeKotlinByteArray *)intToByteArrayValue:(int32_t)value __attribute__((swift_name("intToByteArray(value:)")));
-
-/**
- * Converts a `Long` to an 8-byte Little-Endian `ByteArray`.
- */
 + (BridgeKotlinByteArray *)longToByteArrayValue:(int64_t)value __attribute__((swift_name("longToByteArray(value:)")));
-
-/**
- * Converts a `Short` to a 2-byte Little-Endian `ByteArray`.
- */
 + (BridgeKotlinByteArray *)shortToByteArrayValue:(int16_t)value __attribute__((swift_name("shortToByteArray(value:)")));
 @end
 
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("IOSHeartbeatParserKt")))
 @interface BridgeIOSHeartbeatParserKt : BridgeBase
-
-/**
- * Factory function to create heartbeat parser for iOS
- */
 + (id<BridgeIHeartbeatParser>)provideHeartbeatParserHeartbeatParser:(id<BridgeIHeartbeatParser> _Nullable)heartbeatParser __attribute__((swift_name("provideHeartbeatParser(heartbeatParser:)")));
 @end
 
@@ -2994,16 +2219,66 @@ __attribute__((swift_name("Kotlinx_serialization_coreEncoder")))
 __attribute__((swift_name("Kotlinx_serialization_coreSerialDescriptor")))
 @protocol BridgeKotlinx_serialization_coreSerialDescriptor
 @required
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
 - (NSArray<id<BridgeKotlinAnnotation>> *)getElementAnnotationsIndex:(int32_t)index __attribute__((swift_name("getElementAnnotations(index:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
 - (id<BridgeKotlinx_serialization_coreSerialDescriptor>)getElementDescriptorIndex:(int32_t)index __attribute__((swift_name("getElementDescriptor(index:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
 - (int32_t)getElementIndexName:(NSString *)name __attribute__((swift_name("getElementIndex(name:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
 - (NSString *)getElementNameIndex:(int32_t)index __attribute__((swift_name("getElementName(index:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
 - (BOOL)isElementOptionalIndex:(int32_t)index __attribute__((swift_name("isElementOptional(index:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
 @property (readonly) NSArray<id<BridgeKotlinAnnotation>> *annotations __attribute__((swift_name("annotations")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
 @property (readonly) int32_t elementsCount __attribute__((swift_name("elementsCount")));
 @property (readonly) BOOL isInline __attribute__((swift_name("isInline")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
 @property (readonly) BOOL isNullable __attribute__((swift_name("isNullable")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
 @property (readonly) BridgeKotlinx_serialization_coreSerialKind *kind __attribute__((swift_name("kind")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
 @property (readonly) NSString *serialName __attribute__((swift_name("serialName")));
 @end
 
@@ -3478,6 +2753,11 @@ __attribute__((swift_name("KotlinAnnotation")))
 @required
 @end
 
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
 __attribute__((swift_name("Kotlinx_serialization_coreSerialKind")))
 @interface BridgeKotlinx_serialization_coreSerialKind : BridgeBase
 - (NSUInteger)hash __attribute__((swift_name("hash()")));

@@ -362,7 +362,7 @@ SWIFT_CLASS("_TtC10LinkMobile6Bridge")
 SWIFT_CLASS("_TtC10LinkMobile29CredLinkBlueLinkEventListener")
 @interface CredLinkBlueLinkEventListener : BridgeBlueLinkEventListener
 - (void)onHeartbeatDevice:(BridgeBluetoothDevice * _Nonnull)device heartbeatData:(BridgeKotlinByteArray * _Nonnull)heartbeatData;
-- (void)onDeviceDiscoveredDevice:(BridgeBluetoothDevice * _Nonnull)device advertisementData:(BridgeBluetoothAdvertisement * _Nonnull)advertisementData rssi:(int32_t)_ signalStrength:(BridgeSignalStrength * _Nullable)_ connectionStatus:(BridgeBlueLinkDeviceConnectionStatus * _Nonnull)_;
+- (void)onDeviceDiscoveredDevice:(BridgeBluetoothDevice * _Nonnull)device advertisementData:(BridgeBluetoothAdvertisement * _Nonnull)advertisementData rssi:(int32_t)_ signalStrength:(BridgeSignalStrength * _Nonnull)_ connectionStatus:(BridgeBlueLinkDeviceConnectionStatus * _Nonnull)_;
 - (void)onOperationStartDevice:(BridgeBluetoothDevice * _Nonnull)device operation:(BridgeBlueLinkOperation * _Nonnull)operation;
 - (void)onCharacteristicWriteDevice:(BridgeBluetoothDevice * _Nonnull)device characteristic:(BridgeBluetoothGattCharacteristic * _Nonnull)characteristic error:(BridgeBoolean * _Nullable)error operationType:(BridgeBlueLinkOperationType * _Nonnull)_;
 - (void)onNotificationReceivedDevice:(BridgeBluetoothDevice * _Nonnull)device characteristic:(BridgeBluetoothGattCharacteristic * _Nonnull)characteristic payload:(BridgeKotlinByteArray * _Nonnull)payload;
