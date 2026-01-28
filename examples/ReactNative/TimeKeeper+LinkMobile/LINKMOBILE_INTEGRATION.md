@@ -461,7 +461,7 @@ Add the LinkMobile SDK dependency to `android/app/build.gradle`:
 ```gradle
 dependencies {
     implementation("com.facebook.react:react-android")
-    implementation("com.lastlock.dev:bridge-android:1.8.0") // Use your version
+    implementation("com.lastlock.prod:bridge-android:1.7.2") // Use your version
     // ... other dependencies
 }
 ```
