@@ -15,6 +15,8 @@ For more detailed documentation and public API, visit:
 - Personal Access Token (PAT) with `repo` and `read:packages` permissions
 - Xcode 15+, Swift 5.9+, iOS 16.0+
 
+### Note: For React Native projects, use versions 1.7.2 of the Android and iOS Link Mobile SDK dependencies. That specific release has dependencies compatible with Expo and React Native.
+
 ## Setup Instructions iOS
 ### Private Github Access
 The SDK lives inside a private Github repository. Fetch a PAT created from an account that has permissions to access the private repo and include it in the .netrc file stored in the home location:
