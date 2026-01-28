@@ -38,7 +38,7 @@ allprojects {
         mavenCentral()
         maven { url 'https://www.jitpack.io' }
         maven {
-            url "https://maven.pkg.github.com/last-lock/link-mobile-sdk-dev"
+            url "https://maven.pkg.github.com/last-lock/link-mobile-sdk-prod"
             credentials {
                 username = System.getenv("GITHUB_ACTOR") ?: (findProperty("gpr.user") ?: "")
                 password = System.getenv("GITHUB_TOKEN") ?: (findProperty("gpr.key") ?: "")
