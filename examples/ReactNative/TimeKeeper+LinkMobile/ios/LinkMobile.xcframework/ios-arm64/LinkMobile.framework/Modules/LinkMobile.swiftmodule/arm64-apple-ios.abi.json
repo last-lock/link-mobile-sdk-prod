@@ -1983,8 +1983,8 @@
           },
           {
             "kind": "Function",
-            "name": "YedqppztkOmgDLJLQEf8e3bN8fZIwzXQ",
-            "printedName": "YedqppztkOmgDLJLQEf8e3bN8fZIwzXQ(device:)",
+            "name": "LjXw9vMcFzTorX30sMWwMuzAYF3EHxTU",
+            "printedName": "LjXw9vMcFzTorX30sMWwMuzAYF3EHxTU(device:)",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -1999,8 +1999,8 @@
               }
             ],
             "declKind": "Func",
-            "usr": "s:10LinkMobile04CredA7ManagerC32YedqppztkOmgDLJLQEf8e3bN8fZIwzXQ6deviceyAA0cA6DeviceC_tF",
-            "mangledName": "$s10LinkMobile04CredA7ManagerC32YedqppztkOmgDLJLQEf8e3bN8fZIwzXQ6deviceyAA0cA6DeviceC_tF",
+            "usr": "s:10LinkMobile04CredA7ManagerC32LjXw9vMcFzTorX30sMWwMuzAYF3EHxTU6deviceyAA0cA6DeviceC_tF",
+            "mangledName": "$s10LinkMobile04CredA7ManagerC32LjXw9vMcFzTorX30sMWwMuzAYF3EHxTU6deviceyAA0cA6DeviceC_tF",
             "moduleName": "LinkMobile",
             "declAttributes": [
               "RawDocComment"
@@ -2129,17 +2129,9 @@
               },
               {
                 "kind": "TypeNominal",
-                "name": "Optional",
-                "printedName": "bridge.SignalStrength?",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "SignalStrength",
-                    "printedName": "bridge.SignalStrength",
-                    "usr": "c:objc(cs)BridgeSignalStrength"
-                  }
-                ],
-                "usr": "s:Sq"
+                "name": "SignalStrength",
+                "printedName": "bridge.SignalStrength",
+                "usr": "c:objc(cs)BridgeSignalStrength"
               },
               {
                 "kind": "TypeNominal",
@@ -2150,7 +2142,7 @@
             ],
             "declKind": "Func",
             "usr": "c:@M@LinkMobile@objc(cs)CredLinkBlueLinkEventListener(im)onDeviceDiscoveredDevice:advertisementData:rssi:signalStrength:connectionStatus:",
-            "mangledName": "$s10LinkMobile04Creda4BlueA13EventListenerC18onDeviceDiscovered6device17advertisementData4rssi14signalStrength16connectionStatusySo015BridgeBluetoothH0C_So0rS13AdvertisementCs5Int32VSo0r6SignalO0CSgSo0rdah10ConnectionQ0CtF",
+            "mangledName": "$s10LinkMobile04Creda4BlueA13EventListenerC18onDeviceDiscovered6device17advertisementData4rssi14signalStrength16connectionStatusySo015BridgeBluetoothH0C_So0rS13AdvertisementCs5Int32VSo0r6SignalO0CSo0rdah10ConnectionQ0CtF",
             "moduleName": "LinkMobile",
             "overriding": true,
             "objc_name": "onDeviceDiscoveredDevice:advertisementData:rssi:signalStrength:connectionStatus:",
@@ -7114,490 +7106,490 @@
   },
   "ConstValues": [
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Attestation\/AttestationManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Attestation\/AttestationManager.swift",
       "kind": "IntegerLiteral",
       "offset": 2083,
       "length": 3,
       "value": "443"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Attestation\/AttestationManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Attestation\/AttestationManager.swift",
       "kind": "IntegerLiteral",
       "offset": 2146,
       "length": 13,
       "value": "2000000000"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Attestation\/AttestationManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Attestation\/AttestationManager.swift",
       "kind": "StringLiteral",
       "offset": 2196,
       "length": 20,
       "value": "\"AttestationManager\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Attestation\/AttestationManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Attestation\/AttestationManager.swift",
       "kind": "StringLiteral",
       "offset": 2269,
       "length": 35,
       "value": "\"com.lastlock.bridge.attestion.key\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Attestation\/AttestationManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Attestation\/AttestationManager.swift",
       "kind": "StringLiteral",
       "offset": 2356,
       "length": 47,
       "value": "\"com.lastlock.bridge.attestation.temporary.key\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
       "kind": "StringLiteral",
       "offset": 1049,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
       "kind": "StringLiteral",
       "offset": 1098,
       "length": 38,
       "value": "\"fe278a85-89ae-191f-5dde-841202693835\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
       "kind": "StringLiteral",
       "offset": 1182,
       "length": 38,
       "value": "\"e5b1b3b5-3cca-3f76-cd86-a884cc239692\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
       "kind": "Array",
       "offset": 1291,
       "length": 2,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
       "kind": "StringLiteral",
       "offset": 1436,
       "length": 10,
       "value": "\"CredLink\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
       "kind": "StringLiteral",
       "offset": 1914,
       "length": 28,
       "value": "\"CredLink_Blacklist_Devices\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
       "kind": "IntegerLiteral",
       "offset": 2042,
       "length": 1,
       "value": "3"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
       "kind": "FloatLiteral",
       "offset": 2188,
       "length": 4,
       "value": "10.0"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
       "kind": "BooleanLiteral",
       "offset": 12283,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
       "kind": "BooleanLiteral",
       "offset": 18721,
       "length": 4,
       "value": "true"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
       "kind": "BooleanLiteral",
       "offset": 21224,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLink.swift",
       "kind": "StringLiteral",
       "offset": 27227,
       "length": 31,
       "value": "\"CredLinkBlueLinkEventListener\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
       "kind": "IntegerLiteral",
       "offset": 1855,
       "length": 4,
       "value": "0x00"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
       "kind": "IntegerLiteral",
       "offset": 1879,
       "length": 4,
       "value": "0x01"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
       "kind": "IntegerLiteral",
       "offset": 1909,
       "length": 4,
       "value": "0x02"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
       "kind": "IntegerLiteral",
       "offset": 1940,
       "length": 4,
       "value": "0x03"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
       "kind": "IntegerLiteral",
       "offset": 1977,
       "length": 4,
       "value": "0x04"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
       "kind": "IntegerLiteral",
       "offset": 2017,
       "length": 4,
       "value": "0x05"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
       "kind": "IntegerLiteral",
       "offset": 2051,
       "length": 4,
       "value": "0x06"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
       "kind": "IntegerLiteral",
       "offset": 2088,
       "length": 4,
       "value": "0x07"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
       "kind": "IntegerLiteral",
       "offset": 2125,
       "length": 4,
       "value": "0x0C"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/CredLinkHandshakePayload.swift",
       "kind": "IntegerLiteral",
       "offset": 2157,
       "length": 4,
       "value": "0x0D"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/DFU\/DFUDriver_iOS.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/DFU\/DFUDriver_iOS.swift",
       "kind": "StringLiteral",
       "offset": 5687,
       "length": 14,
       "value": "\"DFUDriverIOS\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/Device.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/Device.swift",
       "kind": "BooleanLiteral",
       "offset": 1381,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/Device.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Models\/Device.swift",
       "kind": "BooleanLiteral",
       "offset": 1559,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Logging\/DeviceMetadataCollector.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Logging\/DeviceMetadataCollector.swift",
       "kind": "StringLiteral",
       "offset": 267,
       "length": 26,
       "value": "\"bridge_first_launch_sent\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Logging\/IOSBridgeTelemetryService.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Logging\/IOSBridgeTelemetryService.swift",
       "kind": "StringLiteral",
       "offset": 258,
       "length": 28,
       "value": "\"LinkMobileTelemetryService\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Logging\/IOSUnifiedCrashHandler.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Logging\/IOSUnifiedCrashHandler.swift",
       "kind": "StringLiteral",
       "offset": 1017,
       "length": 24,
       "value": "\"IOSUnifiedCrashHandler\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Logging\/IOSUnifiedCrashHandler.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Logging\/IOSUnifiedCrashHandler.swift",
       "kind": "IntegerLiteral",
       "offset": 1334,
       "length": 2,
       "value": "50"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Logging\/IOSUnifiedCrashHandler.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Logging\/IOSUnifiedCrashHandler.swift",
       "kind": "StringLiteral",
       "offset": 1380,
       "length": 25,
       "value": "\"library_crash_logs.json\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Logging\/IOSUnifiedCrashHandler.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Logging\/IOSUnifiedCrashHandler.swift",
       "kind": "Dictionary",
       "offset": 1552,
       "length": 3,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Secure\/KeychainHelper.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Secure\/KeychainHelper.swift",
       "kind": "BooleanLiteral",
       "offset": 554,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Secure\/KeychainHelper.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Secure\/KeychainHelper.swift",
       "kind": "BooleanLiteral",
       "offset": 1273,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Secure\/KeychainHelper.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Secure\/KeychainHelper.swift",
       "kind": "BooleanLiteral",
       "offset": 1861,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/LongTermSampleKeys.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/LongTermSampleKeys.swift",
       "kind": "Array",
       "offset": 158,
       "length": 210,
       "value": "[0x1C, 0x8D, 0x19, 0x62, 0x9C, 0xE9, 0x4D, 0x23, 0x9A, 0xE9, 0x8D, 0xBA, 0xCF, 0xA2, 0x05, 0x0A, 0xC5, 0xAA, 0xD6, 0x0A, 0x00, 0x2D, 0xC5, 0xB0, 0x1A, 0x46, 0x28, 0x5A, 0x87, 0x12, 0x9F, 0xDE]"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/LongTermSampleKeys.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/LongTermSampleKeys.swift",
       "kind": "Array",
       "offset": 417,
       "length": 414,
       "value": "[0xEE, 0x15, 0x58, 0xEF, 0xB8, 0xDC, 0x62, 0x79, 0x57, 0x5F, 0x13, 0x78, 0xB1, 0x65, 0xCC, 0xD9, 0xBE, 0x32, 0x23, 0xCB, 0x04, 0x92, 0x92, 0xC3, 0x6F, 0xFF, 0x60, 0x1E, 0x09, 0xD5, 0x59, 0xE7, 0xBB, 0x27, 0xA0, 0x13, 0xC1, 0xFC, 0x80, 0xD8, 0xFB, 0x79, 0x15, 0x35, 0x82, 0xB4, 0x92, 0xDF, 0xFF, 0xBE, 0xC4, 0x8E, 0xDC, 0xC9, 0xBA, 0x36, 0xBA, 0xB1, 0x41, 0x72, 0xA2, 0x61, 0x12, 0xC5]"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Util\/ParsingFunctions.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Util\/ParsingFunctions.swift",
       "kind": "IntegerLiteral",
       "offset": 300,
       "length": 4,
       "value": "3683"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneRPC.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneRPC.swift",
       "kind": "StringLiteral",
       "offset": 763,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneRPC.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneRPC.swift",
       "kind": "IntegerLiteral",
       "offset": 793,
       "length": 3,
       "value": "443"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneRPC.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneRPC.swift",
       "kind": "StringLiteral",
       "offset": 819,
       "length": 12,
       "value": "\"RPCChannel\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneStreamManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneStreamManager.swift",
       "kind": "IntegerLiteral",
       "offset": 1025,
       "length": 13,
       "value": "5000000000"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneStreamManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneStreamManager.swift",
       "kind": "IntegerLiteral",
       "offset": 1111,
       "length": 13,
       "value": "1000000000"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneStreamManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneStreamManager.swift",
       "kind": "BooleanLiteral",
       "offset": 1228,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneStreamManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneStreamManager.swift",
       "kind": "Dictionary",
       "offset": 1486,
       "length": 3,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneStreamManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneStreamManager.swift",
       "kind": "StringLiteral",
       "offset": 1513,
       "length": 20,
       "value": "\"PlaneStreamManager\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneStreamManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneStreamManager.swift",
       "kind": "Dictionary",
       "offset": 1817,
       "length": 3,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneStreamManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneStreamManager.swift",
       "kind": "Array",
       "offset": 1950,
       "length": 2,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneStreamManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/PlaneRPC\/PlaneStreamManager.swift",
       "kind": "IntegerLiteral",
       "offset": 8273,
       "length": 2,
       "value": "30"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Proxy\/ProxyMessageStreamManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Proxy\/ProxyMessageStreamManager.swift",
       "kind": "IntegerLiteral",
-      "offset": 960,
+      "offset": 961,
       "length": 13,
       "value": "2000000000"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Proxy\/ProxyMessageStreamManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Proxy\/ProxyMessageStreamManager.swift",
       "kind": "StringLiteral",
-      "offset": 1069,
+      "offset": 1070,
       "length": 27,
       "value": "\"ProxyMessageStreamManager\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Util\/TrueTimeManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Util\/TrueTimeManager.swift",
       "kind": "StringLiteral",
       "offset": 547,
       "length": 17,
       "value": "\"TrueTimeManager\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Util\/TrueTimeManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Util\/TrueTimeManager.swift",
       "kind": "BooleanLiteral",
       "offset": 780,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Util\/TrueTimeManager.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/Util\/TrueTimeManager.swift",
       "kind": "BooleanLiteral",
       "offset": 824,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/UUIDs.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/UUIDs.swift",
       "kind": "StringLiteral",
       "offset": 451,
       "length": 38,
       "value": "\"41fb60a1-d4d0-4ae9-8cbb-b62b5ae81810\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/UUIDs.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/UUIDs.swift",
       "kind": "StringLiteral",
       "offset": 548,
       "length": 38,
       "value": "\"fe278a85-89ae-191f-5dde-841202693835\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/UUIDs.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/UUIDs.swift",
       "kind": "StringLiteral",
       "offset": 645,
       "length": 38,
       "value": "\"fe278a85-89ae-191f-5dde-841202693835\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/UUIDs.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/UUIDs.swift",
       "kind": "StringLiteral",
       "offset": 1535,
       "length": 58,
       "value": "\"com.example.last-lock.credentialExchange.credLink.public\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/UUIDs.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/UUIDs.swift",
       "kind": "StringLiteral",
       "offset": 1660,
       "length": 59,
       "value": "\"com.example.last-lock.credentialExchange.credLink.private\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/UUIDs.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/UUIDs.swift",
       "kind": "StringLiteral",
       "offset": 1786,
       "length": 70,
       "value": "\"com.example.last-lock.credentialExchange.credLink.assignedCredential\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/UUIDs.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/UUIDs.swift",
       "kind": "StringLiteral",
       "offset": 1992,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/UUIDs.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/CredLink\/Utils\/UUIDs.swift",
       "kind": "StringLiteral",
       "offset": 2053,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/DFU\/ZipPackage_iOS.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/DFU\/ZipPackage_iOS.swift",
       "kind": "Dictionary",
       "offset": 330,
       "length": 3,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/DFU\/gRPCClientWrapper_DFU.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/DFU\/gRPCClientWrapper_DFU.swift",
       "kind": "IntegerLiteral",
       "offset": 761,
       "length": 3,
       "value": "443"
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/DFU\/gRPCClientWrapper_DFU.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/DFU\/gRPCClientWrapper_DFU.swift",
       "kind": "StringLiteral",
       "offset": 787,
       "length": 16,
       "value": "\"GRPCClient-DFU\""
     },
     {
-      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/another_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/DFU\/gRPCClientWrapper_DFU.swift",
+      "filePath": "\/Users\/nihirsingh\/Documents\/Last_Lock\/Seamless_mono\/mono\/seamless\/mobile\/iOS\/libraries\/LinkMobile\/Sources\/LinkMobile-obfuscated\/DFU\/gRPCClientWrapper_DFU.swift",
       "kind": "IntegerLiteral",
       "offset": 884,
       "length": 2,

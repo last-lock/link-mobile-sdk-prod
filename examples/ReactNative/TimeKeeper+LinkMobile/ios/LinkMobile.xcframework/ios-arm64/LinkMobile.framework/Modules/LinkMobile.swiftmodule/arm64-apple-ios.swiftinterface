@@ -77,11 +77,11 @@ extension LinkMobile.CredLinkManager {
   public func resetPersistedLongTermPhoneKeys(userId _: Swift.String) -> Swift.Bool
   public func validatePhoneKeys(userId: Swift.String, serverAddress: Swift.String, forceGeneration: Swift.Bool = false, completionHandler: (Swift.Result<LinkMobile.ValidatePhoneKeysResult, any Swift.Error>) -> Swift.Void)
   public func resetCredLink(for device: LinkMobile.CredLinkDevice?)
-  public func YedqppztkOmgDLJLQEf8e3bN8fZIwzXQ(device: LinkMobile.CredLinkDevice)
+  public func LjXw9vMcFzTorX30sMWwMuzAYF3EHxTU(device: LinkMobile.CredLinkDevice)
 }
 @objc @_hasMissingDesignatedInitializers public class CredLinkBlueLinkEventListener : bridge.BlueLinkEventListener {
   @objc override dynamic public func onHeartbeat(device: bridge.BluetoothDevice, heartbeatData: bridge.KotlinByteArray)
-  @objc override dynamic public func onDeviceDiscovered(device: bridge.BluetoothDevice, advertisementData: bridge.BluetoothAdvertisement, rssi _: Swift.Int32, signalStrength _: bridge.SignalStrength?, connectionStatus _: bridge.BlueLinkDeviceConnectionStatus)
+  @objc override dynamic public func onDeviceDiscovered(device: bridge.BluetoothDevice, advertisementData: bridge.BluetoothAdvertisement, rssi _: Swift.Int32, signalStrength _: bridge.SignalStrength, connectionStatus _: bridge.BlueLinkDeviceConnectionStatus)
   @objc override dynamic public func onOperationStart(device: bridge.BluetoothDevice, operation: bridge.BlueLinkOperation)
   @objc override dynamic public func onCharacteristicWrite(device: bridge.BluetoothDevice, characteristic: bridge.BluetoothGattCharacteristic, error: bridge.KotlinBoolean?, operationType _: bridge.BlueLinkOperationType)
   @objc override dynamic public func onNotificationReceived(device: bridge.BluetoothDevice, characteristic: bridge.BluetoothGattCharacteristic, payload: bridge.KotlinByteArray)
