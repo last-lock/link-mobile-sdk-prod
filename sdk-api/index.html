@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LinkMobile | Documentation</title>
+    <link rel="icon" href="./branding/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">Link Mobile <span>Docs</span></div>
+    </header>
+
+    <main class="shell">
+      <section class="content">
+        <section class="hero">
+          <h1>Link Mobile SDK</h1>
+          <p class="subtitle">Versioned API docs for iOS and Android SDK.</p>
+        </section>
+
+        <section class="cards">
+          <article class="card">
+            <p class="card-kicker">Apple Platform</p>
+            <h2>iOS</h2>
+            <p>Access API reference material for the iOS SDK.</p>
+            <p>
+              <a class="button" id="ios-latest-link" href="./ios/">Open iOS Latest</a>
+            </p>
+          </article>
+          <article class="card">
+            <p class="card-kicker">JVM Platform</p>
+            <h2>Android</h2>
+            <p>Review API documentation for the Android SDK.</p>
+            <p><a class="button" id="android-latest-link" href="./android/">Open Android Latest</a></p>
+          </article>
+        </section>
+
+        <section class="versions">
+          <h2>Published Versions</h2>
+          <ul id="version-list">
+            <li class="muted">Loading versions...</li>
+          </ul>
+        </section>
+      </section>
+    </main>
+
+    <script src="./site.js" defer></script>
+  </body>
+</html>
