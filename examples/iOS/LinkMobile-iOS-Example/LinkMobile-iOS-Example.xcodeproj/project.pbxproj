@@ -7,29 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AD962C452EBA8B0500698DE2 /* LinkMobile in Frameworks */ = {isa = PBXBuildFile; productRef = AD962C442EBA8B0500698DE2 /* LinkMobile */; };
+		AD4CB9322F8E9034002BEACA /* LinkMobile in Frameworks */ = {isa = PBXBuildFile; productRef = AD4CB9312F8E9034002BEACA /* LinkMobile */; };
+		AD4CB9342F8E9034002BEACA /* LinkMobileTypes in Frameworks */ = {isa = PBXBuildFile; productRef = AD4CB9332F8E9034002BEACA /* LinkMobileTypes */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AD96C1672EB01AC1000764AE /* LinkMobile-iOS-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LinkMobile-iOS-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		ADF952DB2EB3EA8A00F4B5C1 /* Exceptions for "LinkMobile-iOS-Example" folder in "LinkMobile-iOS-Example" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = AD96C1662EB01AC1000764AE /* LinkMobile-iOS-Example */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AD96C1692EB01AC1000764AE /* LinkMobile-iOS-Example */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				ADF952DB2EB3EA8A00F4B5C1 /* Exceptions for "LinkMobile-iOS-Example" folder in "LinkMobile-iOS-Example" target */,
-			);
 			path = "LinkMobile-iOS-Example";
 			sourceTree = "<group>";
 		};
@@ -40,7 +28,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AD962C452EBA8B0500698DE2 /* LinkMobile in Frameworks */,
+				AD4CB9342F8E9034002BEACA /* LinkMobileTypes in Frameworks */,
+				AD4CB9322F8E9034002BEACA /* LinkMobile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +72,8 @@
 			);
 			name = "LinkMobile-iOS-Example";
 			packageProductDependencies = (
-				AD962C442EBA8B0500698DE2 /* LinkMobile */,
+				AD4CB9312F8E9034002BEACA /* LinkMobile */,
+				AD4CB9332F8E9034002BEACA /* LinkMobileTypes */,
 			);
 			productName = "LinkMobile-iOS-Example";
 			productReference = AD96C1672EB01AC1000764AE /* LinkMobile-iOS-Example.app */;
@@ -114,7 +104,7 @@
 			mainGroup = AD96C15E2EB01AC1000764AE;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				AD962C432EBA8B0500698DE2 /* XCRemoteSwiftPackageReference "link-mobile-sdk-prod" */,
+				AD4CB9302F8E9034002BEACA /* XCRemoteSwiftPackageReference "link-mobile-sdk-dev" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AD96C1682EB01AC1000764AE /* Products */;
@@ -352,21 +342,26 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		AD962C432EBA8B0500698DE2 /* XCRemoteSwiftPackageReference "link-mobile-sdk-prod" */ = {
+		AD4CB9302F8E9034002BEACA /* XCRemoteSwiftPackageReference "link-mobile-sdk-dev" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/last-lock/link-mobile-sdk-prod";
+			repositoryURL = "https://github.com/last-lock/link-mobile-sdk-dev";
 			requirement = {
 				kind = exactVersion;
-				version = 1.7.1;
+				version = 0.8.675;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		AD962C442EBA8B0500698DE2 /* LinkMobile */ = {
+		AD4CB9312F8E9034002BEACA /* LinkMobile */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = AD962C432EBA8B0500698DE2 /* XCRemoteSwiftPackageReference "link-mobile-sdk-prod" */;
+			package = AD4CB9302F8E9034002BEACA /* XCRemoteSwiftPackageReference "link-mobile-sdk-dev" */;
 			productName = LinkMobile;
+		};
+		AD4CB9332F8E9034002BEACA /* LinkMobileTypes */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AD4CB9302F8E9034002BEACA /* XCRemoteSwiftPackageReference "link-mobile-sdk-dev" */;
+			productName = LinkMobileTypes;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

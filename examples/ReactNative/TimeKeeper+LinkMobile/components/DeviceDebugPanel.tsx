@@ -30,8 +30,8 @@ export function DeviceDebugPanel() {
   const subtitleStyle = [styles.subtitle, { color: theme.colors.onSurfaceVariant }];
 
   return (
-    <Card style={containerStyle} contentStyle={styles.cardContent} mode="outlined">
-      <Card.Content style={styles.cardBody}>
+    <Card style={containerStyle} mode="outlined">
+      <Card.Content>
         <Title style={titleStyle}>🔍 Device Discovery Debug</Title>
         <View style={styles.statusContainer}>
           <Chip 
@@ -77,64 +77,58 @@ export function DeviceDebugPanel() {
             </Text>
           </View>
         ) : (
-          <View style={styles.deviceListContainer}>
-            <ScrollView 
-              style={styles.deviceList} 
-              contentContainerStyle={styles.deviceListContent}
-              showsVerticalScrollIndicator={false}
-            >
-              {devices.map((device: Device, index: number) => (
-                <Card 
-                  key={device.identifier || index} 
-                  style={[
-                    styles.deviceCard,
-                    { 
-                      backgroundColor: 'transparent',
-                      borderColor: theme.colors.outline,
-                    }
+          <ScrollView style={styles.deviceList} showsVerticalScrollIndicator={false}>
+            {devices.map((device: Device, index: number) => (
+              <Card 
+                key={device.identifier || index} 
+                style={[
+                  styles.deviceCard,
+                  { 
+                    backgroundColor: 'transparent',
+                    borderColor: theme.colors.outline,
+                  }
+                ]}
+                mode="outlined"
+              >
+                <LinearGradient
+                  colors={[
+                    theme.colors.surfaceVariant,
+                    theme.colors.surfaceVariant + '80'
                   ]}
-                  mode="outlined"
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.gradientBackground}
                 >
-                  <LinearGradient
-                    colors={[
-                      theme.colors.surfaceVariant,
-                      theme.colors.surfaceVariant + '80'
-                    ]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.gradientBackground}
-                  >
-                    <Card.Content>
-                      <View style={styles.deviceHeader}>
-                        <Text style={[styles.deviceName, { color: theme.colors.onSurfaceVariant }]}>
-                          {"Device ID: " + device.identifier || 'Unknown Device'}
-                        </Text>
-                      </View>
-                      
-                      <View style={styles.propertiesContainer}>
-                        <Text style={[styles.propertiesTitle, { color: theme.colors.onSurfaceVariant }]}>
-                          Properties:
-                        </Text>
-                        {Object.entries(device).sort((a, b) => a[0].localeCompare(b[0])).map(([key, value]) => (
-                          <View key={key} style={styles.propertyRow}>
-                            <Text style={[styles.propertyKey, { color: theme.colors.primary }]}>
-                              {key}:
-                            </Text>
-                            <Text style={[styles.propertyValue, { color: theme.colors.onSurfaceVariant }]}>
-                              {typeof value === 'object' 
-                                ? JSON.stringify(value, null, 2)
-                                : String(value)
-                              }
-                            </Text>
-                          </View>
-                        ))}
-                      </View>
-                    </Card.Content>
-                  </LinearGradient>
-                </Card>
-              ))}
-            </ScrollView>
-          </View>
+                  <Card.Content>
+                    <View style={styles.deviceHeader}>
+                      <Text style={[styles.deviceName, { color: theme.colors.onSurfaceVariant }]}>
+                        {"Device ID: " + device.identifier || 'Unknown Device'}
+                      </Text>
+                    </View>
+                    
+                    <View style={styles.propertiesContainer}>
+                      <Text style={[styles.propertiesTitle, { color: theme.colors.onSurfaceVariant }]}>
+                        Properties:
+                      </Text>
+                      {Object.entries(device).sort((a, b) => a[0].localeCompare(b[0])).map(([key, value]) => (
+                        <View key={key} style={styles.propertyRow}>
+                          <Text style={[styles.propertyKey, { color: theme.colors.primary }]}>
+                            {key}:
+                          </Text>
+                          <Text style={[styles.propertyValue, { color: theme.colors.onSurfaceVariant }]}>
+                            {typeof value === 'object' 
+                              ? JSON.stringify(value, null, 2)
+                              : String(value)
+                            }
+                          </Text>
+                        </View>
+                      ))}
+                    </View>
+                  </Card.Content>
+                </LinearGradient>
+              </Card>
+            ))}
+          </ScrollView>
         )}
       </Card.Content>
     </Card>
@@ -145,18 +139,11 @@ const styles = StyleSheet.create({
   container: {
     margin: 16,
     maxHeight: 400,
-    overflow: 'hidden',
     elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-  },
-  cardContent: {
-    paddingBottom: 12,
-  },
-  cardBody: {
-    flexGrow: 1,
   },
   title: {
     fontSize: 18,
@@ -169,11 +156,6 @@ const styles = StyleSheet.create({
   },
   divider: {
     marginVertical: 12,
-  },
-  deviceListContainer: {
-    maxHeight: 300,
-    overflow: 'hidden',
-    flexShrink: 1,
   },
   statusContainer: {
     flexDirection: 'row',
@@ -198,10 +180,7 @@ const styles = StyleSheet.create({
     lineHeight: 16,
   },
   deviceList: {
-    flexGrow: 0,
-  },
-  deviceListContent: {
-    paddingBottom: 40,
+    maxHeight: 300,
   },
   deviceCard: {
     marginBottom: 8,

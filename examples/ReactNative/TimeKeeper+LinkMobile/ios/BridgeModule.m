@@ -1,10 +1,8 @@
 #import <React/RCTBridgeModule.h>
-#import <React/RCTEventEmitter.h>
 
-@interface RCT_EXTERN_MODULE(BridgeModule, RCTEventEmitter)
+@interface RCT_EXTERN_MODULE(BridgeModule, NSObject)
 
 RCT_EXTERN_METHOD(initialize:(NSString *)serverAddress
-                  uuid:(NSString *)uuid
                   resolver:(RCTPromiseResolveBlock)resolver
                   rejecter:(RCTPromiseRejectBlock)rejecter)
 

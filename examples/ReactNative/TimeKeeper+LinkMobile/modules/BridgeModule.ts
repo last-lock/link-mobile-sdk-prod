@@ -1,7 +1,7 @@
 import { NativeModules } from 'react-native';
 
 interface BridgeModuleInterface {
-  initialize(serverAddress: string, uuid: string): Promise<string>;
+  initialize(serverAddress: string): Promise<string>;
   start(uuid: string): Promise<string>;
 }
 

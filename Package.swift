@@ -1,49 +1,51 @@
-// swift-tools-version:6.0
-
+// swift-tools-version: 5.9
 import PackageDescription
 
 let package = Package(
-    name: "LinkMobile",
+    name: "LinkMobileiOS",
     platforms: [
-        .iOS(.v13) // Or whatever your use
+        .iOS(.v16)
     ],
-    products: [ // Example Product. Define your own
+    products: [
         .library(
             name: "LinkMobile",
-            targets: ["iOSBridgeWrapper"]
+            targets: ["LinkMobile", "LinkMobileTypes", "bridge"]
         ),
+        .library(
+            name: "LinkMobileTypes",
+            targets: ["LinkMobileTypes"]
+        )
     ],
     dependencies: [
-        // Match versions you already use in the mono-repo
         .package(url: "https://github.com/grpc/grpc-swift.git", from: "1.24.2"),
-        .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.28.2"),
-        .package(url: "https://github.com/NordicSemiconductor/IOS-nRF-Connect-Device-Manager.git", from: "1.9.2"),
-        .package(url: "https://github.com/weichsel/ZIPFoundation.git", from: "0.9.19"),
-        .package(url: "https://github.com/last-lock/TrueTime.git", from: "7.0.0")
+        .package(url: "https://github.com/apple/swift-protobuf", from: "1.28.2"),
+        .package(url: "https://github.com/apple/swift-nio.git", from: "2.60.0"),
+        .package(url: "https://github.com/apple/swift-nio-http2.git", from: "1.27.0"),
+        .package(url: "https://github.com/apple/swift-atomics.git", from: "1.0.0")
     ],
     targets: [
         .binaryTarget(
             name: "LinkMobile",
-            url: "https://api.github.com/repos/last-lock/link-mobile-sdk-prod/releases/assets/408286131.zip",
-            checksum: "13a1c5a6bdc198b481e15db753f4cb619e81396f70a68ce1971db1c5609eca25"
+            url: "https://api.github.com/repos/last-lock/link-mobile-sdk-prod/releases/assets/427241204.zip",
+            checksum: "b844e34e186b37a7ff37dce108bb64f6a6d651a03d1379af5d9a79d280af693e"
         ),
         .binaryTarget(
             name: "bridge",
-            url: "https://api.github.com/repos/last-lock/link-mobile-sdk-prod/releases/assets/408286132.zip",
-            checksum: "f85fd3084c9299c76328ae31bdbb38596b8d003a7de48c86b525eee3631a99ea"
+            url: "https://api.github.com/repos/last-lock/link-mobile-sdk-prod/releases/assets/427241203.zip",
+            checksum: "1dc2d25622a6f7fb83113d9304bb0567d0de552546c11375ee318e03056cf6c5"
         ),
         .target(
-            name: "iOSBridgeWrapper",
+            name: "LinkMobileTypes",
             dependencies: [
-                "LinkMobile",
-                "bridge",
                 .product(name: "GRPC", package: "grpc-swift"),
                 .product(name: "SwiftProtobuf", package: "swift-protobuf"),
-                .product(name: "iOSMcuManagerLibrary", package: "IOS-nRF-Connect-Device-Manager"),
-                .product(name: "ZIPFoundation", package: "ZIPFoundation"),
-                .product(name: "TrueTime", package: "TrueTime")
+                .product(name: "NIO", package: "swift-nio"),
+                .product(name: "NIOCore", package: "swift-nio"),
+                .product(name: "NIOConcurrencyHelpers", package: "swift-nio"),
+                .product(name: "NIOHTTP2", package: "swift-nio-http2"),
+                .product(name: "Atomics", package: "swift-atomics")
             ],
-            path: "Sources/iOSBridgeWrapper"
+            path: "Sources/LinkMobileTypes"
         )
     ]
 )

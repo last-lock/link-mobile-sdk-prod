@@ -1,5 +1,5 @@
 {
-  "originHash" : "f40def2491f67a7ac0489f2f4260225add042e4bddbe92b3ad9c7a24999877f2",
+  "originHash" : "3f22565c3c99c53b5d1243cab60bc65c89c32fae00b2b78b1a54daa5d7144e77",
   "pins" : [
     {
       "identity" : "grpc-swift",
@@ -11,48 +11,12 @@
       }
     },
     {
-      "identity" : "ios-ble-library",
+      "identity" : "link-mobile-sdk-dev",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/NordicSemiconductor/IOS-BLE-Library",
+      "location" : "https://github.com/last-lock/link-mobile-sdk-dev",
       "state" : {
-        "revision" : "f610daf7cdb1b0e1a5eaac19917db906221b8102",
-        "version" : "0.4.4"
-      }
-    },
-    {
-      "identity" : "ios-common-libraries",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/NordicPlayground/IOS-Common-Libraries",
-      "state" : {
-        "revision" : "2b9a131a685aabc59b816241c2d55187203862a2",
-        "version" : "0.1.13"
-      }
-    },
-    {
-      "identity" : "ios-corebluetooth-mock",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/NordicSemiconductor/IOS-CoreBluetooth-Mock.git",
-      "state" : {
-        "revision" : "13f09628c2de7f3fd5703516c4f5650e063ddb6c",
-        "version" : "1.0.3"
-      }
-    },
-    {
-      "identity" : "ios-nrf-connect-device-manager",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/NordicSemiconductor/IOS-nRF-Connect-Device-Manager.git",
-      "state" : {
-        "revision" : "83f285d4058f1a728fe91813824f98728689d54b",
-        "version" : "1.11.5"
-      }
-    },
-    {
-      "identity" : "link-mobile-sdk-prod",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/last-lock/link-mobile-sdk-prod",
-      "state" : {
-        "revision" : "a040027802cb1b2cdf92e63a39979d3e4bd6fa88",
-        "version" : "1.7.1"
+        "revision" : "0ba57bbe100f3e3c68f3e7f49f9e2cb5c67e4cad",
+        "version" : "0.8.675"
       }
     },
     {
@@ -69,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-asn1.git",
       "state" : {
-        "revision" : "810496cf121e525d660cd0ea89a758740476b85f",
-        "version" : "1.5.1"
+        "revision" : "40d25bbb2fc5b557a9aa8512210bded327c0f60d",
+        "version" : "1.5.0"
       }
     },
     {
@@ -78,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-async-algorithms.git",
       "state" : {
-        "revision" : "6c050d5ef8e1aa6342528460db614e9770d7f804",
-        "version" : "1.1.1"
+        "revision" : "042e1c4d9d19748c9c228f8d4ebc97bb1e339b0b",
+        "version" : "1.0.4"
       }
     },
     {
@@ -96,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-certificates.git",
       "state" : {
-        "revision" : "7d5f6124c91a2d06fb63a811695a3400d15a100e",
-        "version" : "1.17.1"
+        "revision" : "c399f90e7bbe8874f6cbfda1d5f9023d1f5ce122",
+        "version" : "1.15.1"
       }
     },
     {
@@ -114,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-crypto.git",
       "state" : {
-        "revision" : "6f70fa9eab24c1fd982af18c281c4525d05e3095",
-        "version" : "4.2.0"
+        "revision" : "e8ed8867ec23bccf5f3bb9342148fa8deaff9b49",
+        "version" : "4.1.0"
       }
     },
     {
@@ -123,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-http-structured-headers.git",
       "state" : {
-        "revision" : "76d7627bd88b47bf5a0f8497dd244885960dde0b",
-        "version" : "1.6.0"
+        "revision" : "a9f3c352f4d46afd155e00b3c6e85decae6bcbeb",
+        "version" : "1.5.0"
       }
     },
     {
@@ -141,8 +105,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log.git",
       "state" : {
-        "revision" : "2778fd4e5a12a8aaa30a3ee8285f4ce54c5f3181",
-        "version" : "1.9.1"
+        "revision" : "ce592ae52f982c847a4efc0dd881cc9eb32d29f2",
+        "version" : "1.6.4"
       }
     },
     {
@@ -150,8 +114,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio.git",
       "state" : {
-        "revision" : "233f61bc2cfbb22d0edeb2594da27a20d2ce514e",
-        "version" : "2.93.0"
+        "revision" : "a24771a4c228ff116df343c85fcf3dcfae31a06c",
+        "version" : "2.88.0"
       }
     },
     {
@@ -159,8 +123,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio-extras.git",
       "state" : {
-        "revision" : "cc599775aa85d04340f09b47e5432564f9889ae7",
-        "version" : "1.32.0"
+        "revision" : "b87fdbf492c8fd5ac860e642c714d2d24156990a",
+        "version" : "1.30.0"
       }
     },
     {
@@ -168,8 +132,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio-http2.git",
       "state" : {
-        "revision" : "c2ba4cfbb83f307c66f5a6df6bb43e3c88dfbf80",
-        "version" : "1.39.0"
+        "revision" : "5e9e99ec96c53bc2c18ddd10c1e25a3cd97c55e5",
+        "version" : "1.38.0"
       }
     },
     {
@@ -186,8 +150,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio-transport-services.git",
       "state" : {
-        "revision" : "60c3e187154421171721c1a38e800b390680fb5d",
-        "version" : "1.26.0"
+        "revision" : "df6c28355051c72c884574a6c858bc54f7311ff9",
+        "version" : "1.25.2"
       }
     },
     {
@@ -213,8 +177,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swift-server/swift-service-lifecycle.git",
       "state" : {
-        "revision" : "1de37290c0ab3c5a96028e0f02911b672fd42348",
-        "version" : "2.9.1"
+        "revision" : "0fcc4c9c2d58dd98504c06f7308c86de775396ff",
+        "version" : "2.9.0"
       }
     },
     {
@@ -222,35 +186,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-system.git",
       "state" : {
-        "revision" : "7c6ad0fc39d0763e0b699210e4124afd5041c5df",
-        "version" : "1.6.4"
-      }
-    },
-    {
-      "identity" : "swiftcbor",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/valpackett/SwiftCBOR.git",
-      "state" : {
-        "revision" : "04ccff117f6549121d5721ec84fdf0162122b90e",
-        "version" : "0.5.0"
-      }
-    },
-    {
-      "identity" : "truetime",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/last-lock/TrueTime.git",
-      "state" : {
-        "revision" : "9eea726f557661ec377494017dfcf016f02a4c1a",
-        "version" : "7.0.0"
-      }
-    },
-    {
-      "identity" : "zipfoundation",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/weichsel/ZIPFoundation.git",
-      "state" : {
-        "revision" : "22787ffb59de99e5dc1fbfe80b19c97a904ad48d",
-        "version" : "0.9.20"
+        "revision" : "395a77f0aa927f0ff73941d7ac35f2b46d47c9db",
+        "version" : "1.6.3"
       }
     }
   ],
