@@ -214,7 +214,8 @@ public struct Link_InstallMode: Sendable {
   /// One of determines if we are entering or exiting install mode
   public var entry: Link_InstallMode.OneOf_Entry? = nil
 
-  /// The time to be in the install mode for. This must be at least 1 second, and less than 5 minutes
+  /// The time to be in the install mode for. This must be at least 1 second, and less than 5
+  /// minutes
   public var time: UInt32 {
     get {
       if case .time(let v)? = entry {return v}
@@ -223,7 +224,8 @@ public struct Link_InstallMode: Sendable {
     set {entry = .time(newValue)}
   }
 
-  /// Boolean that if set, the rest of the message is ignored and the device reboots to exit install mode
+  /// Boolean that if set, the rest of the message is ignored and the device reboots to exit
+  /// install mode
   public var reboot: Bool {
     get {
       if case .reboot(let v)? = entry {return v}
@@ -256,9 +258,11 @@ public struct Link_InstallMode: Sendable {
 
   /// One of determines if we are entering or exiting install mode
   public enum OneOf_Entry: Equatable, Sendable {
-    /// The time to be in the install mode for. This must be at least 1 second, and less than 5 minutes
+    /// The time to be in the install mode for. This must be at least 1 second, and less than 5
+    /// minutes
     case time(UInt32)
-    /// Boolean that if set, the rest of the message is ignored and the device reboots to exit install mode
+    /// Boolean that if set, the rest of the message is ignored and the device reboots to exit
+    /// install mode
     case reboot(Bool)
 
   }
@@ -404,6 +408,46 @@ public struct Link_LEDTestMode: Sendable {
   public init() {}
 }
 
+public struct Link_HibernateMode: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// One of determines if we are entering or exiting hibernate mode
+  public var entry: Link_HibernateMode.OneOf_Entry? = nil
+
+  /// Enter hibernate mode
+  public var enter: Bool {
+    get {
+      if case .enter(let v)? = entry {return v}
+      return false
+    }
+    set {entry = .enter(newValue)}
+  }
+
+  /// Exit hibernate mode
+  public var exit: Bool {
+    get {
+      if case .exit(let v)? = entry {return v}
+      return false
+    }
+    set {entry = .exit(newValue)}
+  }
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  /// One of determines if we are entering or exiting hibernate mode
+  public enum OneOf_Entry: Equatable, Sendable {
+    /// Enter hibernate mode
+    case enter(Bool)
+    /// Exit hibernate mode
+    case exit(Bool)
+
+  }
+
+  public init() {}
+}
+
 public struct Link_OutOfBandOperation: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -458,7 +502,8 @@ public struct Link_OutOfBandOperation: Sendable {
     set {opType = .installMode(newValue)}
   }
 
-  /// Tells the device to begin a rotation of proxy symmetric keys FIXME: Rename before implementing
+  /// Tells the device to begin a rotation of proxy symmetric keys FIXME: Rename before
+  /// implementing
   public var keyRollRequest: Link_KeyRollRequest {
     get {
       if case .keyRollRequest(let v)? = opType {return v}
@@ -507,6 +552,24 @@ public struct Link_OutOfBandOperation: Sendable {
     set {opType = .ledTestMode(newValue)}
   }
 
+  /// Puts the device into or out of hibernate mode
+  public var hibernateMode: Link_HibernateMode {
+    get {
+      if case .hibernateMode(let v)? = opType {return v}
+      return Link_HibernateMode()
+    }
+    set {opType = .hibernateMode(newValue)}
+  }
+
+  public var postDfuConfig: Data {
+    get {return _postDfuConfig ?? Data()}
+    set {_postDfuConfig = newValue}
+  }
+  /// Returns true if `postDfuConfig` has been explicitly set.
+  public var hasPostDfuConfig: Bool {return self._postDfuConfig != nil}
+  /// Clears the value of `postDfuConfig`. Subsequent reads from it will return its default value.
+  public mutating func clearPostDfuConfig() {self._postDfuConfig = nil}
+
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public enum OneOf_OpType: Equatable, Sendable {
@@ -518,7 +581,8 @@ public struct Link_OutOfBandOperation: Sendable {
     case timeSync(Link_Timesync)
     /// Puts the device into install mode, can include a DFU as part of install mode
     case installMode(Link_InstallMode)
-    /// Tells the device to begin a rotation of proxy symmetric keys FIXME: Rename before implementing
+    /// Tells the device to begin a rotation of proxy symmetric keys FIXME: Rename before
+    /// implementing
     case keyRollRequest(Link_KeyRollRequest)
     /// UNSECURED COMMAND
     /// Identify triggers the device to turn its LEDs on in an identify animation
@@ -532,10 +596,14 @@ public struct Link_OutOfBandOperation: Sendable {
     /// Note: This will use the same handlers and flows as identify
     /// Device will reject durations less than 250 ms
     case ledTestMode(Link_LEDTestMode)
+    /// Puts the device into or out of hibernate mode
+    case hibernateMode(Link_HibernateMode)
 
   }
 
   public init() {}
+
+  fileprivate var _postDfuConfig: Data? = nil
 }
 
 /// <!-- --8<-- [start:oobwrapper] -->
@@ -552,9 +620,20 @@ public struct Link_OobWrapper: Sendable {
 
   public var bridgeTimestamp: UInt32 = 0
 
+  public var oobCert: Lastlock_Api_Access_Cert {
+    get {return _oobCert ?? Lastlock_Api_Access_Cert()}
+    set {_oobCert = newValue}
+  }
+  /// Returns true if `oobCert` has been explicitly set.
+  public var hasOobCert: Bool {return self._oobCert != nil}
+  /// Clears the value of `oobCert`. Subsequent reads from it will return its default value.
+  public mutating func clearOobCert() {self._oobCert = nil}
+
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
+
+  fileprivate var _oobCert: Lastlock_Api_Access_Cert? = nil
 }
 
 /// OOB settings are what the oob subsystem uses for persistence
@@ -884,9 +963,66 @@ extension Link_LEDTestMode: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
   }
 }
 
+extension Link_HibernateMode: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".HibernateMode"
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}enter\0\u{1}exit\0")
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try {
+        var v: Bool?
+        try decoder.decodeSingularBoolField(value: &v)
+        if let v = v {
+          if self.entry != nil {try decoder.handleConflictingOneOf()}
+          self.entry = .enter(v)
+        }
+      }()
+      case 2: try {
+        var v: Bool?
+        try decoder.decodeSingularBoolField(value: &v)
+        if let v = v {
+          if self.entry != nil {try decoder.handleConflictingOneOf()}
+          self.entry = .exit(v)
+        }
+      }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    switch self.entry {
+    case .enter?: try {
+      guard case .enter(let v)? = self.entry else { preconditionFailure() }
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 1)
+    }()
+    case .exit?: try {
+      guard case .exit(let v)? = self.entry else { preconditionFailure() }
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 2)
+    }()
+    case nil: break
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: Link_HibernateMode, rhs: Link_HibernateMode) -> Bool {
+    if lhs.entry != rhs.entry {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
 extension Link_OutOfBandOperation: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".OutOfBandOperation"
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}device_id\0\u{1}timestamp\0\u{1}dfu\0\u{1}rst\0\u{1}sco\0\u{3}time_sync\0\u{3}install_mode\0\u{3}key_roll_request\0\u{1}identify\0\u{1}recovery\0\u{3}locking_state_engage\0\u{3}led_test_mode\0")
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}device_id\0\u{1}timestamp\0\u{1}dfu\0\u{1}rst\0\u{1}sco\0\u{3}time_sync\0\u{3}install_mode\0\u{3}key_roll_request\0\u{1}identify\0\u{1}recovery\0\u{3}locking_state_engage\0\u{3}led_test_mode\0\u{3}post_dfu_config\0\u{3}hibernate_mode\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1011,6 +1147,20 @@ extension Link_OutOfBandOperation: SwiftProtobuf.Message, SwiftProtobuf._Message
           self.opType = .ledTestMode(v)
         }
       }()
+      case 13: try { try decoder.decodeSingularBytesField(value: &self._postDfuConfig) }()
+      case 14: try {
+        var v: Link_HibernateMode?
+        var hadOneofValue = false
+        if let current = self.opType {
+          hadOneofValue = true
+          if case .hibernateMode(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.opType = .hibernateMode(v)
+        }
+      }()
       default: break
       }
     }
@@ -1068,8 +1218,14 @@ extension Link_OutOfBandOperation: SwiftProtobuf.Message, SwiftProtobuf._Message
       guard case .ledTestMode(let v)? = self.opType else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 12)
     }()
-    case nil: break
+    default: break
     }
+    try { if let v = self._postDfuConfig {
+      try visitor.visitSingularBytesField(value: v, fieldNumber: 13)
+    } }()
+    try { if case .hibernateMode(let v)? = self.opType {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 14)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -1077,6 +1233,7 @@ extension Link_OutOfBandOperation: SwiftProtobuf.Message, SwiftProtobuf._Message
     if lhs.deviceID != rhs.deviceID {return false}
     if lhs.timestamp != rhs.timestamp {return false}
     if lhs.opType != rhs.opType {return false}
+    if lhs._postDfuConfig != rhs._postDfuConfig {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1084,7 +1241,7 @@ extension Link_OutOfBandOperation: SwiftProtobuf.Message, SwiftProtobuf._Message
 
 extension Link_OobWrapper: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".OobWrapper"
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}operation\0\u{1}signature\0\u{3}bridge_timestamp\0")
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}operation\0\u{1}signature\0\u{3}bridge_timestamp\0\u{3}oob_cert\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1095,12 +1252,17 @@ extension Link_OobWrapper: SwiftProtobuf.Message, SwiftProtobuf._MessageImplemen
       case 1: try { try decoder.decodeSingularBytesField(value: &self.operation) }()
       case 2: try { try decoder.decodeSingularBytesField(value: &self.signature) }()
       case 3: try { try decoder.decodeSingularUInt32Field(value: &self.bridgeTimestamp) }()
+      case 4: try { try decoder.decodeSingularMessageField(value: &self._oobCert) }()
       default: break
       }
     }
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
     if !self.operation.isEmpty {
       try visitor.visitSingularBytesField(value: self.operation, fieldNumber: 1)
     }
@@ -1110,6 +1272,9 @@ extension Link_OobWrapper: SwiftProtobuf.Message, SwiftProtobuf._MessageImplemen
     if self.bridgeTimestamp != 0 {
       try visitor.visitSingularUInt32Field(value: self.bridgeTimestamp, fieldNumber: 3)
     }
+    try { if let v = self._oobCert {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -1117,6 +1282,7 @@ extension Link_OobWrapper: SwiftProtobuf.Message, SwiftProtobuf._MessageImplemen
     if lhs.operation != rhs.operation {return false}
     if lhs.signature != rhs.signature {return false}
     if lhs.bridgeTimestamp != rhs.bridgeTimestamp {return false}
+    if lhs._oobCert != rhs._oobCert {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

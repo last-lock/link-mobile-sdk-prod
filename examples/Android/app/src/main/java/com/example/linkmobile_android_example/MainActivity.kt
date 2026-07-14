@@ -76,7 +76,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             LinkMobileAndroidExampleTheme {
-                val vm = applicationViewModel ?: return@LinkMobileAndroidExampleTheme
+                val vm = applicationViewModel
                 Text("Link SDK Companion")
                 DeviceScreen(
                     viewModel = vm,
