@@ -188,6 +188,16 @@ public struct Lastlock_Api_Access_CertData: Sendable {
     set {key = .ecdhPublicKey(newValue)}
   }
 
+  /// peer ECDH public key bound into this certificate signature.
+  public var peerEcdhPublicKey: Data {
+    get {return _peerEcdhPublicKey ?? Data()}
+    set {_peerEcdhPublicKey = newValue}
+  }
+  /// Returns true if `peerEcdhPublicKey` has been explicitly set.
+  public var hasPeerEcdhPublicKey: Bool {return self._peerEcdhPublicKey != nil}
+  /// Clears the value of `peerEcdhPublicKey`. Subsequent reads from it will return its default value.
+  public mutating func clearPeerEcdhPublicKey() {self._peerEcdhPublicKey = nil}
+
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public enum OneOf_Key: Equatable, Sendable {
@@ -207,6 +217,7 @@ public struct Lastlock_Api_Access_CertData: Sendable {
   fileprivate var _subject: String? = nil
   fileprivate var _certificateAuthority: Bool? = nil
   fileprivate var _keyUsage: Int64? = nil
+  fileprivate var _peerEcdhPublicKey: Data? = nil
 }
 
 public struct Lastlock_Api_Access_CertNode: Sendable {
@@ -277,7 +288,7 @@ extension Lastlock_Api_Access_KeyUsage: SwiftProtobuf._ProtoNameProviding {
 
 extension Lastlock_Api_Access_CertData: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".CertData"
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}serial_number\0\u{1}issuer\0\u{3}not_before\0\u{3}not_after\0\u{1}subject\0\u{3}ec_p256_sha256_public_key\0\u{3}ecdh_public_key\0\u{3}key_usage\0\u{3}certificate_authority\0")
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}serial_number\0\u{1}issuer\0\u{3}not_before\0\u{3}not_after\0\u{1}subject\0\u{3}ec_p256_sha256_public_key\0\u{3}ecdh_public_key\0\u{3}key_usage\0\u{3}certificate_authority\0\u{3}peer_ecdh_public_key\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -308,6 +319,7 @@ extension Lastlock_Api_Access_CertData: SwiftProtobuf.Message, SwiftProtobuf._Me
       }()
       case 8: try { try decoder.decodeSingularInt64Field(value: &self._keyUsage) }()
       case 9: try { try decoder.decodeSingularBoolField(value: &self._certificateAuthority) }()
+      case 10: try { try decoder.decodeSingularBytesField(value: &self._peerEcdhPublicKey) }()
       default: break
       }
     }
@@ -350,6 +362,9 @@ extension Lastlock_Api_Access_CertData: SwiftProtobuf.Message, SwiftProtobuf._Me
     try { if let v = self._certificateAuthority {
       try visitor.visitSingularBoolField(value: v, fieldNumber: 9)
     } }()
+    try { if let v = self._peerEcdhPublicKey {
+      try visitor.visitSingularBytesField(value: v, fieldNumber: 10)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -362,6 +377,7 @@ extension Lastlock_Api_Access_CertData: SwiftProtobuf.Message, SwiftProtobuf._Me
     if lhs._certificateAuthority != rhs._certificateAuthority {return false}
     if lhs._keyUsage != rhs._keyUsage {return false}
     if lhs.key != rhs.key {return false}
+    if lhs._peerEcdhPublicKey != rhs._peerEcdhPublicKey {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
