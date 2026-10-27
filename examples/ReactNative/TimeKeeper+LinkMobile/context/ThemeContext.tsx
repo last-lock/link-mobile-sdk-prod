@@ -30,7 +30,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     if (manualTheme) {
       return manualTheme; // Use manual override if set
     }
-    return systemScheme || "light"; // Otherwise, use system theme (defaulting to light if system is null)
+    return systemScheme === "dark" ? "dark" : "light";
   }, [manualTheme, systemScheme]);
 
   // Flag to easily check if the current theme is system-driven

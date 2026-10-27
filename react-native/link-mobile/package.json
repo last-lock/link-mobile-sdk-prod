@@ -1,0 +1,41 @@
+{
+  "name": "@last-lock/link-mobile",
+  "version": "2.7.3",
+  "description": "React Native bridge for the Link Mobile SDK",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "files": [
+    "src",
+    "android",
+    "ios",
+    "app.plugin.js",
+    "react-native.config.js",
+    "LinkMobileRN.podspec"
+  ],
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "codegenConfig": {
+    "name": "LinkMobileSpec",
+    "type": "modules",
+    "jsSrcsDir": "src/specs",
+    "android": {
+      "javaPackageName": "com.lastlock.linkmobile"
+    },
+    "ios": {
+      "modulesProvider": {
+        "LinkMobile": "LinkMobile"
+      }
+    }
+  },
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/last-lock/link-mobile-sdk-prod.git",
+    "directory": "react-native/link-mobile"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}

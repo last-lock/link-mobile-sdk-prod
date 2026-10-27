@@ -1,386 +1,263 @@
-# LinkMobile SDK React Native Integration Guide
+# Link Mobile for React Native
 
-> **Important:**  
-> Before integrating the LinkMobile SDK, ensure that you have **enrolled your app for attestation through Last Lock**. Attestation is required before devices can be discovered or connected through the SDK.
+Enroll the app for attestation with Last Lock before devices can be discovered or unlocked. Attestation is tied to the app's bundle id and Android package name.
 
-This document explains how the LinkMobile SDK was integrated into a React Native app using xcframeworks as an example.
+This sample is TimeKeeper on React Native 0.86 with the New Architecture enabled. Android uses `com.lastlock.dev:bridge-android:0.0.1-rn  `. iOS uses the `LinkMobile` Swift package at `0.0.1-rn`.
 
-## Overview
+## Run TimeKeeper
 
-The LinkMobile SDK integration exposes device discovery and connection functionality through a React Native bridge. The implementation consists of several interconnected components that work together to provide seamless native-to-JavaScript communication.
+From this directory:
 
-**Key Components:**
-- Native iOS Swift/Objective-C bridge module
-- TypeScript interface layer
-- React Native context providers
-- Device discovery hooks
-- UI integration components
-
-## Architecture Overview
-
-The integration follows a layered architecture:
-
-```
-┌─────────────────────────────────────┐
-│           React Native UI           │
-│        (index.tsx, components)      │
-└─────────────────┬───────────────────┘
-                  │
-┌─────────────────▼───────────────────┐
-│        Context Providers            │
-│    (BridgeContext, ThemeContext)   │
-└─────────────────┬───────────────────┘
-                  │
-┌─────────────────▼───────────────────┐
-│      Custom Hooks Layer             │
-│    (useDeviceDiscovery.ts)          │
-└─────────────────┬───────────────────┘
-                  │
-┌─────────────────▼───────────────────┐
-│     TypeScript Interface            │
-│      (BridgeModule.ts)              │
-└─────────────────┬───────────────────┘
-                  │
-┌─────────────────▼───────────────────┐
-│    Native iOS Bridge Layer          │
-│  (BridgeModule.swift, BridgeModule.m)│
-└─────────────────┬───────────────────┘
-                  │
-┌─────────────────▼───────────────────┐
-│        LinkMobile SDK               │
-│        (xcframeworks)               │
-└─────────────────────────────────────┘
+```bash
+npm install
 ```
 
-#### Note: For React Native projects, use v1.7.2 of the Link Mobile Android and iOS SDK. That specific release has dependencies compatible with Expo and React Native
+> **Before `npm install`:**
+> - Export `NODE_AUTH_TOKEN` with a GitHub token that can read `last-lock` packages. Your `.npmrc` should route `@last-lock` to GitHub Packages and use that token.
+> - For Android, set `gpr.user` and `gpr.key` in your `~/.gradle/gradle.properties`, or export `GITHUB_ACTOR` and `GITHUB_TOKEN` in your environment. Gradle uses these to download `bridge-android` dependencies.
 
-## Pre-Integration Requirements
+---
 
-**1. App Enrollment:**  
-Before writing any code, your app **must** be enrolled for attestation through Last Lock. Contact Last Lock and ensure enrollment is complete for your app's bundle ID.
+### iOS
 
-**2. SDK Configuration:**  
-When initializing the SDK, you **must use the proper server address and UUID**:
-- Example server address: `api.test.example.com`
-- Example UUID: `AAAA`
+1. **Install Pod dependencies:**  
+   After `npm install`, run `npx expo prebuild --clean --platform ios` to regenerate native iOS code and ensure dependencies are up to date, then run `pod install` inside the `ios` directory:
+   ```bash
+   npx expo prebuild --clean --platform ios
+   cd ios
+   pod install
+   cd ..
+   ```
+   Run `npx expo prebuild --clean --platform ios` and `pod install` again any time you add or change a native dependency (`@last-lock/link-mobile` updates, React Native updates, etc).
 
-## Integration Components
+2. **Start the dev server (Metro):**  
+   In a separate terminal:
+   ```bash
+   npm start
+   # or
+   npx expo start
+   ```
 
-### 1. Native iOS Bridge Layer
+3. **Run the app on a physical iPhone (iOS 17+ required):**  
+   ```bash
+   npm run ios -- --device
+   # or
+   expo run:ios --device
+   ```
+   For a **release build** on a connected device:
+   ```bash
+   npx expo run:ios --configuration Release --device
+   ```
+   > **Note:** Metro dev server hot-reloads JavaScript only. Any changes to native code (including updates to native modules, pod dependencies, or bridge code) require re-running `npx expo prebuild --clean --platform ios`, followed by `pod install` and then `expo run:ios`.
 
-#### BridgeModule.swift
-The Swift implementation provides the core functionality by wrapping the LinkMobile SDK:
+---
 
-```swift
-import Foundation
-import React
-import LinkMobile
+### Android
 
-@objc(BridgeModule)
-class BridgeModule: RCTEventEmitter {
-    private var bridge: Bridge?
-    
-    @objc
-    func initialize(_ serverAddress: String, resolver: @escaping RCTPromiseResolveBlock, rejecter: @escaping RCTPromiseRejectBlock) {
-        // Initialize LinkMobile SDK with server address
-        bridge = Bridge()
-        bridge?.initialize(serverAddress: serverAddress)
-        resolver("Bridge initialized successfully")
-    }
-    
-    @objc
-    func start(_ uuid: String, resolver: @escaping RCTPromiseResolveBlock, rejecter: @escaping RCTPromiseRejectBlock) {
-        // Start device discovery with UUID
-        bridge?.start(uuid: uuid) { [weak self] device in
-            self?.sendEvent(withName: "onDeviceDiscovered", body: device)
-        }
-        resolver("Bridge started successfully")
-    }
-}
+1. **Start the dev server (Metro):**  
+   In a separate terminal, run:
+   ```bash
+   npm start
+   # or
+   npx expo start
+   ```
+
+2. **Run in debug mode:**  
+   On a device or emulator (API 26+ required):
+   ```bash
+   npm run android
+   # or
+   expo run:android
+   ```
+   > **Note:** This will install a debug build. Native code changes require rerunning this command to take effect.
+
+3. **Run a release build on a device:**  
+   To install a release build directly:
+   ```bash
+   npx expo run:android --variant release --device
+   ```
+
+4. **Build a release APK for distribution:**  
+   To generate a release APK file:
+   ```bash
+   cd android
+   ./gradlew assembleRelease
+   ```
+   - The APK will be created at `android/app/build/outputs/apk/release/app-release.apk`.
+   - You can then install it manually using:
+     ```bash
+     adb install app/build/outputs/apk/release/app-release.apk
+     ```
+   > For production-ready signing, consult the official React Native/Expo docs for release keystore configuration.
+
+---
+
+**Summary Table**
+
+| When to run              | What to do                                                            |
+|--------------------------|----------------------------------------------------------------------|
+| After adding native deps | `npm install` (then `cd ios && pod install` for iOS)                  |
+| Native code changes      | Rerun `expo run:ios` or `expo run:android` to pick up changes         |
+| JavaScript/TypeScript   | Use Metro / dev server reload (`npm start`)                            |
+| Release install iOS      | `npx expo run:ios --configuration Release --device`                   |
+| Release install Android  | `npx expo run:android --variant release --device`                     |
+| Build Android APK        | `cd android && ./gradlew assembleRelease`, output: `app-release.apk`  |
+
+---
+
+The app automatically calls `initialize` and `start` on launch from `app/_layout.tsx`.
+
+Use a physical iPhone on iOS 17 or later, and an Android device/emulator with `minSdk` 26.
+
+Two ways to integrate:
+
+1. **Use the package.** Install `@last-lock/link-mobile` and its Expo plugin. This is what TimeKeeper does.
+2. **Wire it yourself.** Link the same SDK and write your own native module with the same JavaScript shape.
+
+Both paths use the same SDK and the same JavaScript contract. The package is the maintained bridge. The do-it-yourself path is for an app that cannot take the package.
+
+## How a call moves
+
+```
+JavaScript
+  initialize(serverAddress) / start(uuid) / tokenUnlock(identifier, namespace)
+  onDeviceDiscovered(listener) and the other event subscriptions
+        │
+        ▼
+TurboModule "LinkMobile"
+        │
+        ├── Android: LinkMobileModule.kt
+        └── iOS:     LinkMobileModule.mm  →  LinkMobileController (Swift)
+        │
+        ▼
+Link Mobile SDK
+  Android  com.lastlock.dev:bridge-android:0.0.1-rn
+  iOS      Swift package product LinkMobile at 0.0.1-rn
 ```
 
-#### BridgeModule.m
-The Objective-C bridge exposes the Swift module to React Native:
+`initialize` stores the plane host. `start` begins a BLE scan for a service UUID. `tokenUnlock` presents a stored token-unlock pass to a device that scan already found. Store the pass first with `fetchTokenUnlockPublicKey` and `storeTokenUnlockPass`.
 
-```objc
-#import <React/RCTBridgeModule.h>
-#import <React/RCTEventEmitter.h>
+Events are TurboModule callbacks, subscribed with `onDeviceDiscovered(listener)` and the matching functions. Each call returns `{ remove() }`.
 
-@interface RCT_EXTERN_MODULE(BridgeModule, RCTEventEmitter)
+| Function | Payload |
+| --- | --- |
+| `onDeviceDiscovered` | `identifier`, `name`, `rssi`, `connectionStatus`, `signalStrength` |
+| `onDeviceConnected` | `identifier`, `name` |
+| `onDeviceDisconnected` | `identifier`, `name` |
+| `onBLEStateChanged` | `state` boolean. `true` means the radio is on. |
+| `onCredentialExchangeResult` | `identifier`, `name`, `result`, `message`. Fired for token unlock. |
 
-RCT_EXTERN_METHOD(initialize:(NSString *)serverAddress
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
+`start` takes the service UUID as four hex characters, such as `"4801"`. The SDK expands that to `00004801-0000-1000-8000-00805F9B34FB`. The server address is a host with no port. The SDK uses TLS on 443.
 
-RCT_EXTERN_METHOD(start:(NSString *)uuid
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
+A discovered lock's `identifier` is the device id from the advertising packet, not the Bluetooth address.
 
-+ (BOOL)requiresMainQueueSetup
+Native code changes require a new install (`npx expo run:ios --device` or `npx expo run:android`). Reloading Metro only updates JavaScript.
+
+## Requirements
+
+- React Native New Architecture (`newArchEnabled: true`).
+- iOS 17 or later, on a physical iPhone.
+- Android `minSdk` 26.
+- GitHub Packages credentials for the Android SDK: `gpr.user` and `gpr.key` in `~/.gradle/gradle.properties`, or `GITHUB_ACTOR` and `GITHUB_TOKEN` in the environment.
+
+## Option 1: Use the package
+
+TimeKeeper depends on the published package `0.0.5-allison-sim`. That build includes the DFU, identify, and out-of-band methods `DeviceDebugPanel.tsx` calls. The project `.npmrc` sends `@last-lock` to GitHub Packages. Android and iOS inside that package use native SDK `0.0.1-rn`.
+
+```json
 {
-    return NO;
-}
-
-@end
-```
-
-### 2. TypeScript Interface Layer
-
-#### BridgeModule.ts
-Provides type-safe access to native functionality:
-
-```typescript
-import { NativeModules, NativeEventEmitter } from 'react-native';
-
-const { BridgeModule } = NativeModules;
-
-export interface Device {
-  identifier: string;
-  name?: string;
-  rssi?: number;
-  connectionStatus?: string;
-  signalStrength?: string;
-}
-
-class BridgeModuleInterface {
-  /**
-   * Be sure to provide the correct serverAddress as issued by Last Lock. 
-   * For development/testing, you might use "api.test.example.com".
-   */
-  async initialize(serverAddress: string): Promise<string> {
-    return BridgeModule.initialize(serverAddress);
-  }
-
-  /**
-   * UUID is issued by Last Lock for your integration.
-   * For testing, use "AAAA" if you have been given that as a demo/test UUID.
-   */
-  async start(uuid: string): Promise<string> {
-    return BridgeModule.start(uuid);
+  "dependencies": {
+    "@last-lock/link-mobile": "0.0.5-allison-sim"
   }
 }
-
-export default new BridgeModuleInterface();
 ```
 
-### 3. Context Provider Layer
+Then install and add the plugin first in `app.json`:
 
-#### BridgeContext.tsx
-Manages global bridge state and provides it to components:
-
-```typescript
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-
-interface BridgeContextType {
-  isInitialized: boolean;
-  isScanning: boolean;
-  setInitialized: (value: boolean) => void;
-  setScanning: (value: boolean) => void;
-}
-
-const BridgeContext = createContext<BridgeContextType | undefined>(undefined);
-
-export const BridgeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [isScanning, setIsScanning] = useState(false);
-
-  return (
-    <BridgeContext.Provider value={{
-      isInitialized,
-      isScanning,
-      setInitialized: setIsInitialized,
-      setScanning: setIsScanning,
-    }}>
-      {children}
-    </BridgeContext.Provider>
-  );
-};
-
-export const useBridgeContext = () => {
-  const context = useContext(BridgeContext);
-  if (!context) {
-    throw new Error('useBridgeContext must be used within BridgeProvider');
+```json
+{
+  "expo": {
+    "newArchEnabled": true,
+    "plugins": ["@last-lock/link-mobile/app.plugin.js"]
   }
-  return context;
-};
-```
-
-### 4. Custom Hooks Layer
-
-#### useDeviceDiscovery.ts
-Handles device discovery events and state management:
-
-```typescript
-import React from 'react';
-import { NativeEventEmitter, NativeModules } from 'react-native';
-import { Device } from './BridgeModule';
-
-const { BridgeModule } = NativeModules;
-const bridgeEmitter = new NativeEventEmitter(BridgeModule);
-
-export function useDeviceDiscovery() {
-  const [devices, setDevices] = React.useState<Device[]>([]);
-
-  React.useEffect(() => {
-    const discoveredListener = bridgeEmitter.addListener('onDeviceDiscovered', (event) => {
-      setDevices((prev) => {
-        const existingIndex = prev.findIndex((d) => d.identifier === event.identifier);
-        if (existingIndex >= 0) {
-          // Update existing device
-          const updatedDevices = [...prev];
-          updatedDevices[existingIndex] = event;
-          return updatedDevices;
-        } else {
-          // Add new device
-          return [...prev, event];
-        }
-      });
-    });
-
-    return () => {
-      discoveredListener.remove();
-    };
-  }, []);
-
-  return devices;
 }
 ```
 
-### 5. Application Integration
-
-#### _layout.tsx
-Initializes the bridge on app startup:
-
-```typescript
-import { BridgeProvider } from '@/context/BridgeContext';
-import BridgeModule from '../modules/BridgeModule';
-
-/**
- * NOTE:
- * It is important to use the correct values for serverAddress and UUID.
- * Example values for test environments:
- *   serverAddress: "api.test.example.com"
- *   uuid: "AAAA"
- */
-const handleInitialize = async (setScanning: (value: boolean) => void) => {
-  try {
-    // Initialize with server address
-    await BridgeModule.initialize("api.test.example.com");
-
-    // Start scanning after initialization
-    setTimeout(async () => {
-      await BridgeModule.start("AAAA"); // 4-character UUID
-      setScanning(true);
-    }, 2000);
-  } catch (error) {
-    console.error('Bridge initialization failed:', error);
-  }
-};
-
-export default function Layout() {
-  return (
-    <BridgeProvider>
-      <RootContent />
-    </BridgeProvider>
-  );
-}
-```
-
-#### index.tsx
-Integrates device discovery into the main UI:
-
-```typescript
-import { DeviceDebugPanel } from '@/components/DeviceDebugPanel';
-import { useDeviceDiscovery } from './useDeviceDiscovery';
-
-export default function Index() {
-  const devices = useDeviceDiscovery();
-  
-  return (
-    <SafeAreaView>
-      {/* Debug Panel for device discovery */}
-      <DeviceDebugPanel />
-      
-      {/* Main app content */}
-      {/* ... */}
-    </SafeAreaView>
-  );
-}
-```
-
-## Key Integration Patterns
-
-### 1. Event-Driven Architecture
-The integration uses React Native's event emitter system to handle real-time device discovery:
-- Native events are emitted from Swift/Objective-C
-- JavaScript listeners update React state
-- UI automatically re-renders with new device data
-
-### 2. Promise-Based API
-All native method calls return promises for proper error handling:
-```typescript
-try {
-  // Use the correct server address and UUID here (see example above)
-  await BridgeModule.initialize("api.test.example.com");
-  await BridgeModule.start("AAAA");
-} catch (error) {
-  // Handle errors gracefully
-}
-```
-
-### 3. Context-Based State Management
-Global bridge state is managed through React Context:
-- Prevents prop drilling
-- Centralizes state management
-- Provides consistent state across components
-
-### 4. Custom Hooks for Logic Separation
-Device discovery logic is encapsulated in custom hooks:
-- Reusable across components
-- Separates concerns from UI logic
-- Easier to test and maintain
-
-## xcframework Integration Notes
-
-This implementation uses xcframeworks as an example rather than Swift Package Manager (SPM) for several reasons:
-
-1. **Legacy Support**: xcframeworks provide better compatibility with older Xcode versions
-2. **Distribution**: Easier to distribute pre-compiled frameworks
-3. **Dependencies**: Avoids potential dependency conflicts with SPM
-4. **Control**: More control over framework linking and embedding
-
-### Adding xcframeworks to Xcode Project:
-1. Drag the `.xcframework` file into Xcode
-2. Add to "Frameworks, Libraries, and Embedded Content"
-3. Update the bridging header to import the framework
-4. Ensure proper code signing and deployment targets
-
-## Setup Instructions
-
-### 1. Install Dependencies
 ```bash
-cd ios
-pod install
-cd ..
+npm install
+npx expo prebuild
+npx expo run:ios --device
+npx expo run:android
 ```
 
-### 2. Build and Run
-```bash
-npx expo run:ios
+The plugin does the native setup:
+
+- Copies `LinkMobileModule.swift`, `LinkMobileModule.mm`, and `LinkMobileController.h` into the iOS app target.
+- After `pod install`, links the Swift package `https://github.com/last-lock/link-mobile-sdk-dev.git` at `0.0.1-rn`, product `LinkMobile`.
+- Sets the iOS deployment target to 17.
+- Adds Bluetooth purpose strings when `Info.plist` does not already have them.
+- Sets `android.minSdkVersion` to 26.
+- Adds `https://maven.pkg.github.com/last-lock/link-mobile-sdk-dev` to the Android repositories so Gradle can resolve `com.lastlock.dev:bridge-android:0.0.1-rn`.
+
+Android autolinking registers `LinkMobilePackage`. The iOS bridge is compiled in the app target because that target is what links the Swift package. `LinkMobileRN` is a small CocoaPod so React Native codegen can emit `LinkMobileSpec`. It does not contain the bridge.
+
+JavaScript:
+
+```ts
+import {
+  initialize,
+  start,
+  tokenUnlock,
+  onDeviceDiscovered,
+  onBLEStateChanged,
+} from '@last-lock/link-mobile';
+
+await initialize('plane.lastlock.com');
+await start('FC5A');
+
+const discovered = onDeviceDiscovered((device) => {
+  console.log(device.identifier, device.rssi);
+});
+const radio = onBLEStateChanged((event) => {
+  console.log('BLE state:', event.state);
+});
+
+await tokenUnlock(device.identifier, namespace);
+
+discovered.remove();
+radio.remove();
 ```
 
-### 3. Verify Integration
-- Check console logs for bridge initialization
-- Verify device discovery events are received
-- Test UI updates with discovered devices
+TimeKeeper calls `initialize` and `start` from `app/_layout.tsx`, and keeps the device list in `app/useDeviceDiscovery.ts`.
 
-## Troubleshooting
+## Option 2: Wire it yourself
 
-### Common Issues:
-1. **Module not found**: Ensure `pod install` was run and app was rebuilt
-2. **Linker errors**: Verify xcframework is properly embedded in Xcode project
-3. **Event not received**: Check event listener setup and native event emission
-4. **TypeScript errors**: Ensure proper type definitions in BridgeModule.ts
+Skip the package when the app needs its own native module. Link the same SDK and implement a TurboModule named `LinkMobile` with the methods and events above. The package sources under `seamless/mobile/react-native/link-mobile` are the reference.
 
-This integration provides a complete reference for integrating native iOS SDKs into React Native applications using xcframeworks and demonstrates best practices for maintaining clean, maintainable code architecture.
+### Android
 
+1. Add the GitHub Packages repository to the app's `android/build.gradle` `allprojects.repositories` block, with `gpr.user` / `gpr.key` or `GITHUB_ACTOR` / `GITHUB_TOKEN`.
+2. Depend on `com.lastlock.dev:bridge-android:0.0.1-rn`.
+3. Set `android.minSdkVersion=26` in `android/gradle.properties`.
+4. Add a Kotlin module that extends the codegen class `NativeLinkMobileSpec`, and a `BaseReactPackage` whose `ReactModuleInfo` marks the module as a TurboModule.
+5. Give the library a `codegenConfig` named `LinkMobileSpec` with `jsSrcsDir` pointing at the TurboModule spec. Apply `com.facebook.react` when `newArchEnabled` is true so codegen runs.
+6. Rebuild the app. The generated `Android-autolinking.cmake` must list `react_codegen_LinkMobileSpec`. An incremental Gradle build can keep an older file that omits it, and JavaScript then reports that the native module is missing. `./gradlew clean` from `android/` forces that file to regenerate.
+
+### iOS
+
+1. Add the Swift package `https://github.com/last-lock/link-mobile-sdk-dev.git`, exact version `0.0.1-rn`, product `LinkMobile`, to the app target.
+2. Set the deployment target to iOS 17 in `ios/Podfile.properties.json` (`ios.deploymentTarget`) and on the app target. The Podfile reads that property, falling back to 16.4, which CocoaPods will reject for this SDK.
+3. Add `NSBluetoothAlwaysUsageDescription` and `NSBluetoothPeripheralUsageDescription` to `Info.plist`. Without them Core Bluetooth stays off and `onBLEStateChanged` reports `false`.
+4. Implement the module in Objective-C++. The generated spec header is ObjC++ and Swift cannot import it. Subclass `NativeLinkMobileSpecBase`, conform to `NativeLinkMobileSpec`, and implement `getTurboModule:` by returning `NativeLinkMobileSpecJSI`. Put the Swift SDK calls in a separate controller, as `LinkMobileController` does.
+5. Compile those sources in the app target, next to the Swift package. A stored Swift property must not be named `bridge`.
+6. Include the library in iOS codegen. `react-native.config.js` setting `platforms.ios` to `null` skips codegen, and the spec header is never generated. A podspec that does not also compile the bridge sources is enough. `pod install` must log `Processing LinkMobileSpec`.
+
+### JavaScript
+
+Define the spec with `CodegenTypes.EventEmitter` for each event, and load the module with `TurboModuleRegistry.get('LinkMobile')`. Subscribe with `native.onDeviceDiscovered(listener)`.
+
+## Rebuild checklist
+
+- `BLE state: true` appears before any `Device discovered` log.
+- `Device discovered` includes identifier `180` when the lock is advertising service `4801`.
+- Android shows the same identifier. The name on Android is the peripheral address. The name on iOS is the Core Bluetooth identifier.

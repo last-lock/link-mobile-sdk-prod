@@ -130,6 +130,8 @@ export default function Index() {
               hasNotification: c.hasNotification === true,
               type: c.type || "countup",
               completed: c.completed || false,
+              notificationId: c.notificationId,
+              todayNotificationId: c.todayNotificationId,
             })
           );
           setCounters(correctedCounters);
@@ -554,74 +556,77 @@ export default function Index() {
         />
       </Appbar.Header>
 
-      {/* Debug Panel */}
-      <DeviceDebugPanel />
-
-      <View style={styles.segmentContainer}>
-        <Animated.View
-          style={[
-            styles.sliderBackground,
-            animatedSliderStyle,
-            {
-              backgroundColor: "#4285F4",
-            },
-          ]}
-        />
-        <Button
-          labelStyle={[
-            styles.buttonLabel,
-            {
-              fontSize: currentView === "current" ? 17 : 15,
-              fontWeight: currentView === "current" ? "bold" : "900",
-            },
-          ]}
-          onPress={() => setCurrentView("current")}
-          style={[styles.topbtn, styles.transparentButton, {}]}
-          textColor={themeMode === "dark" ? "#fff" : "#000"}
-        >
-          Counters
-        </Button>
-
-        <Button
-          labelStyle={[
-            styles.buttonLabel,
-            {
-              fontSize: currentView === "archive" ? 17 : 15,
-              fontWeight: currentView === "archive" ? "bold" : "900",
-            },
-          ]}
-          onPress={() => setCurrentView("archive")}
-          style={[styles.topbtn, styles.transparentButton]}
-          textColor={themeMode === "dark" ? "#fff" : "#000"}
-        >
-          Archives
-        </Button>
-      </View>
       <GestureDetector
         gesture={Gesture.Simultaneous(flingRightGesture, flingLeftGesture)}
       >
         <View style={{ flex: 1 }}>
-          <FlatList
-            data={displayedCounters}
-            renderItem={renderCounterItem} // No conditional rendering based on isModalVisible
-            keyExtractor={(item) => item.id}
-            ListEmptyComponent={
-              <View style={styles.centered}>
-                <Text style={styles.emptyText}>
-                  No counters {currentView === "archive" ? "archived" : "yet"}.
-                </Text>
-                {currentView === "current" && !isDataLoaded && (
-                  <ActivityIndicator style={{ marginTop: 20 }} size="large" />
-                )}
-                {currentView === "current" &&
-                  isDataLoaded &&
-                  displayedCounters.length === 0 && (
-                    <Text style={styles.emptyText}>Press '+' to add one!</Text>
-                  )}
+        <FlatList
+          style={{ flex: 1 }}
+          keyboardShouldPersistTaps="handled"
+          data={displayedCounters}
+          renderItem={renderCounterItem}
+          keyExtractor={(item) => item.id}
+          ListHeaderComponent={
+            <View>
+              <DeviceDebugPanel />
+              <View style={styles.segmentContainer}>
+                <Animated.View
+                  style={[
+                    styles.sliderBackground,
+                    animatedSliderStyle,
+                    {
+                      backgroundColor: "#4285F4",
+                    },
+                  ]}
+                />
+                <Button
+                  labelStyle={[
+                    styles.buttonLabel,
+                    {
+                      fontSize: currentView === "current" ? 17 : 15,
+                      fontWeight: currentView === "current" ? "bold" : "900",
+                    },
+                  ]}
+                  onPress={() => setCurrentView("current")}
+                  style={[styles.topbtn, styles.transparentButton, {}]}
+                  textColor={themeMode === "dark" ? "#fff" : "#000"}
+                >
+                  Counters
+                </Button>
+                <Button
+                  labelStyle={[
+                    styles.buttonLabel,
+                    {
+                      fontSize: currentView === "archive" ? 17 : 15,
+                      fontWeight: currentView === "archive" ? "bold" : "900",
+                    },
+                  ]}
+                  onPress={() => setCurrentView("archive")}
+                  style={[styles.topbtn, styles.transparentButton]}
+                  textColor={themeMode === "dark" ? "#fff" : "#000"}
+                >
+                  Archives
+                </Button>
               </View>
-            }
-            contentContainerStyle={styles.listContent}
-          />
+            </View>
+          }
+          ListEmptyComponent={
+            <View style={styles.centered}>
+              <Text style={styles.emptyText}>
+                No counters {currentView === "archive" ? "archived" : "yet"}.
+              </Text>
+              {currentView === "current" && !isDataLoaded && (
+                <ActivityIndicator style={{ marginTop: 20 }} size="large" />
+              )}
+              {currentView === "current" &&
+                isDataLoaded &&
+                displayedCounters.length === 0 && (
+                  <Text style={styles.emptyText}>Press '+' to add one!</Text>
+                )}
+            </View>
+          }
+          contentContainerStyle={styles.listContent}
+        />
         </View>
       </GestureDetector>
     </SafeAreaView>

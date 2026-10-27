@@ -1,8 +1,11 @@
 import React from 'react';
-import { NativeEventEmitter, NativeModules } from 'react-native';
-
-const { BridgeModule } = NativeModules;
-const bridgeEmitter = new NativeEventEmitter(BridgeModule);
+import {
+  onBLEStateChanged,
+  onDeviceConnected,
+  onDeviceDisconnected,
+  onDeviceDiscovered,
+  onHeartbeat,
+} from '@last-lock/link-mobile';
 
 interface Device {
   identifier: string;
@@ -10,46 +13,51 @@ interface Device {
   rssi?: number;
   connectionStatus?: string;
   signalStrength?: string;
-  [key: string]: any;
 }
 
 export function useDeviceDiscovery() {
   const [devices, setDevices] = React.useState<Device[]>([]);
 
   React.useEffect(() => {
-    const discoveredListener = bridgeEmitter.addListener('onDeviceDiscovered', (event) => {
+    const bleStateListener = onBLEStateChanged((event) => {
+      console.log('BLE state:', event?.state);
+    });
+
+    const discoveredListener = onDeviceDiscovered((event) => {
       console.log('Device discovered:', event);
       setDevices((prev) => {
-        const existingIndex = prev.findIndex((d) => d.identifier === event.identifier);
+        const existingIndex = prev.findIndex((device) => device.identifier === event.identifier);
         if (existingIndex >= 0) {
-          // Update existing device with new properties
-          console.log('Updating existing device at index:', existingIndex);
           const updatedDevices = [...prev];
           updatedDevices[existingIndex] = event;
-          console.log('Updated devices array:', updatedDevices);
           return updatedDevices;
-        } else {
-          // Add new device
-          console.log('Adding new device');
-          const newDevices = [...prev, event];
-          console.log('New devices array:', newDevices);
-          return newDevices;
         }
+        return [...prev, event];
       });
     });
 
-    const connectedListener = bridgeEmitter.addListener('onDeviceConnected', (event) => {
+    const connectedListener = onDeviceConnected((event) => {
       console.log('Device connected:', event);
     });
 
-    const disconnectedListener = bridgeEmitter.addListener('onDeviceDisconnected', (event) => {
+    const disconnectedListener = onDeviceDisconnected((event) => {
       console.log('Device disconnected:', event);
     });
 
+    const heartbeatListener = onHeartbeat((event) => {
+      setDevices((prev) =>
+        prev.map((device) =>
+          device.identifier === event.identifier ? {...device, oobTimestamp: event.oobTimestamp} : device,
+        ),
+      );
+    });
+
     return () => {
+      bleStateListener.remove();
       discoveredListener.remove();
       connectedListener.remove();
       disconnectedListener.remove();
+      heartbeatListener.remove();
     };
   }, []);
 

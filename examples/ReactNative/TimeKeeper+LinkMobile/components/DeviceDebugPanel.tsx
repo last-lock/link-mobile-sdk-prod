@@ -1,7 +1,32 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { Text, Card, Title, Paragraph, Chip, Divider, useTheme } from 'react-native-paper';
+import { Alert, View, StyleSheet } from 'react-native';
+import { Text, Card, Title, Paragraph, Chip, Divider, Button, TextInput, useTheme } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
+import {
+  cancelDFU,
+  checkForDFU,
+  exitDFUInstallMode,
+  fetchTokenUnlockPublicKey,
+  identify,
+  initialize,
+  onDFUStateChanged,
+  onProxyStreamStateChanged,
+  sendOutOfBandPayload,
+  setLockEngagedState,
+  start,
+  startDFU,
+  storeTokenUnlockPass,
+  tokenUnlock,
+  waitForDeviceMode,
+} from '@last-lock/link-mobile';
+import {
+  DEFAULT_SERVER_ADDRESS,
+  DEFAULT_SERVICE_UUID,
+  isServiceUuid,
+  loadBridgeConfig,
+  saveBridgeConfig,
+} from '../app/bridgeConfig';
+import { enterInstallMode, exitInstallMode, issueUnlockPass, TOKEN_NAMESPACE } from '../app/exampleServer';
 import { useDeviceDiscovery } from '../app/useDeviceDiscovery';
 import { useBridgeContext } from '../context/BridgeContext';
 
@@ -16,8 +41,97 @@ interface Device {
 
 export function DeviceDebugPanel() {
   const devices = useDeviceDiscovery();
-  const { isInitialized, isScanning } = useBridgeContext();
+  const { isInitialized, isScanning, setScanning } = useBridgeContext();
   const theme = useTheme();
+  const [oobPayload, setOobPayload] = React.useState('');
+  const [dfuState, setDfuState] = React.useState('REST');
+  const [serverUrl, setServerUrl] = React.useState('http://127.0.0.1:3006');
+  const [planeServer, setPlaneServer] = React.useState(DEFAULT_SERVER_ADDRESS);
+  const [serviceUuid, setServiceUuid] = React.useState(DEFAULT_SERVICE_UUID);
+  const [appliedConfig, setAppliedConfig] = React.useState({
+    serverAddress: DEFAULT_SERVER_ADDRESS,
+    serviceUUID: DEFAULT_SERVICE_UUID,
+  });
+  const [proxyStream, setProxyStream] = React.useState('unknown');
+  const [passReady, setPassReady] = React.useState(false);
+  const [dfuReadyIds, setDfuReadyIds] = React.useState<ReadonlySet<string>>(() => new Set());
+
+  React.useEffect(() => {
+    const dfuSubscription = onDFUStateChanged((event) => {
+      const progress = Math.round((event.installProgress ?? 0) * 100);
+      setDfuState(`${event.flowState} ${progress}%`);
+    });
+    const streamSubscription = onProxyStreamStateChanged((event) => {
+      setProxyStream(event.state);
+    });
+    return () => {
+      dfuSubscription.remove();
+      streamSubscription.remove();
+    };
+  }, []);
+
+  React.useEffect(() => {
+    let active = true;
+    loadBridgeConfig().then((config) => {
+      if (!active) return;
+      setPlaneServer(config.serverAddress);
+      setServiceUuid(config.serviceUUID);
+      setAppliedConfig(config);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const configChanged =
+    planeServer.trim() !== appliedConfig.serverAddress ||
+    serviceUuid.trim().toUpperCase() !== appliedConfig.serviceUUID;
+
+  async function restartBridge() {
+    const address = planeServer.trim();
+    const uuid = serviceUuid.trim().toUpperCase();
+    if (!address || address.includes('://') || address.includes('/')) {
+      throw new Error('Server address must be a host, such as plane.lastlock.com.');
+    }
+    if (!isServiceUuid(uuid)) {
+      throw new Error('Service UUID must be exactly 4 hexadecimal characters (e.g. 4B4A).');
+    }
+    await initialize(address);
+    const result = await start(uuid);
+    await saveBridgeConfig(address, uuid);
+    setPlaneServer(address);
+    setServiceUuid(uuid);
+    setAppliedConfig({ serverAddress: address, serviceUUID: uuid });
+    setScanning(true);
+    return result;
+  }
+
+  async function issuePass() {
+    const publicKey = await fetchTokenUnlockPublicKey(TOKEN_NAMESPACE);
+    const pass = await issueUnlockPass(serverUrl, publicKey);
+    await storeTokenUnlockPass(
+      TOKEN_NAMESPACE,
+      pass.accessDocument,
+      pass.readerGroupId,
+      pass.issuerCaPublicKey,
+      pass.issuerCaCertificate,
+    );
+    setPassReady(true);
+    return 'Unlock pass is ready for seven days.';
+  }
+
+  async function run(action: () => Promise<unknown>) {
+    try {
+      const result = await action();
+      if (typeof result === 'string') {
+        Alert.alert('Link Mobile', result);
+      } else if (result && typeof result === 'object') {
+        Alert.alert('Link Mobile', JSON.stringify(result));
+      }
+    } catch (error) {
+      Alert.alert('Link Mobile', error instanceof Error ? error.message : String(error));
+    }
+  }
 
   console.log('[DeviceDebugPanel] Rendering with devices:', devices);
 
@@ -60,10 +174,63 @@ export function DeviceDebugPanel() {
           >
             Scanning: {isScanning ? 'Active' : 'Inactive'}
           </Chip>
+          <Chip mode="outlined" style={styles.statusChip}>
+            Plane stream: {proxyStream}
+          </Chip>
+          <Chip mode="outlined" style={styles.statusChip}>
+            Unlock pass: {passReady ? 'Ready' : 'None'}
+          </Chip>
         </View>
         <Paragraph style={subtitleStyle}>
-          Found {devices.length} device{devices.length !== 1 ? 's' : ''}
+          Found {devices.length} device{devices.length !== 1 ? 's' : ''}. DFU: {dfuState}
         </Paragraph>
+        <TextInput
+          mode="outlined"
+          label="Server address"
+          value={planeServer}
+          onChangeText={setPlaneServer}
+          autoCapitalize="none"
+          autoCorrect={false}
+          style={styles.payloadInput}
+        />
+        <TextInput
+          mode="outlined"
+          label="Service UUID"
+          value={serviceUuid}
+          onChangeText={(value) => setServiceUuid(value.trim())}
+          autoCapitalize="characters"
+          autoCorrect={false}
+          maxLength={4}
+          style={styles.payloadInput}
+        />
+        <Button
+          compact
+          mode="contained"
+          disabled={!configChanged}
+          onPress={() => run(restartBridge)}
+          style={styles.passButton}
+        >
+          Restart bridge
+        </Button>
+        <TextInput
+          mode="outlined"
+          label="Example server URL"
+          value={serverUrl}
+          onChangeText={setServerUrl}
+          autoCapitalize="none"
+          autoCorrect={false}
+          style={styles.payloadInput}
+        />
+        <Button compact mode="contained" onPress={() => run(issuePass)} style={styles.passButton}>
+          Issue a 7 day unlock pass
+        </Button>
+        <TextInput
+          mode="outlined"
+          label="Out-of-band payload (base64)"
+          value={oobPayload}
+          onChangeText={setOobPayload}
+          dense
+        />
         
         <Divider style={styles.divider} />
         
@@ -77,7 +244,7 @@ export function DeviceDebugPanel() {
             </Text>
           </View>
         ) : (
-          <ScrollView style={styles.deviceList} showsVerticalScrollIndicator={false}>
+          <View style={styles.deviceListContent}>
             {devices.map((device: Device, index: number) => (
               <Card 
                 key={device.identifier || index} 
@@ -105,6 +272,99 @@ export function DeviceDebugPanel() {
                         {"Device ID: " + device.identifier || 'Unknown Device'}
                       </Text>
                     </View>
+                    <View style={styles.actions}>
+                      <Button
+                        compact
+                        mode="outlined"
+                        disabled={!passReady}
+                        onPress={() => run(() => tokenUnlock(device.identifier, TOKEN_NAMESPACE))}
+                      >
+                        BLE Unlock
+                      </Button>
+                      <Button compact mode="outlined" onPress={() => run(() => identify(device.identifier))}>
+                        Identify
+                      </Button>
+                      <Button
+                        compact
+                        mode="outlined"
+                        onPress={() =>
+                          run(async () => {
+                            await enterInstallMode(serverUrl, device.identifier);
+                            return waitForDeviceMode(device.identifier, false);
+                          })
+                        }
+                      >
+                        Enter install
+                      </Button>
+                      <Button
+                        compact
+                        mode="outlined"
+                        onPress={() =>
+                          run(() =>
+                            device.dfuMode
+                              ? exitDFUInstallMode(device.identifier)
+                              : exitInstallMode(serverUrl, device.identifier),
+                          )
+                        }
+                      >
+                        Exit install
+                      </Button>
+                      <Button compact mode="outlined" onPress={() => run(() => setLockEngagedState(device.identifier, true))}>
+                        Engage
+                      </Button>
+                      <Button compact mode="outlined" onPress={() => run(() => setLockEngagedState(device.identifier, false))}>
+                        Disengage
+                      </Button>
+                      <Button
+                        compact
+                        mode="outlined"
+                        onPress={() => run(() => sendOutOfBandPayload(device.identifier, oobPayload))}
+                      >
+                        Send OOB
+                      </Button>
+                      <Button
+                        compact
+                        mode="outlined"
+                        onPress={() =>
+                          run(async () => {
+                            const result = await checkForDFU(device.identifier);
+                            setDfuReadyIds((current) => {
+                              const next = new Set(current);
+                              if (result?.status === 'update_available') {
+                                next.add(device.identifier);
+                              } else {
+                                next.delete(device.identifier);
+                              }
+                              return next;
+                            });
+                            return result;
+                          })
+                        }
+                      >
+                        Check DFU
+                      </Button>
+                      <Button
+                        compact
+                        mode="outlined"
+                        onPress={() => {
+                          if (!dfuReadyIds.has(device.identifier)) {
+                            Alert.alert('Link Mobile', 'Check for a firmware update before starting DFU.');
+                            return;
+                          }
+                          setDfuState('requesting install mode');
+                          run(async () => {
+                            await enterInstallMode(serverUrl, device.identifier);
+                            setDfuState('waiting for DFU mode');
+                            return startDFU(device.identifier);
+                          });
+                        }}
+                      >
+                        Start DFU
+                      </Button>
+                      <Button compact mode="outlined" onPress={() => run(() => cancelDFU())}>
+                        Cancel DFU
+                      </Button>
+                    </View>
                     
                     <View style={styles.propertiesContainer}>
                       <Text style={[styles.propertiesTitle, { color: theme.colors.onSurfaceVariant }]}>
@@ -128,7 +388,7 @@ export function DeviceDebugPanel() {
                 </LinearGradient>
               </Card>
             ))}
-          </ScrollView>
+          </View>
         )}
       </Card.Content>
     </Card>
@@ -138,7 +398,6 @@ export function DeviceDebugPanel() {
 const styles = StyleSheet.create({
   container: {
     margin: 16,
-    maxHeight: 400,
     elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -159,7 +418,14 @@ const styles = StyleSheet.create({
   },
   statusContainer: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 8,
+    marginBottom: 8,
+  },
+  payloadInput: {
+    marginBottom: 8,
+  },
+  passButton: {
     marginBottom: 8,
   },
   statusChip: {
@@ -179,8 +445,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 16,
   },
-  deviceList: {
-    maxHeight: 300,
+  deviceListContent: {
+    paddingBottom: 4,
   },
   deviceCard: {
     marginBottom: 8,
@@ -189,11 +455,17 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
-    overflow: 'hidden',
   },
   gradientBackground: {
     borderRadius: 8,
     padding: 10,
+  },
+  actions: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 4,
+    marginBottom: 8,
+    width: '100%',
   },
   deviceHeader: {
     flexDirection: 'row',

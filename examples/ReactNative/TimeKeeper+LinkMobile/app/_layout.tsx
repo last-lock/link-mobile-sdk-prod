@@ -3,15 +3,16 @@ import { withLayoutContext } from "expo-router";
 import { StatusBar } from "react-native";
 import { MD3LightTheme, MD3DarkTheme, PaperProvider } from "react-native-paper";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import BridgeModule from '../modules/BridgeModule';
+import { initialize, start } from '@last-lock/link-mobile';
+import { loadBridgeConfig } from './bridgeConfig';
 import { Alert } from "react-native";
 import { ThemeProvider, useThemeContext } from "@/context/ThemeContext";
 import {
   createStackNavigator,
   StackNavigationOptions,
   StackNavigationEventMap,
-} from "@react-navigation/stack";
-import { ParamListBase, NavigationState } from "@react-navigation/native";
+} from "expo-router/js-stack";
+import { ParamListBase, NavigationState } from "expo-router/react-navigation";
 import { CounterProvider } from "@/context/counterContext";
 import { BridgeProvider, useBridgeContext } from "@/context/BridgeContext";
 
@@ -26,28 +27,16 @@ export const Stack = withLayoutContext<
 
 const handleInitialize = async (setScanning: (value: boolean) => void) => {
   try {
-    console.log('[Bridge] Initializing bridge...');
-    // TODO: Replace with the correct server address
-    const result = await BridgeModule.initialize("api.test.example.com");
+    const config = await loadBridgeConfig();
+    console.log('[Bridge] Initializing bridge...', config.serverAddress);
+    const result = await initialize(config.serverAddress);
     console.log('[Bridge] Initialize result:', result);
-    
-    // Start scanning after a short delay to ensure initialization is complete
-    setTimeout(async () => {
-      try {
-        console.log('[Bridge] Starting bridge...');
-        // TODO: Replace with the correct UUID
-        const result2 = await BridgeModule.start("AAAA");
-        console.log('[Bridge] Start result:', result2);
-        console.log('[Bridge] Bridge is now scanning for devices');
-        setScanning(true);
-      } catch (startError: any) {
-        console.error('[Bridge] Start error:', startError);
-        // Don't show alert for start errors, just log them
-      }
-    }, 2000); // Reduced from 10 seconds to 2 seconds
+    console.log('[Bridge] Starting bridge...', config.serviceUUID);
+    const started = await start(config.serviceUUID);
+    console.log('[Bridge] Start result:', started);
+    setScanning(true);
   } catch (error: any) {
     console.error('[Bridge] Initialize error:', error);
-    // Only show alert for critical initialization errors
     Alert.alert('Bridge Error', 'Failed to initialize device scanning. Some features may not work properly.');
   }
 };

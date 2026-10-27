@@ -17,6 +17,8 @@ import { Text, View, ActivityIndicator, StyleSheet } from "react-native"; // Imp
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
   }),
@@ -54,6 +56,7 @@ export const CounterProvider = ({
 }) => {
   const [counters, setCounters] = useState<Counter[]>([]);
   const [isReady, setIsReady] = useState(false);
+  const [notificationsReady, setNotificationsReady] = useState(false);
 
   // --- Load counters from AsyncStorage on startup ---
   useEffect(() => {
@@ -90,17 +93,23 @@ export const CounterProvider = ({
   // Request notification permissions
   useEffect(() => {
     (async () => {
-      const { status: existingStatus } =
-        await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-      if (existingStatus !== "granted") {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-      if (finalStatus !== "granted") {
-        alert(
-          "Failed to get push token for push notification! You might miss countdown alerts."
-        );
+      try {
+        const { status: existingStatus } =
+          await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== "granted") {
+          const { status } = await Notifications.requestPermissionsAsync();
+          finalStatus = status;
+        }
+        if (finalStatus !== "granted") {
+          alert(
+            "Failed to get push token for push notification! You might miss countdown alerts."
+          );
+        }
+      } catch (error) {
+        console.error("Failed to request notification permissions", error);
+      } finally {
+        setNotificationsReady(true);
       }
     })();
   }, []);
@@ -122,11 +131,9 @@ export const CounterProvider = ({
       Notifications.addNotificationReceivedListener((notification) => {
         console.log("Notification received in foreground:", notification);
         const notificationData = notification.request.content.data;
-        if (notificationData && notificationData.counterId) {
-          // Only mark complete if it's the final 'exact time' notification
-          if (notificationData.notificationType === "exactTime") {
-            markCounterCompleted(notificationData.counterId);
-          }
+        const counterId = notificationData?.counterId;
+        if (typeof counterId === "string" && notificationData?.notificationType === "exactTime") {
+          markCounterCompleted(counterId);
         }
       });
 
@@ -134,12 +141,9 @@ export const CounterProvider = ({
       Notifications.addNotificationResponseReceivedListener((response) => {
         console.log("Notification response received (user tapped):", response);
         const notificationData = response.notification.request.content.data;
-        if (notificationData && notificationData.counterId) {
-          if (notificationData.notificationType === "exactTime") {
-            markCounterCompleted(notificationData.counterId);
-          }
-          // You might want to navigate to the counter's detail page here
-          // if the user taps the notification.
+        const counterId = notificationData?.counterId;
+        if (typeof counterId === "string" && notificationData?.notificationType === "exactTime") {
+          markCounterCompleted(counterId);
         }
       });
 
@@ -147,21 +151,16 @@ export const CounterProvider = ({
       if (response && response.notification) {
         console.log("App launched from notification:", response.notification);
         const notificationData = response.notification.request.content.data;
-        if (notificationData && notificationData.counterId) {
-          if (notificationData.notificationType === "exactTime") {
-            markCounterCompleted(notificationData.counterId);
-          }
+        const counterId = notificationData?.counterId;
+        if (typeof counterId === "string" && notificationData?.notificationType === "exactTime") {
+          markCounterCompleted(counterId);
         }
       }
     });
 
     return () => {
-      Notifications.removeNotificationSubscription(
-        notificationReceivedListener
-      );
-      Notifications.removeNotificationSubscription(
-        notificationResponseListener
-      );
+      notificationReceivedListener.remove();
+      notificationResponseListener.remove();
     };
   }, [markCounterCompleted]);
 
@@ -198,8 +197,7 @@ export const CounterProvider = ({
                 },
                 trigger: {
                   date: triggerDate,
-                  type: "date",
-                  repeats: false,
+                  type: Notifications.SchedulableTriggerInputTypes.DATE,
                 },
               });
             console.log(
@@ -240,8 +238,7 @@ export const CounterProvider = ({
                   },
                   trigger: {
                     date: todayNotificationTime,
-                    type: "date",
-                    repeats: false,
+                    type: Notifications.SchedulableTriggerInputTypes.DATE,
                   },
                 });
               console.log(
@@ -311,8 +308,9 @@ export const CounterProvider = ({
     [counters, setCounters, addCounter, markCounterCompleted]
   );
 
-  // Splash screen while loading
-  if (!isReady) {
+  // RootContent starts Bluetooth on mount. Finish Expo's permission request first
+  // because ReactActivity shares one permission listener between native modules.
+  if (!isReady || !notificationsReady) {
     return (
       <View style={styles.splashContainer}>
         <ActivityIndicator size="large" color="#0000ff" />
