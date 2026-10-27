@@ -39,8 +39,8 @@
         word-break: break-all;
       }
     </style>
-      <link id="link-favicon" rel="icon" href="favicon.svg" type="image/svg+xml">
-    <link rel="shortcut icon" href="favicon.svg" type="image/svg+xml">
+      <link id="link-favicon" rel="icon" href="/link-mobile-sdk-prod/sdk-api/ios/latest/favicon.svg" type="image/svg+xml">
+    <link rel="shortcut icon" href="/link-mobile-sdk-prod/sdk-api/ios/latest/favicon.svg" type="image/svg+xml">
 </head>
   <body>
     <main class="wrap">
@@ -110,7 +110,7 @@
   </style>
   <header class="doc-header">
     <a class="doc-brand" href="/link-mobile-sdk-prod/sdk-api/ios/latest/" aria-label="LinkMobile Documentation">
-      <img class="doc-logo" src="logo.png" alt="Seamless Link logo">
+      <img class="doc-logo" src="/link-mobile-sdk-prod/sdk-api/ios/latest/logo.png" alt="Seamless Link logo">
       <span>LinkMobile</span>
     </a>
     <span class="doc-version-badge" data-sdk-version>SDK latest</span>
@@ -139,7 +139,7 @@
     var version = header.shadowRoot.querySelector('[data-sdk-version]');
     var base = normalizeBase(window.baseUrl || '/');
     setFavicon(base);
-    if(link) link.setAttribute('href', base);
+    if(link) link.setAttribute('href', '/');
     if(logo) logo.setAttribute('src', base + 'logo.png');
     if(version) version.textContent = 'SDK ' + getSdkVersion();
     return true;
