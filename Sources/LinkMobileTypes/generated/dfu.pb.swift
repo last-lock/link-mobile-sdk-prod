@@ -132,27 +132,6 @@ public struct Link_DFU: @unchecked Sendable {
   /// Clears the value of `canApplyNow`. Subsequent reads from it will return its default value.
   public mutating func clearCanApplyNow() {_uniqueStorage()._canApplyNow = nil}
 
-  public var mcubootFirmware: Data {
-    get {return _storage._mcubootFirmware ?? Data()}
-    set {_uniqueStorage()._mcubootFirmware = newValue}
-  }
-  /// Returns true if `mcubootFirmware` has been explicitly set.
-  public var hasMcubootFirmware: Bool {return _storage._mcubootFirmware != nil}
-  /// Clears the value of `mcubootFirmware`. Subsequent reads from it will return its default value.
-  public mutating func clearMcubootFirmware() {_uniqueStorage()._mcubootFirmware = nil}
-
-  /// Whether this firmware also updates MCUboot (dual-stage bootloader). Set by
-  /// multiconsole when targeting, from the firmware's DFU record, so install mode
-  /// can tell the device without inspecting the firmware.
-  public var mcubootDfu: Bool {
-    get {return _storage._mcubootDfu ?? false}
-    set {_uniqueStorage()._mcubootDfu = newValue}
-  }
-  /// Returns true if `mcubootDfu` has been explicitly set.
-  public var hasMcubootDfu: Bool {return _storage._mcubootDfu != nil}
-  /// Clears the value of `mcubootDfu`. Subsequent reads from it will return its default value.
-  public mutating func clearMcubootDfu() {_uniqueStorage()._mcubootDfu = nil}
-
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
@@ -349,7 +328,7 @@ extension Link_DFURequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplemen
 
 extension Link_DFU: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".DFU"
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}device_id\0\u{3}firmware_name\0\u{1}firmware\0\u{3}oob_request\0\u{3}firmware_sem_ver\0\u{3}oob_wrapper\0\u{3}link_out\0\u{1}version\0\u{3}force_no_cache\0\u{3}can_apply_now\0\u{3}mcuboot_firmware\0\u{3}mcuboot_dfu\0")
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}device_id\0\u{3}firmware_name\0\u{1}firmware\0\u{3}oob_request\0\u{3}firmware_sem_ver\0\u{3}oob_wrapper\0\u{3}link_out\0\u{1}version\0\u{3}force_no_cache\0\u{3}can_apply_now\0")
 
   fileprivate class _StorageClass {
     var _deviceID: UInt32? = nil
@@ -362,8 +341,6 @@ extension Link_DFU: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationB
     var _version: Int64? = nil
     var _forceNoCache: Bool? = nil
     var _canApplyNow: Bool? = nil
-    var _mcubootFirmware: Data? = nil
-    var _mcubootDfu: Bool? = nil
 
       // This property is used as the initial default value for new instances of the type.
       // The type itself is protecting the reference to its storage via CoW semantics.
@@ -384,8 +361,6 @@ extension Link_DFU: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationB
       _version = source._version
       _forceNoCache = source._forceNoCache
       _canApplyNow = source._canApplyNow
-      _mcubootFirmware = source._mcubootFirmware
-      _mcubootDfu = source._mcubootDfu
     }
   }
 
@@ -414,8 +389,6 @@ extension Link_DFU: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationB
         case 8: try { try decoder.decodeSingularInt64Field(value: &_storage._version) }()
         case 9: try { try decoder.decodeSingularBoolField(value: &_storage._forceNoCache) }()
         case 10: try { try decoder.decodeSingularBoolField(value: &_storage._canApplyNow) }()
-        case 11: try { try decoder.decodeSingularBytesField(value: &_storage._mcubootFirmware) }()
-        case 12: try { try decoder.decodeSingularBoolField(value: &_storage._mcubootDfu) }()
         default: break
         }
       }
@@ -458,12 +431,6 @@ extension Link_DFU: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationB
       try { if let v = _storage._canApplyNow {
         try visitor.visitSingularBoolField(value: v, fieldNumber: 10)
       } }()
-      try { if let v = _storage._mcubootFirmware {
-        try visitor.visitSingularBytesField(value: v, fieldNumber: 11)
-      } }()
-      try { if let v = _storage._mcubootDfu {
-        try visitor.visitSingularBoolField(value: v, fieldNumber: 12)
-      } }()
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -483,8 +450,6 @@ extension Link_DFU: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationB
         if _storage._version != rhs_storage._version {return false}
         if _storage._forceNoCache != rhs_storage._forceNoCache {return false}
         if _storage._canApplyNow != rhs_storage._canApplyNow {return false}
-        if _storage._mcubootFirmware != rhs_storage._mcubootFirmware {return false}
-        if _storage._mcubootDfu != rhs_storage._mcubootDfu {return false}
         return true
       }
       if !storagesAreEqual {return false}

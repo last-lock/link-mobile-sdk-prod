@@ -191,9 +191,6 @@ public enum Link_DeviceStateBit: SwiftProtobuf.Enum, Swift.CaseIterable {
 
   /// 1 << 4
   case deviceStateRecovery // = 16
-
-  /// Bits 7..5 carry lastlock.api.audittypes.BatteryLifecycleState << 5; zero is unknown.
-  case deviceStateBatteryLifecycleMask // = 224
   case UNRECOGNIZED(Int)
 
   public init() {
@@ -208,7 +205,6 @@ public enum Link_DeviceStateBit: SwiftProtobuf.Enum, Swift.CaseIterable {
     case 4: self = .deviceStateCooldown
     case 8: self = .deviceStateCold
     case 16: self = .deviceStateRecovery
-    case 224: self = .deviceStateBatteryLifecycleMask
     default: self = .UNRECOGNIZED(rawValue)
     }
   }
@@ -221,7 +217,6 @@ public enum Link_DeviceStateBit: SwiftProtobuf.Enum, Swift.CaseIterable {
     case .deviceStateCooldown: return 4
     case .deviceStateCold: return 8
     case .deviceStateRecovery: return 16
-    case .deviceStateBatteryLifecycleMask: return 224
     case .UNRECOGNIZED(let i): return i
     }
   }
@@ -234,7 +229,6 @@ public enum Link_DeviceStateBit: SwiftProtobuf.Enum, Swift.CaseIterable {
     .deviceStateCooldown,
     .deviceStateCold,
     .deviceStateRecovery,
-    .deviceStateBatteryLifecycleMask,
   ]
 
 }
@@ -330,8 +324,7 @@ public struct Link_Heartbeat: @unchecked Sendable {
     set {_uniqueStorage()._deviceMode = newValue}
   }
 
-  /// Device State Byte as advertised: bitmap of DeviceStateBit values; bits 7..5 carry
-  /// BatteryLifecycleState << 5.
+  /// Device State Byte as advertised: bitmap of DeviceStateBit values.
   public var deviceState: UInt32 {
     get {return _storage._deviceState}
     set {_uniqueStorage()._deviceState = newValue}
@@ -342,16 +335,6 @@ public struct Link_Heartbeat: @unchecked Sendable {
     get {return _storage._databaseVersion}
     set {_uniqueStorage()._databaseVersion = newValue}
   }
-
-  /// Active MCUboot package version
-  public var bootloaderSemVer: Lastlock_Api_Semver_SemVer {
-    get {return _storage._bootloaderSemVer ?? Lastlock_Api_Semver_SemVer()}
-    set {_uniqueStorage()._bootloaderSemVer = newValue}
-  }
-  /// Returns true if `bootloaderSemVer` has been explicitly set.
-  public var hasBootloaderSemVer: Bool {return _storage._bootloaderSemVer != nil}
-  /// Clears the value of `bootloaderSemVer`. Subsequent reads from it will return its default value.
-  public mutating func clearBootloaderSemVer() {_uniqueStorage()._bootloaderSemVer = nil}
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -373,7 +356,7 @@ extension Link_OverridingMode: SwiftProtobuf._ProtoNameProviding {
 }
 
 extension Link_DeviceStateBit: SwiftProtobuf._ProtoNameProviding {
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{2}\0DEVICE_STATE_NONE\0\u{1}DEVICE_STATE_LOW_BATTERY\0\u{1}DEVICE_STATE_CRITICAL_BATTERY\0\u{2}\u{2}DEVICE_STATE_COOLDOWN\0\u{2}\u{4}DEVICE_STATE_COLD\0\u{2}\u{8}DEVICE_STATE_RECOVERY\0\u{2}P\u{3}DEVICE_STATE_BATTERY_LIFECYCLE_MASK\0")
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{2}\0DEVICE_STATE_NONE\0\u{1}DEVICE_STATE_LOW_BATTERY\0\u{1}DEVICE_STATE_CRITICAL_BATTERY\0\u{2}\u{2}DEVICE_STATE_COOLDOWN\0\u{2}\u{4}DEVICE_STATE_COLD\0\u{2}\u{8}DEVICE_STATE_RECOVERY\0")
 }
 
 extension Link_SignedTime: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
@@ -413,7 +396,7 @@ extension Link_SignedTime: SwiftProtobuf.Message, SwiftProtobuf._MessageImplemen
 
 extension Link_Heartbeat: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".Heartbeat"
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}mfr_id\0\u{3}dev_id\0\u{1}dsc\0\u{1}ssc\0\u{3}sig_bmp\0\u{3}sem_ver\0\u{3}signed_timestamp\0\u{2}\u{2}rssi\0\u{3}last_oob_server_timestamp\0\u{3}bridge_timestamp\0\u{3}device_mode\0\u{3}device_state\0\u{3}database_version\0\u{3}bootloader_sem_ver\0")
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}mfr_id\0\u{3}dev_id\0\u{1}dsc\0\u{1}ssc\0\u{3}sig_bmp\0\u{3}sem_ver\0\u{3}signed_timestamp\0\u{2}\u{2}rssi\0\u{3}last_oob_server_timestamp\0\u{3}bridge_timestamp\0\u{3}device_mode\0\u{3}device_state\0\u{3}database_version\0")
 
   fileprivate class _StorageClass {
     var _mfrID: UInt32 = 0
@@ -429,7 +412,6 @@ extension Link_Heartbeat: SwiftProtobuf.Message, SwiftProtobuf._MessageImplement
     var _deviceMode: UInt32 = 0
     var _deviceState: UInt32 = 0
     var _databaseVersion: UInt64 = 0
-    var _bootloaderSemVer: Lastlock_Api_Semver_SemVer? = nil
 
       // This property is used as the initial default value for new instances of the type.
       // The type itself is protecting the reference to its storage via CoW semantics.
@@ -453,7 +435,6 @@ extension Link_Heartbeat: SwiftProtobuf.Message, SwiftProtobuf._MessageImplement
       _deviceMode = source._deviceMode
       _deviceState = source._deviceState
       _databaseVersion = source._databaseVersion
-      _bootloaderSemVer = source._bootloaderSemVer
     }
   }
 
@@ -485,7 +466,6 @@ extension Link_Heartbeat: SwiftProtobuf.Message, SwiftProtobuf._MessageImplement
         case 12: try { try decoder.decodeSingularUInt32Field(value: &_storage._deviceMode) }()
         case 13: try { try decoder.decodeSingularUInt32Field(value: &_storage._deviceState) }()
         case 14: try { try decoder.decodeSingularUInt64Field(value: &_storage._databaseVersion) }()
-        case 15: try { try decoder.decodeSingularMessageField(value: &_storage._bootloaderSemVer) }()
         default: break
         }
       }
@@ -537,9 +517,6 @@ extension Link_Heartbeat: SwiftProtobuf.Message, SwiftProtobuf._MessageImplement
       if _storage._databaseVersion != 0 {
         try visitor.visitSingularUInt64Field(value: _storage._databaseVersion, fieldNumber: 14)
       }
-      try { if let v = _storage._bootloaderSemVer {
-        try visitor.visitSingularMessageField(value: v, fieldNumber: 15)
-      } }()
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -562,7 +539,6 @@ extension Link_Heartbeat: SwiftProtobuf.Message, SwiftProtobuf._MessageImplement
         if _storage._deviceMode != rhs_storage._deviceMode {return false}
         if _storage._deviceState != rhs_storage._deviceState {return false}
         if _storage._databaseVersion != rhs_storage._databaseVersion {return false}
-        if _storage._bootloaderSemVer != rhs_storage._bootloaderSemVer {return false}
         return true
       }
       if !storagesAreEqual {return false}

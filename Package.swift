@@ -26,12 +26,12 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "LinkMobile",
-            url: "https://api.github.com/repos/last-lock/link-mobile-sdk-prod/releases/assets/680482935.zip",
+            url: "https://api.github.com/repos/last-lock/link-mobile-sdk-prod/releases/assets/680564571.zip",
             checksum: "1d60f61bbecd5f7d32128d75666394dea8ea9a1a1ce160100a19aef6994709ac"
         ),
         .binaryTarget(
             name: "bridge",
-            url: "https://api.github.com/repos/last-lock/link-mobile-sdk-prod/releases/assets/680482934.zip",
+            url: "https://api.github.com/repos/last-lock/link-mobile-sdk-prod/releases/assets/680564569.zip",
             checksum: "0797b39f3aa48a9bdd98cc41fac33ee3d6c8db712b0ab3203fdaee76883b10e0"
         ),
         .target(

@@ -254,15 +254,6 @@ public struct Link_InstallMode: Sendable {
   /// Clears the value of `currVersion`. Subsequent reads from it will return its default value.
   public mutating func clearCurrVersion() {self._currVersion = nil}
 
-  public var mcubootDfu: Bool {
-    get {return _mcubootDfu ?? false}
-    set {_mcubootDfu = newValue}
-  }
-  /// Returns true if `mcubootDfu` has been explicitly set.
-  public var hasMcubootDfu: Bool {return self._mcubootDfu != nil}
-  /// Clears the value of `mcubootDfu`. Subsequent reads from it will return its default value.
-  public mutating func clearMcubootDfu() {self._mcubootDfu = nil}
-
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   /// One of determines if we are entering or exiting install mode
@@ -280,7 +271,6 @@ public struct Link_InstallMode: Sendable {
 
   fileprivate var _dfu: Lastlock_Api_Semver_SemVer? = nil
   fileprivate var _currVersion: Lastlock_Api_Semver_SemVer? = nil
-  fileprivate var _mcubootDfu: Bool? = nil
 }
 
 /// <!-- --8<-- [end:install] -->
@@ -356,21 +346,6 @@ public struct Link_RemoteUnlock: Sendable {
 
   fileprivate var _startTime: UInt32? = nil
   fileprivate var _endTime: UInt32? = nil
-}
-
-/// A battery replacement, sent by the phone of whoever replaced it. The device
-/// resets its battery tracking and sends a BatteryReplaced audit.
-public struct Link_BatteryReplaced: Sendable {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  /// Unix seconds the battery was replaced, or is expected to be.
-  public var replacedAt: UInt32 = 0
-
-  public var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  public init() {}
 }
 
 public struct Link_Timesync: Sendable {
@@ -707,24 +682,6 @@ public struct Link_OutOfBandOperation: Sendable {
     set {opType = .logConfigs(newValue)}
   }
 
-  /// Tells the device its battery was replaced, from the phone that did it.
-  public var batteryReplaced: Link_BatteryReplaced {
-    get {
-      if case .batteryReplaced(let v)? = opType {return v}
-      return Link_BatteryReplaced()
-    }
-    set {opType = .batteryReplaced(newValue)}
-  }
-
-  /// Set/Update device specific metadata.
-  public var deviceMetadata: Lastlock_Api_DeviceMetadata_DeviceMetadata {
-    get {
-      if case .deviceMetadata(let v)? = opType {return v}
-      return Lastlock_Api_DeviceMetadata_DeviceMetadata()
-    }
-    set {opType = .deviceMetadata(newValue)}
-  }
-
   public var postDfuConfig: Data {
     get {return _postDfuConfig ?? Data()}
     set {_postDfuConfig = newValue}
@@ -788,10 +745,6 @@ public struct Link_OutOfBandOperation: Sendable {
     case debugSetTime(UInt32)
     /// Runtime log filter and L2F auto-signal settings.
     case logConfigs(Link_LogConfigs)
-    /// Tells the device its battery was replaced, from the phone that did it.
-    case batteryReplaced(Link_BatteryReplaced)
-    /// Set/Update device specific metadata.
-    case deviceMetadata(Lastlock_Api_DeviceMetadata_DeviceMetadata)
 
   }
 
@@ -905,7 +858,7 @@ extension Link_StateReset: SwiftProtobuf.Message, SwiftProtobuf._MessageImplemen
 
 extension Link_InstallMode: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".InstallMode"
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}time\0\u{1}reboot\0\u{1}dfu\0\u{3}curr_version\0\u{3}mcuboot_dfu\0")
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}time\0\u{1}reboot\0\u{1}dfu\0\u{3}curr_version\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -931,7 +884,6 @@ extension Link_InstallMode: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
       }()
       case 3: try { try decoder.decodeSingularMessageField(value: &self._dfu) }()
       case 4: try { try decoder.decodeSingularMessageField(value: &self._currVersion) }()
-      case 5: try { try decoder.decodeSingularBoolField(value: &self._mcubootDfu) }()
       default: break
       }
     }
@@ -959,9 +911,6 @@ extension Link_InstallMode: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
     try { if let v = self._currVersion {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
     } }()
-    try { if let v = self._mcubootDfu {
-      try visitor.visitSingularBoolField(value: v, fieldNumber: 5)
-    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -969,7 +918,6 @@ extension Link_InstallMode: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
     if lhs.entry != rhs.entry {return false}
     if lhs._dfu != rhs._dfu {return false}
     if lhs._currVersion != rhs._currVersion {return false}
-    if lhs._mcubootDfu != rhs._mcubootDfu {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1049,36 +997,6 @@ extension Link_RemoteUnlock: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
     if lhs.remoteUnlockType != rhs.remoteUnlockType {return false}
     if lhs._startTime != rhs._startTime {return false}
     if lhs._endTime != rhs._endTime {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Link_BatteryReplaced: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = _protobuf_package + ".BatteryReplaced"
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}replaced_at\0")
-
-  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularUInt32Field(value: &self.replacedAt) }()
-      default: break
-      }
-    }
-  }
-
-  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.replacedAt != 0 {
-      try visitor.visitSingularUInt32Field(value: self.replacedAt, fieldNumber: 1)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  public static func ==(lhs: Link_BatteryReplaced, rhs: Link_BatteryReplaced) -> Bool {
-    if lhs.replacedAt != rhs.replacedAt {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1361,7 +1279,7 @@ extension Link_LogConfigs.LogFilter: SwiftProtobuf.Message, SwiftProtobuf._Messa
 
 extension Link_OutOfBandOperation: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".OutOfBandOperation"
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}device_id\0\u{1}timestamp\0\u{1}dfu\0\u{1}rst\0\u{1}sco\0\u{3}time_sync\0\u{3}install_mode\0\u{3}key_roll_request\0\u{1}identify\0\u{1}recovery\0\u{3}locking_state_engage\0\u{3}led_test_mode\0\u{3}post_dfu_config\0\u{3}hibernate_mode\0\u{3}aliro_push_csr\0\u{3}clear_eclipse_perm_disable\0\u{3}clear_error_bitmap\0\u{3}sensor_test_mode\0\u{3}trigger_primary_cell_sample\0\u{3}debug_set_time\0\u{3}log_configs\0\u{3}post_dfu_state\0\u{3}battery_replaced\0\u{3}device_metadata\0")
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}device_id\0\u{1}timestamp\0\u{1}dfu\0\u{1}rst\0\u{1}sco\0\u{3}time_sync\0\u{3}install_mode\0\u{3}key_roll_request\0\u{1}identify\0\u{1}recovery\0\u{3}locking_state_engage\0\u{3}led_test_mode\0\u{3}post_dfu_config\0\u{3}hibernate_mode\0\u{3}aliro_push_csr\0\u{3}clear_eclipse_perm_disable\0\u{3}clear_error_bitmap\0\u{3}sensor_test_mode\0\u{3}trigger_primary_cell_sample\0\u{3}debug_set_time\0\u{3}log_configs\0\u{3}post_dfu_state\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1567,32 +1485,6 @@ extension Link_OutOfBandOperation: SwiftProtobuf.Message, SwiftProtobuf._Message
         }
       }()
       case 22: try { try decoder.decodeSingularBytesField(value: &self._postDfuState) }()
-      case 23: try {
-        var v: Link_BatteryReplaced?
-        var hadOneofValue = false
-        if let current = self.opType {
-          hadOneofValue = true
-          if case .batteryReplaced(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.opType = .batteryReplaced(v)
-        }
-      }()
-      case 24: try {
-        var v: Lastlock_Api_DeviceMetadata_DeviceMetadata?
-        var hadOneofValue = false
-        if let current = self.opType {
-          hadOneofValue = true
-          if case .deviceMetadata(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.opType = .deviceMetadata(v)
-        }
-      }()
       default: break
       }
     }
@@ -1693,17 +1585,6 @@ extension Link_OutOfBandOperation: SwiftProtobuf.Message, SwiftProtobuf._Message
     try { if let v = self._postDfuState {
       try visitor.visitSingularBytesField(value: v, fieldNumber: 22)
     } }()
-    switch self.opType {
-    case .batteryReplaced?: try {
-      guard case .batteryReplaced(let v)? = self.opType else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 23)
-    }()
-    case .deviceMetadata?: try {
-      guard case .deviceMetadata(let v)? = self.opType else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 24)
-    }()
-    default: break
-    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
