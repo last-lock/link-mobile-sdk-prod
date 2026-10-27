@@ -8,16 +8,21 @@
 // For information on using the generated types, please see the documentation:
 //   https://github.com/apple/swift-protobuf/
 
-//*
-// @file hearbeat.proto
-// @brief Protobuf definitions for the credential definitions
-//
-// This is UNPUBLISHED PROPRIETARY SOURCE CODE of LastLock Inc.
-// The contents of this file may not be disclosed to third parties,
-// copied or duplicated in any form, in whole or in part,
-// without the prior written permission of LastLock Inc.
-// Copyright 2024 Last Lock Inc. All rights .
-// SPDX-License-Identifier: LicenseRef-Proprietary
+///*
+/// @file heartbeat.proto
+/// @brief ProtoBuf definition of the heartbeat message used by Device, Bridge, and Server.
+///
+/// @note `sem_ver` is used by the bridge for version-dependent behavior.
+/// Its field number, protobuf type, and semantics SHALL NOT change.
+/// Compatible additive changes to `Heartbeat` are permitted.
+/// An incompatible change requires a new message contract or characteristic UUID.
+///
+/// This is UNPUBLISHED PROPRIETARY SOURCE CODE of LastLock Inc.
+/// The contents of this file may not be disclosed to third parties,
+/// copied or duplicated in any form, in whole or in part,
+/// without the prior written permission of LastLock Inc.
+/// Copyright 2026 Last Lock Inc. All rights reserved.
+/// SPDX-License-Identifier: LicenseRef-Proprietary
 
 import Foundation
 import SwiftProtobuf
@@ -112,6 +117,128 @@ public enum Link_SignalingBit: SwiftProtobuf.Enum, Swift.CaseIterable {
 
 }
 
+/// Overriding mode advertised in the Device Mode Byte, bits 7-4. The enum value
+/// occupies the high nibble on the wire, e.g. OVERRIDING_MODE_HIBERNATE (1)
+/// advertises as byte 0x10. Bits 3-0 of the byte are reserved, transmitted as zero.
+/// See Access Control Proxy Application Spec section 1.1.2.
+public enum Link_OverridingMode: SwiftProtobuf.Enum, Swift.CaseIterable {
+  public typealias RawValue = Int
+
+  /// required zero
+  case none // = 0
+  case hibernate // = 1
+  case service // = 2
+  case construction // = 3
+  case silent // = 4
+  case UNRECOGNIZED(Int)
+
+  public init() {
+    self = .none
+  }
+
+  public init?(rawValue: Int) {
+    switch rawValue {
+    case 0: self = .none
+    case 1: self = .hibernate
+    case 2: self = .service
+    case 3: self = .construction
+    case 4: self = .silent
+    default: self = .UNRECOGNIZED(rawValue)
+    }
+  }
+
+  public var rawValue: Int {
+    switch self {
+    case .none: return 0
+    case .hibernate: return 1
+    case .service: return 2
+    case .construction: return 3
+    case .silent: return 4
+    case .UNRECOGNIZED(let i): return i
+    }
+  }
+
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  public static let allCases: [Link_OverridingMode] = [
+    .none,
+    .hibernate,
+    .service,
+    .construction,
+    .silent,
+  ]
+
+}
+
+/// Bit masks for the Device State Byte. States can coexist; all bits clear = good.
+/// See Access Control Proxy Application Spec section 1.1.3.
+public enum Link_DeviceStateBit: SwiftProtobuf.Enum, Swift.CaseIterable {
+  public typealias RawValue = Int
+
+  /// required zero
+  case deviceStateNone // = 0
+
+  /// 1 << 0
+  case deviceStateLowBattery // = 1
+
+  /// 1 << 1
+  case deviceStateCriticalBattery // = 2
+
+  /// 1 << 2
+  case deviceStateCooldown // = 4
+
+  /// 1 << 3
+  case deviceStateCold // = 8
+
+  /// 1 << 4
+  case deviceStateRecovery // = 16
+
+  /// Bits 7..5 carry lastlock.api.audittypes.BatteryLifecycleState << 5; zero is unknown.
+  case deviceStateBatteryLifecycleMask // = 224
+  case UNRECOGNIZED(Int)
+
+  public init() {
+    self = .deviceStateNone
+  }
+
+  public init?(rawValue: Int) {
+    switch rawValue {
+    case 0: self = .deviceStateNone
+    case 1: self = .deviceStateLowBattery
+    case 2: self = .deviceStateCriticalBattery
+    case 4: self = .deviceStateCooldown
+    case 8: self = .deviceStateCold
+    case 16: self = .deviceStateRecovery
+    case 224: self = .deviceStateBatteryLifecycleMask
+    default: self = .UNRECOGNIZED(rawValue)
+    }
+  }
+
+  public var rawValue: Int {
+    switch self {
+    case .deviceStateNone: return 0
+    case .deviceStateLowBattery: return 1
+    case .deviceStateCriticalBattery: return 2
+    case .deviceStateCooldown: return 4
+    case .deviceStateCold: return 8
+    case .deviceStateRecovery: return 16
+    case .deviceStateBatteryLifecycleMask: return 224
+    case .UNRECOGNIZED(let i): return i
+    }
+  }
+
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  public static let allCases: [Link_DeviceStateBit] = [
+    .deviceStateNone,
+    .deviceStateLowBattery,
+    .deviceStateCriticalBattery,
+    .deviceStateCooldown,
+    .deviceStateCold,
+    .deviceStateRecovery,
+    .deviceStateBatteryLifecycleMask,
+  ]
+
+}
+
 public struct Link_SignedTime: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -126,62 +253,111 @@ public struct Link_SignedTime: Sendable {
   public init() {}
 }
 
-public struct Link_Heartbeat: Sendable {
+public struct Link_Heartbeat: @unchecked Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  public var mfrID: UInt32 = 0
+  public var mfrID: UInt32 {
+    get {return _storage._mfrID}
+    set {_uniqueStorage()._mfrID = newValue}
+  }
 
-  public var devID: UInt32 = 0
+  public var devID: UInt32 {
+    get {return _storage._devID}
+    set {_uniqueStorage()._devID = newValue}
+  }
 
-  public var dsc: UInt32 = 0
+  public var dsc: UInt32 {
+    get {return _storage._dsc}
+    set {_uniqueStorage()._dsc = newValue}
+  }
 
-  public var ssc: UInt32 = 0
+  public var ssc: UInt32 {
+    get {return _storage._ssc}
+    set {_uniqueStorage()._ssc = newValue}
+  }
 
-  public var sigBmp: UInt32 = 0
+  public var sigBmp: UInt32 {
+    get {return _storage._sigBmp}
+    set {_uniqueStorage()._sigBmp = newValue}
+  }
 
   public var semVer: Lastlock_Api_Semver_SemVer {
-    get {return _semVer ?? Lastlock_Api_Semver_SemVer()}
-    set {_semVer = newValue}
+    get {return _storage._semVer ?? Lastlock_Api_Semver_SemVer()}
+    set {_uniqueStorage()._semVer = newValue}
   }
   /// Returns true if `semVer` has been explicitly set.
-  public var hasSemVer: Bool {return self._semVer != nil}
+  public var hasSemVer: Bool {return _storage._semVer != nil}
   /// Clears the value of `semVer`. Subsequent reads from it will return its default value.
-  public mutating func clearSemVer() {self._semVer = nil}
+  public mutating func clearSemVer() {_uniqueStorage()._semVer = nil}
 
   public var signedTimestamp: Link_SignedTime {
-    get {return _signedTimestamp ?? Link_SignedTime()}
-    set {_signedTimestamp = newValue}
+    get {return _storage._signedTimestamp ?? Link_SignedTime()}
+    set {_uniqueStorage()._signedTimestamp = newValue}
   }
   /// Returns true if `signedTimestamp` has been explicitly set.
-  public var hasSignedTimestamp: Bool {return self._signedTimestamp != nil}
+  public var hasSignedTimestamp: Bool {return _storage._signedTimestamp != nil}
   /// Clears the value of `signedTimestamp`. Subsequent reads from it will return its default value.
-  public mutating func clearSignedTimestamp() {self._signedTimestamp = nil}
+  public mutating func clearSignedTimestamp() {_uniqueStorage()._signedTimestamp = nil}
 
   /// only used by bridge to pass its RSSI value
-  public var rssi: Int32 = 0
+  public var rssi: Int32 {
+    get {return _storage._rssi}
+    set {_uniqueStorage()._rssi = newValue}
+  }
 
   /// server timestamp of the last oob the device received
-  public var lastOobServerTimestamp: UInt32 = 0
+  public var lastOobServerTimestamp: UInt32 {
+    get {return _storage._lastOobServerTimestamp}
+    set {_uniqueStorage()._lastOobServerTimestamp = newValue}
+  }
 
-  /// The precise time (according to truetime) on the bridge when this message was received from the device
+  /// The precise time (according to truetime) on the bridge when this message was received from the
+  /// device
   public var bridgeTimestamp: UInt32 {
-    get {return _bridgeTimestamp ?? 0}
-    set {_bridgeTimestamp = newValue}
+    get {return _storage._bridgeTimestamp ?? 0}
+    set {_uniqueStorage()._bridgeTimestamp = newValue}
   }
   /// Returns true if `bridgeTimestamp` has been explicitly set.
-  public var hasBridgeTimestamp: Bool {return self._bridgeTimestamp != nil}
+  public var hasBridgeTimestamp: Bool {return _storage._bridgeTimestamp != nil}
   /// Clears the value of `bridgeTimestamp`. Subsequent reads from it will return its default value.
-  public mutating func clearBridgeTimestamp() {self._bridgeTimestamp = nil}
+  public mutating func clearBridgeTimestamp() {_uniqueStorage()._bridgeTimestamp = nil}
+
+  /// Device Mode Byte as advertised: overriding mode in bits 7-4, bits 3-0 reserved.
+  public var deviceMode: UInt32 {
+    get {return _storage._deviceMode}
+    set {_uniqueStorage()._deviceMode = newValue}
+  }
+
+  /// Device State Byte as advertised: bitmap of DeviceStateBit values; bits 7..5 carry
+  /// BatteryLifecycleState << 5.
+  public var deviceState: UInt32 {
+    get {return _storage._deviceState}
+    set {_uniqueStorage()._deviceState = newValue}
+  }
+
+  /// Active device database version: (firmware_epoch << 32) | state_version.
+  public var databaseVersion: UInt64 {
+    get {return _storage._databaseVersion}
+    set {_uniqueStorage()._databaseVersion = newValue}
+  }
+
+  /// Active MCUboot package version
+  public var bootloaderSemVer: Lastlock_Api_Semver_SemVer {
+    get {return _storage._bootloaderSemVer ?? Lastlock_Api_Semver_SemVer()}
+    set {_uniqueStorage()._bootloaderSemVer = newValue}
+  }
+  /// Returns true if `bootloaderSemVer` has been explicitly set.
+  public var hasBootloaderSemVer: Bool {return _storage._bootloaderSemVer != nil}
+  /// Clears the value of `bootloaderSemVer`. Subsequent reads from it will return its default value.
+  public mutating func clearBootloaderSemVer() {_uniqueStorage()._bootloaderSemVer = nil}
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
 
-  fileprivate var _semVer: Lastlock_Api_Semver_SemVer? = nil
-  fileprivate var _signedTimestamp: Link_SignedTime? = nil
-  fileprivate var _bridgeTimestamp: UInt32? = nil
+  fileprivate var _storage = _StorageClass.defaultInstance
 }
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
@@ -190,6 +366,14 @@ fileprivate let _protobuf_package = "link"
 
 extension Link_SignalingBit: SwiftProtobuf._ProtoNameProviding {
   public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{2}\0Unspecified\0\u{1}ConnReq\0\u{1}TSReq\0\u{2}\u{2}Emergency\0\u{2}\u{4}Busy\0\u{2}\u{8}Reserved4\0\u{2}\u{10}Reserved5\0\u{2} Reserved6\0\u{2}@\u{1}Reserved7\0")
+}
+
+extension Link_OverridingMode: SwiftProtobuf._ProtoNameProviding {
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{2}\0OVERRIDING_MODE_NONE\0\u{1}OVERRIDING_MODE_HIBERNATE\0\u{1}OVERRIDING_MODE_SERVICE\0\u{1}OVERRIDING_MODE_CONSTRUCTION\0\u{1}OVERRIDING_MODE_SILENT\0")
+}
+
+extension Link_DeviceStateBit: SwiftProtobuf._ProtoNameProviding {
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{2}\0DEVICE_STATE_NONE\0\u{1}DEVICE_STATE_LOW_BATTERY\0\u{1}DEVICE_STATE_CRITICAL_BATTERY\0\u{2}\u{2}DEVICE_STATE_COOLDOWN\0\u{2}\u{4}DEVICE_STATE_COLD\0\u{2}\u{8}DEVICE_STATE_RECOVERY\0\u{2}P\u{3}DEVICE_STATE_BATTERY_LIFECYCLE_MASK\0")
 }
 
 extension Link_SignedTime: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
@@ -229,78 +413,160 @@ extension Link_SignedTime: SwiftProtobuf.Message, SwiftProtobuf._MessageImplemen
 
 extension Link_Heartbeat: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".Heartbeat"
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}mfr_id\0\u{3}dev_id\0\u{1}dsc\0\u{1}ssc\0\u{3}sig_bmp\0\u{3}sem_ver\0\u{3}signed_timestamp\0\u{2}\u{2}rssi\0\u{3}last_oob_server_timestamp\0\u{3}bridge_timestamp\0")
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}mfr_id\0\u{3}dev_id\0\u{1}dsc\0\u{1}ssc\0\u{3}sig_bmp\0\u{3}sem_ver\0\u{3}signed_timestamp\0\u{2}\u{2}rssi\0\u{3}last_oob_server_timestamp\0\u{3}bridge_timestamp\0\u{3}device_mode\0\u{3}device_state\0\u{3}database_version\0\u{3}bootloader_sem_ver\0")
+
+  fileprivate class _StorageClass {
+    var _mfrID: UInt32 = 0
+    var _devID: UInt32 = 0
+    var _dsc: UInt32 = 0
+    var _ssc: UInt32 = 0
+    var _sigBmp: UInt32 = 0
+    var _semVer: Lastlock_Api_Semver_SemVer? = nil
+    var _signedTimestamp: Link_SignedTime? = nil
+    var _rssi: Int32 = 0
+    var _lastOobServerTimestamp: UInt32 = 0
+    var _bridgeTimestamp: UInt32? = nil
+    var _deviceMode: UInt32 = 0
+    var _deviceState: UInt32 = 0
+    var _databaseVersion: UInt64 = 0
+    var _bootloaderSemVer: Lastlock_Api_Semver_SemVer? = nil
+
+      // This property is used as the initial default value for new instances of the type.
+      // The type itself is protecting the reference to its storage via CoW semantics.
+      // This will force a copy to be made of this reference when the first mutation occurs;
+      // hence, it is safe to mark this as `nonisolated(unsafe)`.
+      static nonisolated(unsafe) let defaultInstance = _StorageClass()
+
+    private init() {}
+
+    init(copying source: _StorageClass) {
+      _mfrID = source._mfrID
+      _devID = source._devID
+      _dsc = source._dsc
+      _ssc = source._ssc
+      _sigBmp = source._sigBmp
+      _semVer = source._semVer
+      _signedTimestamp = source._signedTimestamp
+      _rssi = source._rssi
+      _lastOobServerTimestamp = source._lastOobServerTimestamp
+      _bridgeTimestamp = source._bridgeTimestamp
+      _deviceMode = source._deviceMode
+      _deviceState = source._deviceState
+      _databaseVersion = source._databaseVersion
+      _bootloaderSemVer = source._bootloaderSemVer
+    }
+  }
+
+  fileprivate mutating func _uniqueStorage() -> _StorageClass {
+    if !isKnownUniquelyReferenced(&_storage) {
+      _storage = _StorageClass(copying: _storage)
+    }
+    return _storage
+  }
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularUInt32Field(value: &self.mfrID) }()
-      case 2: try { try decoder.decodeSingularUInt32Field(value: &self.devID) }()
-      case 3: try { try decoder.decodeSingularUInt32Field(value: &self.dsc) }()
-      case 4: try { try decoder.decodeSingularUInt32Field(value: &self.ssc) }()
-      case 5: try { try decoder.decodeSingularUInt32Field(value: &self.sigBmp) }()
-      case 6: try { try decoder.decodeSingularMessageField(value: &self._semVer) }()
-      case 7: try { try decoder.decodeSingularMessageField(value: &self._signedTimestamp) }()
-      case 9: try { try decoder.decodeSingularSInt32Field(value: &self.rssi) }()
-      case 10: try { try decoder.decodeSingularUInt32Field(value: &self.lastOobServerTimestamp) }()
-      case 11: try { try decoder.decodeSingularUInt32Field(value: &self._bridgeTimestamp) }()
-      default: break
+    _ = _uniqueStorage()
+    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
+      while let fieldNumber = try decoder.nextFieldNumber() {
+        // The use of inline closures is to circumvent an issue where the compiler
+        // allocates stack space for every case branch when no optimizations are
+        // enabled. https://github.com/apple/swift-protobuf/issues/1034
+        switch fieldNumber {
+        case 1: try { try decoder.decodeSingularUInt32Field(value: &_storage._mfrID) }()
+        case 2: try { try decoder.decodeSingularUInt32Field(value: &_storage._devID) }()
+        case 3: try { try decoder.decodeSingularUInt32Field(value: &_storage._dsc) }()
+        case 4: try { try decoder.decodeSingularUInt32Field(value: &_storage._ssc) }()
+        case 5: try { try decoder.decodeSingularUInt32Field(value: &_storage._sigBmp) }()
+        case 6: try { try decoder.decodeSingularMessageField(value: &_storage._semVer) }()
+        case 7: try { try decoder.decodeSingularMessageField(value: &_storage._signedTimestamp) }()
+        case 9: try { try decoder.decodeSingularSInt32Field(value: &_storage._rssi) }()
+        case 10: try { try decoder.decodeSingularUInt32Field(value: &_storage._lastOobServerTimestamp) }()
+        case 11: try { try decoder.decodeSingularUInt32Field(value: &_storage._bridgeTimestamp) }()
+        case 12: try { try decoder.decodeSingularUInt32Field(value: &_storage._deviceMode) }()
+        case 13: try { try decoder.decodeSingularUInt32Field(value: &_storage._deviceState) }()
+        case 14: try { try decoder.decodeSingularUInt64Field(value: &_storage._databaseVersion) }()
+        case 15: try { try decoder.decodeSingularMessageField(value: &_storage._bootloaderSemVer) }()
+        default: break
+        }
       }
     }
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    // The use of inline closures is to circumvent an issue where the compiler
-    // allocates stack space for every if/case branch local when no optimizations
-    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
-    // https://github.com/apple/swift-protobuf/issues/1182
-    if self.mfrID != 0 {
-      try visitor.visitSingularUInt32Field(value: self.mfrID, fieldNumber: 1)
+    try withExtendedLifetime(_storage) { (_storage: _StorageClass) in
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every if/case branch local when no optimizations
+      // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+      // https://github.com/apple/swift-protobuf/issues/1182
+      if _storage._mfrID != 0 {
+        try visitor.visitSingularUInt32Field(value: _storage._mfrID, fieldNumber: 1)
+      }
+      if _storage._devID != 0 {
+        try visitor.visitSingularUInt32Field(value: _storage._devID, fieldNumber: 2)
+      }
+      if _storage._dsc != 0 {
+        try visitor.visitSingularUInt32Field(value: _storage._dsc, fieldNumber: 3)
+      }
+      if _storage._ssc != 0 {
+        try visitor.visitSingularUInt32Field(value: _storage._ssc, fieldNumber: 4)
+      }
+      if _storage._sigBmp != 0 {
+        try visitor.visitSingularUInt32Field(value: _storage._sigBmp, fieldNumber: 5)
+      }
+      try { if let v = _storage._semVer {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 6)
+      } }()
+      try { if let v = _storage._signedTimestamp {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 7)
+      } }()
+      if _storage._rssi != 0 {
+        try visitor.visitSingularSInt32Field(value: _storage._rssi, fieldNumber: 9)
+      }
+      if _storage._lastOobServerTimestamp != 0 {
+        try visitor.visitSingularUInt32Field(value: _storage._lastOobServerTimestamp, fieldNumber: 10)
+      }
+      try { if let v = _storage._bridgeTimestamp {
+        try visitor.visitSingularUInt32Field(value: v, fieldNumber: 11)
+      } }()
+      if _storage._deviceMode != 0 {
+        try visitor.visitSingularUInt32Field(value: _storage._deviceMode, fieldNumber: 12)
+      }
+      if _storage._deviceState != 0 {
+        try visitor.visitSingularUInt32Field(value: _storage._deviceState, fieldNumber: 13)
+      }
+      if _storage._databaseVersion != 0 {
+        try visitor.visitSingularUInt64Field(value: _storage._databaseVersion, fieldNumber: 14)
+      }
+      try { if let v = _storage._bootloaderSemVer {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 15)
+      } }()
     }
-    if self.devID != 0 {
-      try visitor.visitSingularUInt32Field(value: self.devID, fieldNumber: 2)
-    }
-    if self.dsc != 0 {
-      try visitor.visitSingularUInt32Field(value: self.dsc, fieldNumber: 3)
-    }
-    if self.ssc != 0 {
-      try visitor.visitSingularUInt32Field(value: self.ssc, fieldNumber: 4)
-    }
-    if self.sigBmp != 0 {
-      try visitor.visitSingularUInt32Field(value: self.sigBmp, fieldNumber: 5)
-    }
-    try { if let v = self._semVer {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 6)
-    } }()
-    try { if let v = self._signedTimestamp {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 7)
-    } }()
-    if self.rssi != 0 {
-      try visitor.visitSingularSInt32Field(value: self.rssi, fieldNumber: 9)
-    }
-    if self.lastOobServerTimestamp != 0 {
-      try visitor.visitSingularUInt32Field(value: self.lastOobServerTimestamp, fieldNumber: 10)
-    }
-    try { if let v = self._bridgeTimestamp {
-      try visitor.visitSingularUInt32Field(value: v, fieldNumber: 11)
-    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: Link_Heartbeat, rhs: Link_Heartbeat) -> Bool {
-    if lhs.mfrID != rhs.mfrID {return false}
-    if lhs.devID != rhs.devID {return false}
-    if lhs.dsc != rhs.dsc {return false}
-    if lhs.ssc != rhs.ssc {return false}
-    if lhs.sigBmp != rhs.sigBmp {return false}
-    if lhs._semVer != rhs._semVer {return false}
-    if lhs._signedTimestamp != rhs._signedTimestamp {return false}
-    if lhs.rssi != rhs.rssi {return false}
-    if lhs.lastOobServerTimestamp != rhs.lastOobServerTimestamp {return false}
-    if lhs._bridgeTimestamp != rhs._bridgeTimestamp {return false}
+    if lhs._storage !== rhs._storage {
+      let storagesAreEqual: Bool = withExtendedLifetime((lhs._storage, rhs._storage)) { (_args: (_StorageClass, _StorageClass)) in
+        let _storage = _args.0
+        let rhs_storage = _args.1
+        if _storage._mfrID != rhs_storage._mfrID {return false}
+        if _storage._devID != rhs_storage._devID {return false}
+        if _storage._dsc != rhs_storage._dsc {return false}
+        if _storage._ssc != rhs_storage._ssc {return false}
+        if _storage._sigBmp != rhs_storage._sigBmp {return false}
+        if _storage._semVer != rhs_storage._semVer {return false}
+        if _storage._signedTimestamp != rhs_storage._signedTimestamp {return false}
+        if _storage._rssi != rhs_storage._rssi {return false}
+        if _storage._lastOobServerTimestamp != rhs_storage._lastOobServerTimestamp {return false}
+        if _storage._bridgeTimestamp != rhs_storage._bridgeTimestamp {return false}
+        if _storage._deviceMode != rhs_storage._deviceMode {return false}
+        if _storage._deviceState != rhs_storage._deviceState {return false}
+        if _storage._databaseVersion != rhs_storage._databaseVersion {return false}
+        if _storage._bootloaderSemVer != rhs_storage._bootloaderSemVer {return false}
+        return true
+      }
+      if !storagesAreEqual {return false}
+    }
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

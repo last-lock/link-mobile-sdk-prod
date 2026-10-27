@@ -254,6 +254,15 @@ public struct Link_InstallMode: Sendable {
   /// Clears the value of `currVersion`. Subsequent reads from it will return its default value.
   public mutating func clearCurrVersion() {self._currVersion = nil}
 
+  public var mcubootDfu: Bool {
+    get {return _mcubootDfu ?? false}
+    set {_mcubootDfu = newValue}
+  }
+  /// Returns true if `mcubootDfu` has been explicitly set.
+  public var hasMcubootDfu: Bool {return self._mcubootDfu != nil}
+  /// Clears the value of `mcubootDfu`. Subsequent reads from it will return its default value.
+  public mutating func clearMcubootDfu() {self._mcubootDfu = nil}
+
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   /// One of determines if we are entering or exiting install mode
@@ -271,6 +280,7 @@ public struct Link_InstallMode: Sendable {
 
   fileprivate var _dfu: Lastlock_Api_Semver_SemVer? = nil
   fileprivate var _currVersion: Lastlock_Api_Semver_SemVer? = nil
+  fileprivate var _mcubootDfu: Bool? = nil
 }
 
 /// <!-- --8<-- [end:install] -->
@@ -346,6 +356,21 @@ public struct Link_RemoteUnlock: Sendable {
 
   fileprivate var _startTime: UInt32? = nil
   fileprivate var _endTime: UInt32? = nil
+}
+
+/// A battery replacement, sent by the phone of whoever replaced it. The device
+/// resets its battery tracking and sends a BatteryReplaced audit.
+public struct Link_BatteryReplaced: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// Unix seconds the battery was replaced, or is expected to be.
+  public var replacedAt: UInt32 = 0
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
 }
 
 public struct Link_Timesync: Sendable {
@@ -446,6 +471,64 @@ public struct Link_HibernateMode: Sendable {
   }
 
   public init() {}
+}
+
+public struct Link_AliroPushCsr: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  /// Internal command to make firmware push Aliro CSR metadata via the next provisioning payload.
+  /// Temporary ST solution until device metadata requests can pull this automatically.
+  public var push: Bool = false
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+}
+
+/// Runtime log filter and L2F auto-signal settings.
+public struct Link_LogConfigs: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  public var logFilters: [Link_LogConfigs.LogFilter] = []
+
+  public var l2FAutoSignal: Bool {
+    get {return _l2FAutoSignal ?? false}
+    set {_l2FAutoSignal = newValue}
+  }
+  /// Returns true if `l2FAutoSignal` has been explicitly set.
+  public var hasL2FAutoSignal: Bool {return self._l2FAutoSignal != nil}
+  /// Clears the value of `l2FAutoSignal`. Subsequent reads from it will return its default value.
+  public mutating func clearL2FAutoSignal() {self._l2FAutoSignal = nil}
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public struct LogFilter: Sendable {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    /// Source ID (0-based index from log_dictionary.json)
+    public var sourceID: Int32 = 0
+
+    /// 0=NONE, 1=ERR, 2=WRN, 3=INF, 4=DBG
+    public var level: UInt32 = 0
+
+    /// Which backend(s) to apply filter to. Values match LogBackendTarget in config.proto /
+    /// log_backend_target in firmware (0=RTT, 1=L2F, 2=BOTH).
+    public var backendTarget: UInt32 = 0
+
+    public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    public init() {}
+  }
+
+  public init() {}
+
+  fileprivate var _l2FAutoSignal: Bool? = nil
 }
 
 public struct Link_OutOfBandOperation: Sendable {
@@ -561,6 +644,87 @@ public struct Link_OutOfBandOperation: Sendable {
     set {opType = .hibernateMode(newValue)}
   }
 
+  /// Internal command to push Aliro CSR metadata back to the server.
+  public var aliroPushCsr: Link_AliroPushCsr {
+    get {
+      if case .aliroPushCsr(let v)? = opType {return v}
+      return Link_AliroPushCsr()
+    }
+    set {opType = .aliroPushCsr(newValue)}
+  }
+
+  /// Clears eclipse_perm_disabled
+  public var clearEclipsePermDisable_p: Bool {
+    get {
+      if case .clearEclipsePermDisable_p(let v)? = opType {return v}
+      return false
+    }
+    set {opType = .clearEclipsePermDisable_p(newValue)}
+  }
+
+  /// Clears the matching bits from the device error bitmap.
+  public var clearErrorBitmap_p: UInt32 {
+    get {
+      if case .clearErrorBitmap_p(let v)? = opType {return v}
+      return 0
+    }
+    set {opType = .clearErrorBitmap_p(newValue)}
+  }
+
+  /// Enables or disables sensor test mode on the device.
+  public var sensorTestMode: Bool {
+    get {
+      if case .sensorTestMode(let v)? = opType {return v}
+      return false
+    }
+    set {opType = .sensorTestMode(newValue)}
+  }
+
+  /// Starts (non-zero seconds) or stops (0) primary cell sampling outside the usual window.
+  public var triggerPrimaryCellSample: UInt32 {
+    get {
+      if case .triggerPrimaryCellSample(let v)? = opType {return v}
+      return 0
+    }
+    set {opType = .triggerPrimaryCellSample(newValue)}
+  }
+
+  /// Debug-only: forcibly set device unix time.
+  public var debugSetTime: UInt32 {
+    get {
+      if case .debugSetTime(let v)? = opType {return v}
+      return 0
+    }
+    set {opType = .debugSetTime(newValue)}
+  }
+
+  /// Runtime log filter and L2F auto-signal settings.
+  public var logConfigs: Link_LogConfigs {
+    get {
+      if case .logConfigs(let v)? = opType {return v}
+      return Link_LogConfigs()
+    }
+    set {opType = .logConfigs(newValue)}
+  }
+
+  /// Tells the device its battery was replaced, from the phone that did it.
+  public var batteryReplaced: Link_BatteryReplaced {
+    get {
+      if case .batteryReplaced(let v)? = opType {return v}
+      return Link_BatteryReplaced()
+    }
+    set {opType = .batteryReplaced(newValue)}
+  }
+
+  /// Set/Update device specific metadata.
+  public var deviceMetadata: Lastlock_Api_DeviceMetadata_DeviceMetadata {
+    get {
+      if case .deviceMetadata(let v)? = opType {return v}
+      return Lastlock_Api_DeviceMetadata_DeviceMetadata()
+    }
+    set {opType = .deviceMetadata(newValue)}
+  }
+
   public var postDfuConfig: Data {
     get {return _postDfuConfig ?? Data()}
     set {_postDfuConfig = newValue}
@@ -569,6 +733,18 @@ public struct Link_OutOfBandOperation: Sendable {
   public var hasPostDfuConfig: Bool {return self._postDfuConfig != nil}
   /// Clears the value of `postDfuConfig`. Subsequent reads from it will return its default value.
   public mutating func clearPostDfuConfig() {self._postDfuConfig = nil}
+
+  /// ECIES-encrypted link.PostDFUState (shadowstate.proto), applied via the
+  /// ordinary shadow-state framework once the OOB signature verifies. See
+  /// link.PostDFUState's own doc comment for the payload shape.
+  public var postDfuState: Data {
+    get {return _postDfuState ?? Data()}
+    set {_postDfuState = newValue}
+  }
+  /// Returns true if `postDfuState` has been explicitly set.
+  public var hasPostDfuState: Bool {return self._postDfuState != nil}
+  /// Clears the value of `postDfuState`. Subsequent reads from it will return its default value.
+  public mutating func clearPostDfuState() {self._postDfuState = nil}
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -598,12 +774,31 @@ public struct Link_OutOfBandOperation: Sendable {
     case ledTestMode(Link_LEDTestMode)
     /// Puts the device into or out of hibernate mode
     case hibernateMode(Link_HibernateMode)
+    /// Internal command to push Aliro CSR metadata back to the server.
+    case aliroPushCsr(Link_AliroPushCsr)
+    /// Clears eclipse_perm_disabled
+    case clearEclipsePermDisable_p(Bool)
+    /// Clears the matching bits from the device error bitmap.
+    case clearErrorBitmap_p(UInt32)
+    /// Enables or disables sensor test mode on the device.
+    case sensorTestMode(Bool)
+    /// Starts (non-zero seconds) or stops (0) primary cell sampling outside the usual window.
+    case triggerPrimaryCellSample(UInt32)
+    /// Debug-only: forcibly set device unix time.
+    case debugSetTime(UInt32)
+    /// Runtime log filter and L2F auto-signal settings.
+    case logConfigs(Link_LogConfigs)
+    /// Tells the device its battery was replaced, from the phone that did it.
+    case batteryReplaced(Link_BatteryReplaced)
+    /// Set/Update device specific metadata.
+    case deviceMetadata(Lastlock_Api_DeviceMetadata_DeviceMetadata)
 
   }
 
   public init() {}
 
   fileprivate var _postDfuConfig: Data? = nil
+  fileprivate var _postDfuState: Data? = nil
 }
 
 /// <!-- --8<-- [start:oobwrapper] -->
@@ -710,7 +905,7 @@ extension Link_StateReset: SwiftProtobuf.Message, SwiftProtobuf._MessageImplemen
 
 extension Link_InstallMode: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".InstallMode"
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}time\0\u{1}reboot\0\u{1}dfu\0\u{3}curr_version\0")
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}time\0\u{1}reboot\0\u{1}dfu\0\u{3}curr_version\0\u{3}mcuboot_dfu\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -736,6 +931,7 @@ extension Link_InstallMode: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
       }()
       case 3: try { try decoder.decodeSingularMessageField(value: &self._dfu) }()
       case 4: try { try decoder.decodeSingularMessageField(value: &self._currVersion) }()
+      case 5: try { try decoder.decodeSingularBoolField(value: &self._mcubootDfu) }()
       default: break
       }
     }
@@ -763,6 +959,9 @@ extension Link_InstallMode: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
     try { if let v = self._currVersion {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
     } }()
+    try { if let v = self._mcubootDfu {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 5)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -770,6 +969,7 @@ extension Link_InstallMode: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
     if lhs.entry != rhs.entry {return false}
     if lhs._dfu != rhs._dfu {return false}
     if lhs._currVersion != rhs._currVersion {return false}
+    if lhs._mcubootDfu != rhs._mcubootDfu {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -849,6 +1049,36 @@ extension Link_RemoteUnlock: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
     if lhs.remoteUnlockType != rhs.remoteUnlockType {return false}
     if lhs._startTime != rhs._startTime {return false}
     if lhs._endTime != rhs._endTime {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Link_BatteryReplaced: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".BatteryReplaced"
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}replaced_at\0")
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularUInt32Field(value: &self.replacedAt) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.replacedAt != 0 {
+      try visitor.visitSingularUInt32Field(value: self.replacedAt, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: Link_BatteryReplaced, rhs: Link_BatteryReplaced) -> Bool {
+    if lhs.replacedAt != rhs.replacedAt {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1020,9 +1250,118 @@ extension Link_HibernateMode: SwiftProtobuf.Message, SwiftProtobuf._MessageImple
   }
 }
 
+extension Link_AliroPushCsr: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".AliroPushCsr"
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}push\0")
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularBoolField(value: &self.push) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.push != false {
+      try visitor.visitSingularBoolField(value: self.push, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: Link_AliroPushCsr, rhs: Link_AliroPushCsr) -> Bool {
+    if lhs.push != rhs.push {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Link_LogConfigs: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".LogConfigs"
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}log_filters\0\u{3}l2f_auto_signal\0")
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.logFilters) }()
+      case 2: try { try decoder.decodeSingularBoolField(value: &self._l2FAutoSignal) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    if !self.logFilters.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.logFilters, fieldNumber: 1)
+    }
+    try { if let v = self._l2FAutoSignal {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 2)
+    } }()
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: Link_LogConfigs, rhs: Link_LogConfigs) -> Bool {
+    if lhs.logFilters != rhs.logFilters {return false}
+    if lhs._l2FAutoSignal != rhs._l2FAutoSignal {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Link_LogConfigs.LogFilter: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = Link_LogConfigs.protoMessageName + ".LogFilter"
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}source_id\0\u{1}level\0\u{3}backend_target\0")
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularInt32Field(value: &self.sourceID) }()
+      case 2: try { try decoder.decodeSingularUInt32Field(value: &self.level) }()
+      case 3: try { try decoder.decodeSingularUInt32Field(value: &self.backendTarget) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.sourceID != 0 {
+      try visitor.visitSingularInt32Field(value: self.sourceID, fieldNumber: 1)
+    }
+    if self.level != 0 {
+      try visitor.visitSingularUInt32Field(value: self.level, fieldNumber: 2)
+    }
+    if self.backendTarget != 0 {
+      try visitor.visitSingularUInt32Field(value: self.backendTarget, fieldNumber: 3)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: Link_LogConfigs.LogFilter, rhs: Link_LogConfigs.LogFilter) -> Bool {
+    if lhs.sourceID != rhs.sourceID {return false}
+    if lhs.level != rhs.level {return false}
+    if lhs.backendTarget != rhs.backendTarget {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
 extension Link_OutOfBandOperation: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".OutOfBandOperation"
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}device_id\0\u{1}timestamp\0\u{1}dfu\0\u{1}rst\0\u{1}sco\0\u{3}time_sync\0\u{3}install_mode\0\u{3}key_roll_request\0\u{1}identify\0\u{1}recovery\0\u{3}locking_state_engage\0\u{3}led_test_mode\0\u{3}post_dfu_config\0\u{3}hibernate_mode\0")
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{3}device_id\0\u{1}timestamp\0\u{1}dfu\0\u{1}rst\0\u{1}sco\0\u{3}time_sync\0\u{3}install_mode\0\u{3}key_roll_request\0\u{1}identify\0\u{1}recovery\0\u{3}locking_state_engage\0\u{3}led_test_mode\0\u{3}post_dfu_config\0\u{3}hibernate_mode\0\u{3}aliro_push_csr\0\u{3}clear_eclipse_perm_disable\0\u{3}clear_error_bitmap\0\u{3}sensor_test_mode\0\u{3}trigger_primary_cell_sample\0\u{3}debug_set_time\0\u{3}log_configs\0\u{3}post_dfu_state\0\u{3}battery_replaced\0\u{3}device_metadata\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1161,6 +1500,99 @@ extension Link_OutOfBandOperation: SwiftProtobuf.Message, SwiftProtobuf._Message
           self.opType = .hibernateMode(v)
         }
       }()
+      case 15: try {
+        var v: Link_AliroPushCsr?
+        var hadOneofValue = false
+        if let current = self.opType {
+          hadOneofValue = true
+          if case .aliroPushCsr(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.opType = .aliroPushCsr(v)
+        }
+      }()
+      case 16: try {
+        var v: Bool?
+        try decoder.decodeSingularBoolField(value: &v)
+        if let v = v {
+          if self.opType != nil {try decoder.handleConflictingOneOf()}
+          self.opType = .clearEclipsePermDisable_p(v)
+        }
+      }()
+      case 17: try {
+        var v: UInt32?
+        try decoder.decodeSingularUInt32Field(value: &v)
+        if let v = v {
+          if self.opType != nil {try decoder.handleConflictingOneOf()}
+          self.opType = .clearErrorBitmap_p(v)
+        }
+      }()
+      case 18: try {
+        var v: Bool?
+        try decoder.decodeSingularBoolField(value: &v)
+        if let v = v {
+          if self.opType != nil {try decoder.handleConflictingOneOf()}
+          self.opType = .sensorTestMode(v)
+        }
+      }()
+      case 19: try {
+        var v: UInt32?
+        try decoder.decodeSingularUInt32Field(value: &v)
+        if let v = v {
+          if self.opType != nil {try decoder.handleConflictingOneOf()}
+          self.opType = .triggerPrimaryCellSample(v)
+        }
+      }()
+      case 20: try {
+        var v: UInt32?
+        try decoder.decodeSingularUInt32Field(value: &v)
+        if let v = v {
+          if self.opType != nil {try decoder.handleConflictingOneOf()}
+          self.opType = .debugSetTime(v)
+        }
+      }()
+      case 21: try {
+        var v: Link_LogConfigs?
+        var hadOneofValue = false
+        if let current = self.opType {
+          hadOneofValue = true
+          if case .logConfigs(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.opType = .logConfigs(v)
+        }
+      }()
+      case 22: try { try decoder.decodeSingularBytesField(value: &self._postDfuState) }()
+      case 23: try {
+        var v: Link_BatteryReplaced?
+        var hadOneofValue = false
+        if let current = self.opType {
+          hadOneofValue = true
+          if case .batteryReplaced(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.opType = .batteryReplaced(v)
+        }
+      }()
+      case 24: try {
+        var v: Lastlock_Api_DeviceMetadata_DeviceMetadata?
+        var hadOneofValue = false
+        if let current = self.opType {
+          hadOneofValue = true
+          if case .deviceMetadata(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.opType = .deviceMetadata(v)
+        }
+      }()
       default: break
       }
     }
@@ -1223,9 +1655,55 @@ extension Link_OutOfBandOperation: SwiftProtobuf.Message, SwiftProtobuf._Message
     try { if let v = self._postDfuConfig {
       try visitor.visitSingularBytesField(value: v, fieldNumber: 13)
     } }()
-    try { if case .hibernateMode(let v)? = self.opType {
+    switch self.opType {
+    case .hibernateMode?: try {
+      guard case .hibernateMode(let v)? = self.opType else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 14)
+    }()
+    case .aliroPushCsr?: try {
+      guard case .aliroPushCsr(let v)? = self.opType else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 15)
+    }()
+    case .clearEclipsePermDisable_p?: try {
+      guard case .clearEclipsePermDisable_p(let v)? = self.opType else { preconditionFailure() }
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 16)
+    }()
+    case .clearErrorBitmap_p?: try {
+      guard case .clearErrorBitmap_p(let v)? = self.opType else { preconditionFailure() }
+      try visitor.visitSingularUInt32Field(value: v, fieldNumber: 17)
+    }()
+    case .sensorTestMode?: try {
+      guard case .sensorTestMode(let v)? = self.opType else { preconditionFailure() }
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 18)
+    }()
+    case .triggerPrimaryCellSample?: try {
+      guard case .triggerPrimaryCellSample(let v)? = self.opType else { preconditionFailure() }
+      try visitor.visitSingularUInt32Field(value: v, fieldNumber: 19)
+    }()
+    case .debugSetTime?: try {
+      guard case .debugSetTime(let v)? = self.opType else { preconditionFailure() }
+      try visitor.visitSingularUInt32Field(value: v, fieldNumber: 20)
+    }()
+    case .logConfigs?: try {
+      guard case .logConfigs(let v)? = self.opType else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 21)
+    }()
+    default: break
+    }
+    try { if let v = self._postDfuState {
+      try visitor.visitSingularBytesField(value: v, fieldNumber: 22)
     } }()
+    switch self.opType {
+    case .batteryReplaced?: try {
+      guard case .batteryReplaced(let v)? = self.opType else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 23)
+    }()
+    case .deviceMetadata?: try {
+      guard case .deviceMetadata(let v)? = self.opType else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 24)
+    }()
+    default: break
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -1234,6 +1712,7 @@ extension Link_OutOfBandOperation: SwiftProtobuf.Message, SwiftProtobuf._Message
     if lhs.timestamp != rhs.timestamp {return false}
     if lhs.opType != rhs.opType {return false}
     if lhs._postDfuConfig != rhs._postDfuConfig {return false}
+    if lhs._postDfuState != rhs._postDfuState {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

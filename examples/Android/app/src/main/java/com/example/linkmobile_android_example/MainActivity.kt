@@ -1,69 +1,135 @@
 package com.example.linkmobile_android_example
 
+import android.Manifest
+import android.app.AlertDialog
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import com.example.linkmobile_android_example.ui.theme.LinkMobileAndroidExampleTheme
 import com.lastlock.bridge.Bridge
 
-class MainActivity : ComponentActivity() {
-    private var businessServerUrl: String = "http://100.64.62.54:3005"
-    private var applicationViewModel: ApplicationViewModel = ApplicationViewModel(businessServerUrl)
-    private var permissionsGranted = mutableStateOf(false)
-    private val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        arrayOf(
-            android.Manifest.permission.BLUETOOTH_SCAN,
-            android.Manifest.permission.BLUETOOTH_CONNECT,
-            android.Manifest.permission.POST_NOTIFICATIONS // POST_NOTIFICATIONS introduced in api 33
-        )
+internal fun requiredLinkPermissions(sdkInt: Int): List<String> = when {
+    sdkInt >= Build.VERSION_CODES.TIRAMISU -> listOf(
+        Manifest.permission.BLUETOOTH_SCAN,
+        Manifest.permission.BLUETOOTH_CONNECT,
+        Manifest.permission.POST_NOTIFICATIONS,
+    )
+    sdkInt >= Build.VERSION_CODES.S -> listOf(
+        Manifest.permission.BLUETOOTH_SCAN,
+        Manifest.permission.BLUETOOTH_CONNECT,
+    )
+    else -> listOf(
+        Manifest.permission.BLUETOOTH_ADMIN,
+        Manifest.permission.BLUETOOTH,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+    ) + if (sdkInt >= Build.VERSION_CODES.Q) {
+        listOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
     } else {
-        arrayOf(
-            android.Manifest.permission.BLUETOOTH_ADMIN, android.Manifest.permission.BLUETOOTH, android.Manifest.permission.ACCESS_FINE_LOCATION
+        emptyList()
+    }
+}
+
+internal fun nextLinkPermissionRequest(missing: List<String>): List<String> {
+    // Grant foreground location before requesting background access.
+    val foreground = missing.filterNot { it == Manifest.permission.ACCESS_BACKGROUND_LOCATION }
+    return foreground.ifEmpty { missing }
+}
+
+class MainActivity : ComponentActivity() {
+    private val businessServerUrl = "http://<local_server_domain>:3006"
+    private val applicationViewModel by lazy {
+        ApplicationViewModel(
+            context = applicationContext,
+            businessServerUrl = businessServerUrl,
         )
     }
+    private var permissionsGranted = false
+    private val permissions = requiredLinkPermissions(Build.VERSION.SDK_INT)
 
-    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-        // Check if all permissions were granted
-        val allGranted = permissions.all { it.value }
-        if (allGranted) {
-            Log.d("MainActivity", "Permissions granted!")
-            startLinkMobile()
-            permissionsGranted.value = true
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
+        if (results.isNotEmpty() && results.values.all { it }) {
+            // Recheck all grants before starting, or advance to background location.
+            checkAndRequestPermissions()
         } else {
             Log.w("MainActivity", "Missing permissions")
+            showPermissionRecovery()
         }
     }
 
-    private fun checkAndRequestPermissions() {
-        val missingPermissions = permissions.filter {
-            ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
-        }
+    private fun hasPermission(permission: String): Boolean =
+        ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
-        if (missingPermissions.isNotEmpty()) {
-            requestPermissionLauncher.launch(missingPermissions.toTypedArray())
+    private fun checkAndRequestPermissions() {
+        val missingPermissions = permissions.filterNot(::hasPermission)
+
+        if (missingPermissions.isEmpty()) {
+            if (!permissionsGranted) {
+                Log.d("MainActivity", "Permissions granted!")
+                startLinkMobile()
+                permissionsGranted = true
+            }
         } else {
-            startLinkMobile()
-            permissionsGranted.value = true
+            val nextStage = nextLinkPermissionRequest(missingPermissions)
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.R &&
+                nextStage == listOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+            ) {
+                // Android 11 requires Allow all the time to be enabled in Settings.
+                showPermissionRecovery()
+            } else {
+                requestPermissionLauncher.launch(nextStage.toTypedArray())
+            }
         }
+    }
+
+    private fun showPermissionRecovery() {
+        val missing = permissions.filterNot(::hasPermission)
+        if (missing.isEmpty()) {
+            checkAndRequestPermissions()
+            return
+        }
+        val backgroundLocationMissing = Build.VERSION.SDK_INT == Build.VERSION_CODES.R &&
+            missing == listOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+        val openSettings = backgroundLocationMissing || nextLinkPermissionRequest(missing).any {
+            !shouldShowRequestPermissionRationale(it)
+        }
+        val message = when {
+            backgroundLocationMissing ->
+                "To discover locks in the background, allow location access all the time in app Settings."
+            Manifest.permission.ACCESS_FINE_LOCATION in missing ->
+                "Allow location access so this app can discover nearby locks."
+            Manifest.permission.BLUETOOTH_SCAN in missing || Manifest.permission.BLUETOOTH_CONNECT in missing ->
+                "Allow Nearby devices access so this app can discover and connect to locks."
+            Manifest.permission.POST_NOTIFICATIONS in missing ->
+                "Allow notifications so this app can show its Bluetooth service notification."
+            else -> "Grant the required permissions to enable lock discovery."
+        }
+        AlertDialog.Builder(this)
+            .setTitle("Permission required")
+            .setMessage(message)
+            .setPositiveButton(if (openSettings) "Open Settings" else "Try again") { _, _ ->
+                if (openSettings) {
+                    startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.parse("package:$packageName")
+                    })
+                } else {
+                    checkAndRequestPermissions()
+                }
+            }
+            .setNegativeButton("Not now", null)
+            .show()
     }
 
     private fun startLinkMobile() {
-        val serviceUUID = "4000"
-        Bridge.start(serviceUUID)
+        Bridge.start()
     }
 
 
@@ -76,31 +142,19 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             LinkMobileAndroidExampleTheme {
-                val vm = applicationViewModel
-                Text("Link SDK Companion")
-                DeviceScreen(
-                    viewModel = vm,
-                    onDeviceTap = { device ->
-                        vm.performCredExchange(device)
-                    }
-                )
+                DeviceScreen(viewModel = applicationViewModel)
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    LinkMobileAndroidExampleTheme {
-        Greeting("Android")
+    override fun onResume() {
+        super.onResume()
+        // Resume startup after the user grants access in Settings. Do not open
+        // permission dialogs here; onResume also runs during permission requests.
+        if (permissions.all(::hasPermission)) {
+            checkAndRequestPermissions()
+        } else {
+            permissionsGranted = false
+        }
     }
 }

@@ -7,8 +7,8 @@ class ExampleApplication: Application() {
     override fun onCreate() {
         super.onCreate()
 
-       val serverAddress = "api.lastlock.seamless.lastlock.com"
-        Bridge.init(this, serverAddress)
+       val linkAddress = "plane.lastlock.com"
+        Bridge.init(this, linkAddress)
         Bridge.setLogsEnabled(true)
     }
 }

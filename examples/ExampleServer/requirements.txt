@@ -1,0 +1,8 @@
+# Runtime dependencies for the Link example servers and generators.
+# Python 3.9.2 or later is required.
+Flask==3.1.2
+cbor2==5.9.0
+cryptography==46.0.7
+grpcio==1.80.0
+grpcio-tools==1.80.0
+protobuf==6.33.5
