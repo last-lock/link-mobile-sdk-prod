@@ -1,6 +1,6 @@
 **LAST LOCK INC TERMS OF SERVICE**
 
-Last Updated: **August 12, 2025**
+Last Updated: **October 27, 2026**
 
 Welcome, and thank you for choosing to be part of our SEAMLESS Technology Community.  These Terms of Service (“Terms”) constitute a legally binding agreement between Last Lock Inc (together with its affiliates, “Last Lock,” “we,” “us,” or “our”) and govern the purchase and use of SEAMLESS Technology (as defined herein) by you, the end customer and user of the SEAMLESS Technology (“Customer”), either in connection with a purchase of the SEAMLESS Technology or use of the SEAMLESS Technology for evaluation purposes as part of a free trial. Customer is under no obligation to purchase the SEAMLESS Technology used in a free trial and will only be invoiced or charged for SEAMLESS Technology not purchased or returned following the expiration of the trial period.
 
