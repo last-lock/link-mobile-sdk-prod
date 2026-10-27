@@ -79,7 +79,7 @@
 <body>
 <div class="root">
     <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
-<a class="library-name--link" href="../../../index.html" tabindex="1">
+<a class="library-name--link" href="/" tabindex="1">
                     <img class="doc-logo" src="../../../branding/logo.png" alt="Link logo">
                     <span>LinkMobile</span>
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
@@ -142,7 +142,7 @@
     <h1 class="cover"><span><span>Bridge</span></span></h1>
     <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
       <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="index.html">Bridge</a> : <a href="../-i-bridge/index.html">IBridge</a></div><p class="paragraph">The entry point for the SDK meant to initialize the SDK, scan and connect to nearby devices over BLE as well as perform credential exchange operations and create proxy network in the background for the locks to connect to the cloud. Note, Bridge and its implementation is designed to be asynchronous delivering results via delegates / callbacks.</p><p class="paragraph">Usage:</p><ul><li><p class="paragraph">Retrieve instances of BlueLink, BLEProxy, DFUService, CredLink, etc. via the IsolatedKoinContext singleton.</p></li><li><p class="paragraph">Use this object to initialize the library, start scanning, and perform other integration tasks.</p></li><li><p class="paragraph">All dependencies are managed through Koin, ensuring isolated and safe access to library components.</p></li></ul><p class="paragraph">Typical flow:</p><ol><li><p class="paragraph">Call <a href="init.html">init</a> with your application context and server address to initialize the library.</p></li><li><p class="paragraph">Use <a href="start.html">start</a> to begin the foreground service to run blueLink and bleProxy.</p></li><li><p class="paragraph">Use <a href="get-blue-link.html">getBlueLink</a>, <a href="get-cred-link.html">getCredLink</a>, etc. to retrieve library instances as needed.</p></li></ol></div>    </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="index.html">Bridge</a> : <a href="../-i-bridge/index.html">IBridge</a></div><p class="paragraph">The entry point for the SDK meant to initialize the SDK, scan and connect to nearby devices over BLE as well as perform credential exchange operations and create proxy network in the background for the locks to connect to the cloud. Note, Bridge and its implementation is designed to be asynchronous delivering results via delegates / callbacks.</p><p class="paragraph">Usage:</p><ul><li><p class="paragraph">Retrieve instances of BlueLink, BLEProxy, DFUService, CredLink, etc. via the IsolatedKoinContext singleton.</p></li><li><p class="paragraph">Use this object to initialize the library, start scanning, and perform other integration tasks.</p></li><li><p class="paragraph">All dependencies are managed through Koin, ensuring isolated and safe access to library components.</p></li></ul><p class="paragraph">Typical flow:</p><ol><li><p class="paragraph">Call <a href="init.html">init</a> with your application context to initialize the library using the production server.</p></li><li><p class="paragraph">Use <a href="start.html">start</a> to begin the foreground service to run blueLink and bleProxy, or     startLimited to run the same service without a notification (foreground app only).</p></li><li><p class="paragraph">Use <a href="get-blue-link.html">getBlueLink</a>, <a href="get-cred-link.html">getCredLink</a>, etc. to retrieve library instances as needed.</p></li></ol></div>    </div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
@@ -267,7 +267,41 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="init.html"><span class="token function">init</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token punctuation">, </span></span><span class="parameter ">serverAddress<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Initializes the Bridge SDK with the application context and server address registering the context, loads modules, and configures shared dependencies used by the SDK.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="init.html"><span class="token function">init</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token punctuation">, </span></span><span class="parameter ">serverAddress<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">"plane.lastlock.com"</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Initializes the Bridge SDK with the application context and server address registering the context, loads modules, and configures shared dependencies used by the SDK.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1360242334%2FFunctions%2F909228742" anchor-label="restart" id="-1360242334%2FFunctions%2F909228742" data-filterable-set=":bridge/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="restart.html"><span><span>restart</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1360242334%2FFunctions%2F909228742"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="restart.html"><span class="token function">restart</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">serverAddress<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">uuid<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">port<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">443</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Restarts proxy streaming and BLE scan against a new plane host / service UUID.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2137323807%2FFunctions%2F909228742" anchor-label="setDebugLogsEnabled" id="-2137323807%2FFunctions%2F909228742" data-filterable-set=":bridge/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-debug-logs-enabled.html"><span>set</span><wbr><span>Debug</span><wbr><span>Logs</span><wbr><span><span>Enabled</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2137323807%2FFunctions%2F909228742"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-debug-logs-enabled.html"><span class="token function">setDebugLogsEnabled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isEnabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Enable local debug capture (on by default). Disabling also clears its history.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -306,6 +340,23 @@
               </div>
             </div>
           </div>
+<a data-name="-380253323%2FFunctions%2F909228742" anchor-label="setServerPort" id="-380253323%2FFunctions%2F909228742" data-filterable-set=":bridge/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-server-port.html"><span>set</span><wbr><span>Server</span><wbr><span><span>Port</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-380253323%2FFunctions%2F909228742"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-server-port.html"><span class="token function">setServerPort</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">port<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 <a data-name="301005124%2FFunctions%2F909228742" anchor-label="setUUID" id="301005124%2FFunctions%2F909228742" data-filterable-set=":bridge/androidMain"></a>
           <div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain">
             <div class="main-subrow keyValue ">
@@ -335,7 +386,41 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="start.html"><span class="token function">start</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">UUID<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Starts scanning for Bluetooth LE peripherals advertising the specified service UUID. Discovery events are delivered to any registered BlueLinkEventListener without duplicate filtering. Each advertisement packet may trigger a callback, so the same device can be reported multiple times.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="start.html"><span class="token function">start</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">UUID<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">"FC5A"</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Starts scanning for Bluetooth LE peripherals advertising the specified service UUID.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1050843713%2FFunctions%2F909228742" anchor-label="startLimited" id="-1050843713%2FFunctions%2F909228742" data-filterable-set=":bridge/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="start-limited.html"><span>start</span><wbr><span><span>Limited</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1050843713%2FFunctions%2F909228742"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="start-limited.html"><span class="token function">startLimited</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">UUID<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">"FC5A"</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Starts <a href="../-bluetooth-service/index.html">BluetoothService</a> as a background service. No notification is posted.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-745408274%2FFunctions%2F909228742" anchor-label="submitDebugReport" id="-745408274%2FFunctions%2F909228742" data-filterable-set=":bridge/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="submit-debug-report.html"><span>submit</span><wbr><span>Debug</span><wbr><span><span>Report</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-745408274%2FFunctions%2F909228742"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="submit-debug-report.html"><span class="token function">submitDebugReport</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Submit recent logs and return the report ID for support. Throws when unavailable; safe to retry.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -413,6 +498,7 @@
   function normalizeHeader(){
     var brand = document.querySelector('.navigation .library-name--link');
     if(!brand) return;
+    brand.setAttribute('href', '/');
     brand.replaceChildren();
     var logo = document.createElement('img');
     logo.className = 'doc-logo';

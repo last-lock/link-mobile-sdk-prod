@@ -79,7 +79,7 @@
 <body>
 <div class="root">
     <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
-<a class="library-name--link" href="../../index.html" tabindex="1">
+<a class="library-name--link" href="/" tabindex="1">
                     <img class="doc-logo" src="../../branding/logo.png" alt="Link logo">
                     <span>LinkMobile</span>
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
@@ -150,7 +150,7 @@
     <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
   </div>
   <div class="tabbedcontent">
-    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
     <div class="tabs-section-body">
       <div data-togglable="TYPE">
         <h2 class="tableheader">Types</h2>
@@ -303,6 +303,27 @@
           </div>
         </div>
       </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="1449090280%2FFunctions%2F909228742" anchor-label="usesPlaintextGrpcTransport" id="1449090280%2FFunctions%2F909228742" data-filterable-set=":bridge/androidMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="uses-plaintext-grpc-transport.html"><span>uses</span><wbr><span>Plaintext</span><wbr><span>Grpc</span><wbr><span><span>Transport</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1449090280%2FFunctions%2F909228742"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="uses-plaintext-grpc-transport.html"><span class="token function">usesPlaintextGrpcTransport</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">port<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Selects plaintext only for explicit non-default gRPC ports used by Dev Zone overrides.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -374,6 +395,7 @@
   function normalizeHeader(){
     var brand = document.querySelector('.navigation .library-name--link');
     if(!brand) return;
+    brand.setAttribute('href', '/');
     brand.replaceChildren();
     var logo = document.createElement('img');
     logo.className = 'doc-logo';

@@ -79,7 +79,7 @@
 <body>
 <div class="root">
     <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
-<a class="library-name--link" href="../../../index.html" tabindex="1">
+<a class="library-name--link" href="/" tabindex="1">
                     <img class="doc-logo" src="../../../branding/logo.png" alt="Link logo">
                     <span>LinkMobile</span>
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
@@ -141,7 +141,7 @@
   <div class="cover ">
     <h1 class="cover"><span>has</span><wbr><span>Low</span><wbr><span>Battery</span><wbr><span><span>Status</span></span></h1>
   </div>
-  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="has-low-battery-status.html"><span class="token function">hasLowBatteryStatus</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="has-low-battery-status.html"><span class="token function">hasLowBatteryStatus</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><p class="paragraph">Signaling low-battery bit, or device-state low/critical bits if signaling omits battery.</p></div></div>
 </div>
     <div class="footer">
         <div class="footer--container">
@@ -211,6 +211,7 @@
   function normalizeHeader(){
     var brand = document.querySelector('.navigation .library-name--link');
     if(!brand) return;
+    brand.setAttribute('href', '/');
     brand.replaceChildren();
     var logo = document.createElement('img');
     logo.className = 'doc-logo';

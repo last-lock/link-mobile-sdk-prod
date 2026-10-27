@@ -79,7 +79,7 @@
 <body>
 <div class="root">
     <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
-<a class="library-name--link" href="../../../index.html" tabindex="1">
+<a class="library-name--link" href="/" tabindex="1">
                     <img class="doc-logo" src="../../../branding/logo.png" alt="Link logo">
                     <span>LinkMobile</span>
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
@@ -221,7 +221,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="pending-heartbeat-bridge-epochs.html">pendingHeartbeatBridgeEpochs</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Parallel to <a href="../../../bridge/com.lastlock.bridge.proxy.persistence/-device-generated-persisted-payload/--root--.html">pendingHeartbeats</a>: TrueTime epoch seconds when the bridge received each heartbeat.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="pending-heartbeat-bridge-epochs.html">pendingHeartbeatBridgeEpochs</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Parallel to <code class="lang-kotlin">pendingHeartbeats</code>: TrueTime epoch seconds when the bridge received each heartbeat.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -333,6 +333,7 @@
   function normalizeHeader(){
     var brand = document.querySelector('.navigation .library-name--link');
     if(!brand) return;
+    brand.setAttribute('href', '/');
     brand.replaceChildren();
     var logo = document.createElement('img');
     logo.className = 'doc-logo';

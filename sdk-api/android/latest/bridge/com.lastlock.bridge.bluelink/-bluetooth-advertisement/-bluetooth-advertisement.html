@@ -79,7 +79,7 @@
 <body>
 <div class="root">
     <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
-<a class="library-name--link" href="../../../index.html" tabindex="1">
+<a class="library-name--link" href="/" tabindex="1">
                     <img class="doc-logo" src="../../../branding/logo.png" alt="Link logo">
                     <span>LinkMobile</span>
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
@@ -136,12 +136,12 @@
         </nav>
         <div id="resizer" class="resizer" data-item-type="BAR"></div>
         <div id="main" data-item-type="SECTION" role="main">
-<div class="main-content" data-page-type="member" id="content" pageids="bridge::com.lastlock.bridge.bluelink/BluetoothAdvertisement/BluetoothAdvertisement/#kotlin.UInt#kotlin.UShort#kotlin.UShort#kotlin.UByte#com.lastlock.bridge.bluelink.DeviceFirmwareVersion?/PointingToDeclaration//2074461332">
+<div class="main-content" data-page-type="member" id="content" pageids="bridge::com.lastlock.bridge.bluelink/BluetoothAdvertisement/BluetoothAdvertisement/#kotlin.UInt#kotlin.UShort#kotlin.UShort#kotlin.UByte#kotlin.UByte?#kotlin.UByte?/PointingToDeclaration//2074461332">
   <div class="breadcrumbs"><a href="../../index.html">bridge</a><span class="delimiter">/</span><a href="../index.html">com.lastlock.bridge.bluelink</a><span class="delimiter">/</span><a href="index.html">BluetoothAdvertisement</a><span class="delimiter">/</span><span class="current">BluetoothAdvertisement</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Bluetooth</span><wbr><span><span>Advertisement</span></span></h1>
   </div>
-  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">uniqueIdentifier<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-int/index.html">UInt</a><span class="token punctuation">, </span></span><span class="parameter ">deviceStateCounter<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-short/index.html">UShort</a><span class="token punctuation">, </span></span><span class="parameter ">serverStateCounter<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-short/index.html">UShort</a><span class="token punctuation">, </span></span><span class="parameter ">signalingByte<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-byte/index.html">UByte</a><span class="token punctuation">, </span></span><span class="parameter ">firmwareVersion<span class="token operator">: </span><a href="../-device-firmware-version/index.html">DeviceFirmwareVersion</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div></div></div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">uniqueIdentifier<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-int/index.html">UInt</a><span class="token punctuation">, </span></span><span class="parameter ">deviceStateCounter<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-short/index.html">UShort</a><span class="token punctuation">, </span></span><span class="parameter ">serverStateCounter<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-short/index.html">UShort</a><span class="token punctuation">, </span></span><span class="parameter ">signalingByte<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-byte/index.html">UByte</a><span class="token punctuation">, </span></span><span class="parameter ">deviceModeByte<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-byte/index.html">UByte</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">deviceStateByte<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-byte/index.html">UByte</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div></div></div>
 </div>
     <div class="footer">
         <div class="footer--container">
@@ -211,6 +211,7 @@
   function normalizeHeader(){
     var brand = document.querySelector('.navigation .library-name--link');
     if(!brand) return;
+    brand.setAttribute('href', '/');
     brand.replaceChildren();
     var logo = document.createElement('img');
     logo.className = 'doc-logo';

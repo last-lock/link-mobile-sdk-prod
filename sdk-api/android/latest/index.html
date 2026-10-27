@@ -79,7 +79,7 @@
 <body>
 <div class="root">
     <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
-            <a class="library-name--link" href="index.html" tabindex="1">
+            <a class="library-name--link" href="/" tabindex="1">
                     <img class="doc-logo" src="branding/logo.png" alt="Link logo">
                     <span>LinkMobile</span>
             </a>
@@ -155,7 +155,7 @@
       <h2 class="">Usage</h2>
       <h3 class="">Initialize and start scanning</h3>
       <div class="sample-container">
-        <pre><code class="block lang-kotlin" theme="idea">Bridge.init(context = applicationContext, serverAddress = &quot;&lt;your-backend-host&gt;&quot;)<br>Bridge.setLogsEnabled(isEnabled = true)<br><br>// Start scanning for peripherals advertising the BLE service UUID.<br>Bridge.start(UUID = &quot;&lt;ble-service-uuid&gt;&quot;)<br><br>val blueLink = Bridge.getBlueLink()<br>blueLink.addListener(listener = myBlueLinkListener, prependListener = false)</code></pre>
+        <pre><code class="block lang-kotlin" theme="idea">Bridge.init(context = applicationContext, serverAddress = &quot;&lt;your-backend-host&gt;&quot;)<br>Bridge.setLogsEnabled(isEnabled = true)<br><br>// Start scanning for peripherals advertising the default FC5A service UUID.<br>Bridge.start()<br><br>// To scan for a different service UUID, pass it explicitly.<br>// Bridge.start(UUID = &quot;&lt;ble-service-uuid&gt;&quot;)<br><br>val blueLink = Bridge.getBlueLink()<br>blueLink.addListener(listener = myBlueLinkListener, prependListener = false)</code></pre>
 <span class="copy-tooltip">
           <div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div>
 <span class="copy-icon"></span></span></div>
@@ -244,6 +244,7 @@
   function normalizeHeader(){
     var brand = document.querySelector('.navigation .library-name--link');
     if(!brand) return;
+    brand.setAttribute('href', '/');
     brand.replaceChildren();
     var logo = document.createElement('img');
     logo.className = 'doc-logo';

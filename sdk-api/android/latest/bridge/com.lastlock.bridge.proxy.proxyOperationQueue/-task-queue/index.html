@@ -79,7 +79,7 @@
 <body>
 <div class="root">
     <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
-<a class="library-name--link" href="../../../index.html" tabindex="1">
+<a class="library-name--link" href="/" tabindex="1">
                     <img class="doc-logo" src="../../../branding/logo.png" alt="Link logo">
                     <span>LinkMobile</span>
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
@@ -140,7 +140,7 @@
   <div class="breadcrumbs"><a href="../../index.html">bridge</a><span class="delimiter">/</span><a href="../index.html">com.lastlock.bridge.proxy.proxyOperationQueue</a><span class="delimiter">/</span><span class="current">TaskQueue</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Task</span><wbr><span><span>Queue</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="kotlinx.serialization/Serializable///PointingToDeclaration/"><span class="token annotation builtin">Serializable</span></span></div></div><span class="token keyword">class </span><a href="index.html">TaskQueue</a></div><p class="paragraph">TaskQueue - A queue implementation for managing TaskElement instances.</p><p class="paragraph">All mutating reads/writes are guarded by <a href="../../../bridge/com.lastlock.bridge.proxy.proxy-operation-queue/-task-queue/queue-lock.html">queueLock</a> so index-based removal cannot race with concurrent enqueue/dequeue (e.g. BLE disconnect clearing the queue on one thread while another updates the queue).</p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="kotlinx.serialization/Serializable///PointingToDeclaration/"><span class="token annotation builtin">Serializable</span></span></div></div><span class="token keyword">class </span><a href="index.html">TaskQueue</a></div><p class="paragraph">TaskQueue - A queue implementation for managing TaskElement instances.</p><p class="paragraph">All mutating reads/writes are guarded by <code class="lang-kotlin">queueLock</code> so index-based removal cannot race with concurrent enqueue/dequeue (e.g. BLE disconnect clearing the queue on one thread while another updates the queue).</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
@@ -284,6 +284,7 @@
   function normalizeHeader(){
     var brand = document.querySelector('.navigation .library-name--link');
     if(!brand) return;
+    brand.setAttribute('href', '/');
     brand.replaceChildren();
     var logo = document.createElement('img');
     logo.className = 'doc-logo';

@@ -79,7 +79,7 @@
 <body>
 <div class="root">
     <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
-<a class="library-name--link" href="../../../index.html" tabindex="1">
+<a class="library-name--link" href="/" tabindex="1">
                     <img class="doc-logo" src="../../../branding/logo.png" alt="Link logo">
                     <span>LinkMobile</span>
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
@@ -143,7 +143,7 @@
   </div>
   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="init.html"><span class="token function">init</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token punctuation">, </span></span><span class="parameter ">serverAddress<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Initializes the Bridge SDK with the application context and server address registering the context, loads modules, and configures shared dependencies used by the SDK.</p><h4 class="tableheader">Parameters</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>context</span></span></u></div></span></div><div><div class="title"><p class="paragraph">Application context.</p></div></div></div></div><div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>server</span><wbr><span><span>Address</span></span></u></div></span></div><div><div class="title"><p class="paragraph">Server base URL used by SDK services.</p></div></div></div></div></div></div>  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="init.html"><span class="token function">init</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token punctuation">, </span></span><span class="parameter ">serverAddress<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">"plane.lastlock.com"</span></span></span><span class="token punctuation">)</span></div><p class="paragraph">Initializes the Bridge SDK with the application context and server address registering the context, loads modules, and configures shared dependencies used by the SDK.</p><h4 class="tableheader">Parameters</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>context</span></span></u></div></span></div><div><div class="title"><p class="paragraph">Application context.</p></div></div></div></div><div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>server</span><wbr><span><span>Address</span></span></u></div></span></div><div><div class="title"><p class="paragraph">Server hostname used by SDK services. Defaults to plane.lastlock.com.</p></div></div></div></div></div></div>  </div>
 </div>
     <div class="footer">
         <div class="footer--container">
@@ -213,6 +213,7 @@
   function normalizeHeader(){
     var brand = document.querySelector('.navigation .library-name--link');
     if(!brand) return;
+    brand.setAttribute('href', '/');
     brand.replaceChildren();
     var logo = document.createElement('img');
     logo.className = 'doc-logo';

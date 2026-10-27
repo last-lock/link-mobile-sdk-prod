@@ -79,7 +79,7 @@
 <body>
 <div class="root">
     <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
-<a class="library-name--link" href="../../../index.html" tabindex="1">
+<a class="library-name--link" href="/" tabindex="1">
                     <img class="doc-logo" src="../../../branding/logo.png" alt="Link logo">
                     <span>LinkMobile</span>
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
@@ -90,6 +90,7 @@
         <div class="navigation-controls">
         <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
                 <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":bridge/androidMain">android</button>
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":bridge/commonMain">common</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
                 <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
@@ -103,6 +104,13 @@
                                 <input type="checkbox" class="checkbox--input" id=":bridge/androidMain" data-filter=":bridge/androidMain">
                                 <span class="checkbox--icon"></span>
                                 android
+                            </label>
+                        </li>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":bridge/commonMain" data-filter=":bridge/commonMain">
+                                <span class="checkbox--icon"></span>
+                                common
                             </label>
                         </li>
                 </ul>
@@ -145,7 +153,7 @@
 <div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">TrueTimeManager</a> : <a href="../-i-true-time-manager/index.html">ITrueTimeManager</a></div></div>    </div>
   </div>
   <div class="tabbedcontent">
-    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION,EXTENSION_PROPERTY,EXTENSION_FUNCTION">Members &amp; Extensions</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
         <h2 class="tableheader">Constructors</h2>
@@ -203,7 +211,22 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="get-current-time-seconds.html"><span class="token function">getCurrentTimeSeconds</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief "><p class="paragraph">Get the current synchronized time in Unix epoch seconds. If time is unavailable for some reason, retry 3 times before failing the operation</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="get-current-time-seconds.html"><span class="token function">getCurrentTimeSeconds</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief "><p class="paragraph">Get the current synchronized time in Unix epoch seconds. Returns -1 immediately when TrueTime is not ready (does not block the caller).</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-466637855%2FFunctions%2F2074461332" anchor-label="getCurrentTimeSecondsWithRetry" id="-466637855%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../get-current-time-seconds-with-retry.html"><span>get</span><wbr><span>Current</span><wbr><span>Time</span><wbr><span>Seconds</span><wbr><span>With</span><wbr><span><span>Retry</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-466637855%2FFunctions%2F2074461332"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="../-i-true-time-manager/index.html">ITrueTimeManager</a><span class="token punctuation">.</span><a href="../get-current-time-seconds-with-retry.html"><span class="token function">getCurrentTimeSecondsWithRetry</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">attempts<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>TRUE_TIME_RETRY_ATTEMPTS<span class="token punctuation">, </span></span><span class="parameter ">delayMs<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator"> = </span>TRUE_TIME_RETRY_DELAY_MS</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief "><p class="paragraph">Polls getCurrentTimeSeconds without blocking a thread. Returns -1 if still unavailable.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -298,6 +321,7 @@
   function normalizeHeader(){
     var brand = document.querySelector('.navigation .library-name--link');
     if(!brand) return;
+    brand.setAttribute('href', '/');
     brand.replaceChildren();
     var logo = document.createElement('img');
     logo.className = 'doc-logo';

@@ -79,7 +79,7 @@
 <body>
 <div class="root">
     <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
-<a class="library-name--link" href="../../../index.html" tabindex="1">
+<a class="library-name--link" href="/" tabindex="1">
                     <img class="doc-logo" src="../../../branding/logo.png" alt="Link logo">
                     <span>LinkMobile</span>
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
@@ -89,7 +89,7 @@
         </div>
         <div class="navigation-controls">
         <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
-                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":bridge/androidMain">android</button>
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":bridge/commonMain">common</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
                 <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
@@ -98,11 +98,11 @@
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
-                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":bridge/androidMain" data-filter=":bridge/androidMain">
+                                <input type="checkbox" class="checkbox--input" id=":bridge/commonMain" data-filter=":bridge/commonMain">
                                 <span class="checkbox--icon"></span>
-                                android
+                                common
                             </label>
                         </li>
                 </ul>
@@ -136,32 +136,62 @@
         </nav>
         <div id="resizer" class="resizer" data-item-type="BAR"></div>
         <div id="main" data-item-type="SECTION" role="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="bridge::com.lastlock.bridge.credlink/CredLink///PointingToDeclaration//909228742">
+<div class="main-content" data-page-type="classlike" id="content" pageids="bridge::com.lastlock.bridge.credlink/CredLink///PointingToDeclaration//2074461332">
   <div class="breadcrumbs"><a href="../../index.html">bridge</a><span class="delimiter">/</span><a href="../index.html">com.lastlock.bridge.credlink</a><span class="delimiter">/</span><span class="current">CredLink</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Cred</span><wbr><span><span>Link</span></span></h1>
-    <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-      <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">CredLink</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">blueLink<span class="token operator">: </span><a href="../../com.lastlock.bridge.bluelink/-blue-link/index.html">BlueLink</a><span class="token punctuation">, </span></span><span class="parameter ">networkConnectivityMonitor<span class="token operator">: </span><a href="../../com.lastlock.bridge.core.network/-network-connectivity-monitor/index.html">NetworkConnectivityMonitor</a><span class="token punctuation">, </span></span><span class="parameter ">keyStoreHelper<span class="token operator">: </span><a href="../../com.lastlock.bridge.credlink.secure/-key-store-helper/index.html">KeyStoreHelper</a></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/DefaultLifecycleObserver.html">DefaultLifecycleObserver</a>, <a href="../../com.lastlock.bridge.core.network/-connectivity-listener/index.html">ConnectivityListener</a></div><p class="paragraph">Public Interface that exposes various functionalities for performing BLE Credential Exchange operations with nearby Last Lock devices. Implementor must link BlueLink delegates for proper functioning of the package</p><p class="paragraph">Note:</p><ul><li><p class="paragraph">The library assumes that peripherals on which operations are performed come are tracked in BlueLink</p></li><li><p class="paragraph">Any errors thrown by BlueLink will be sent to the implementor to handle aka CredLink library does not do any deep error handling caused by a violation of the assumptions specified above</p></li></ul></div>    </div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">CredLink</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">blueLink<span class="token operator">: </span><a href="../../com.lastlock.bridge.bluelink/-blue-link/index.html">BlueLink</a><span class="token punctuation">, </span></span><span class="parameter ">networkConnectivityMonitor<span class="token operator">: </span><a href="../../com.lastlock.bridge.core.network/-network-connectivity-monitor/index.html">NetworkConnectivityMonitor</a><span class="token punctuation">, </span></span><span class="parameter ">iOSCryptoHandler<span class="token operator">: </span><a href="../../com.lastlock.bridge.credlink.crypto/-cred-link-crypto-handler/index.html">CredLinkCryptoHandler</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">iOSTrueTimeManager<span class="token operator">: </span><a href="../../com.lastlock.bridge.core.util/-i-true-time-manager/index.html">ITrueTimeManager</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span> : <a href="../../com.lastlock.bridge.core.network/-connectivity-listener/index.html">ConnectivityListener</a></div><p class="paragraph">Shared CredLink orchestration for PKOC credential exchange and offline time sync over BlueLink.</p><p class="paragraph">Responsibilities:</p><ul><li><p class="paragraph">Session lifecycle (<a href="on-session-start.html">onSessionStart</a>, <a href="on-session-end.html">onSessionEnd</a>) and phone key management (<a href="validate-legacy-phone-keys.html">validateLegacyPhoneKeys</a>)</p></li><li><p class="paragraph">Queuing BlueLink operations and per-device timeouts</p></li><li><p class="paragraph">Thread-safe device registry and coordination with the internal exchange state machine</p></li></ul><p class="paragraph">Platform cryptography is delegated to <a href="../../com.lastlock.bridge.credlink.crypto/-cred-link-crypto-handler/index.html">CredLinkCryptoHandler</a> (Android Keystore + BouncyCastle, or iOS CryptoKit + Keychain via Swift).</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
         <h2 class="tableheader">Constructors</h2>
-        <div class="table"><a data-name="866538892%2FConstructors%2F909228742" anchor-label="CredLink" id="866538892%2FConstructors%2F909228742" data-filterable-set=":bridge/androidMain"></a>
-          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain">
+        <div class="table"><a data-name="791425911%2FConstructors%2F2074461332" anchor-label="CredLink" id="791425911%2FConstructors%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-cred-link.html"><span>Cred</span><wbr><span><span>Link</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="866538892%2FConstructors%2F909228742"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="791425911%2FConstructors%2F2074461332"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">blueLink<span class="token operator">: </span><a href="../../com.lastlock.bridge.bluelink/-blue-link/index.html">BlueLink</a><span class="token punctuation">, </span></span><span class="parameter ">networkConnectivityMonitor<span class="token operator">: </span><a href="../../com.lastlock.bridge.core.network/-network-connectivity-monitor/index.html">NetworkConnectivityMonitor</a><span class="token punctuation">, </span></span><span class="parameter ">keyStoreHelper<span class="token operator">: </span><a href="../../com.lastlock.bridge.credlink.secure/-key-store-helper/index.html">KeyStoreHelper</a></span></span><span class="token punctuation">)</span></div></div>                  </div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">blueLink<span class="token operator">: </span><a href="../../com.lastlock.bridge.bluelink/-blue-link/index.html">BlueLink</a><span class="token punctuation">, </span></span><span class="parameter ">networkConnectivityMonitor<span class="token operator">: </span><a href="../../com.lastlock.bridge.core.network/-network-connectivity-monitor/index.html">NetworkConnectivityMonitor</a><span class="token punctuation">, </span></span><span class="parameter ">iOSCryptoHandler<span class="token operator">: </span><a href="../../com.lastlock.bridge.credlink.crypto/-cred-link-crypto-handler/index.html">CredLinkCryptoHandler</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">iOSTrueTimeManager<span class="token operator">: </span><a href="../../com.lastlock.bridge.core.util/-i-true-time-manager/index.html">ITrueTimeManager</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-1793363414%2FProperties%2F2074461332" anchor-label="credentialExchangeListener" id="-1793363414%2FProperties%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="credential-exchange-listener.html"><span>credential</span><wbr><span>Exchange</span><wbr><span><span>Listener</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1793363414%2FProperties%2F2074461332"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.concurrent/-volatile/index.html"><span class="token annotation builtin">Volatile</span></a></div></div><span class="token keyword">var </span><a href="credential-exchange-listener.html">credentialExchangeListener</a><span class="token operator">: </span><a href="../../com.lastlock.bridge.credlink.interfaces/-credential-exchange-listener/index.html">CredentialExchangeListener</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-409643331%2FProperties%2F2074461332" anchor-label="networkAvailable" id="-409643331%2FProperties%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="network-available.html"><span>network</span><wbr><span><span>Available</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-409643331%2FProperties%2F2074461332"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="network-available.html">networkAvailable</a><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines.flow/StateFlow///PointingToDeclaration/">StateFlow</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span><span class="token operator">&gt;</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -170,121 +200,272 @@
       </div>
       <div data-togglable="FUNCTION">
         <h2 class="tableheader">Functions</h2>
-        <div class="table"><a data-name="1005204327%2FFunctions%2F909228742" anchor-label="getPublicKeyHex" id="1005204327%2FFunctions%2F909228742" data-filterable-set=":bridge/androidMain"></a>
-          <div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain">
+        <div class="table"><a data-name="-113161947%2FFunctions%2F2074461332" anchor-label="createEphemeralTokenUnlockCredential" id="-113161947%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="create-ephemeral-token-unlock-credential.html"><span>create</span><wbr><span>Ephemeral</span><wbr><span>Token</span><wbr><span>Unlock</span><wbr><span><span>Credential</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-113161947%2FFunctions%2F2074461332"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="create-ephemeral-token-unlock-credential.html"><span class="token function">createEphemeralTokenUnlockCredential</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-ephemeral-token-unlock-credential/index.html">EphemeralTokenUnlockCredential</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Creates a fresh P-256 credential for Ephemeral Temporary Access valid for two minutes. The key pair generated is only persisted in session memory and is purged on session end.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-661572763%2FFunctions%2F2074461332" anchor-label="deleteTokenUnlockPass" id="-661572763%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="delete-token-unlock-pass.html"><span>delete</span><wbr><span>Token</span><wbr><span>Unlock</span><wbr><span><span>Pass</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-661572763%2FFunctions%2F2074461332"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="delete-token-unlock-pass.html"><span class="token function">deleteTokenUnlockPass</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">namespace<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Removes the token unlock pass data associated with <a href="delete-token-unlock-pass.html">namespace</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2087001503%2FFunctions%2F2074461332" anchor-label="didChangeConnectivity" id="-2087001503%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="did-change-connectivity.html"><span>did</span><wbr><span>Change</span><wbr><span><span>Connectivity</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2087001503%2FFunctions%2F2074461332"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="did-change-connectivity.html"><span class="token function">didChangeConnectivity</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isConnected<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">ConnectivityListener callback; drives offline PKOC time-sync eligibility via <a href="network-available.html">networkAvailable</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-923712515%2FFunctions%2F2074461332" anchor-label="discardEphemeralTokenUnlockCredential" id="-923712515%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="discard-ephemeral-token-unlock-credential.html"><span>discard</span><wbr><span>Ephemeral</span><wbr><span>Token</span><wbr><span>Unlock</span><wbr><span><span>Credential</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-923712515%2FFunctions%2F2074461332"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="discard-ephemeral-token-unlock-credential.html"><span class="token function">discardEphemeralTokenUnlockCredential</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">credential<span class="token operator">: </span><a href="../-ephemeral-token-unlock-credential/index.html">EphemeralTokenUnlockCredential</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1392280200%2FFunctions%2F2074461332" anchor-label="fetchPublicCredential" id="1392280200%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="fetch-public-credential.html"><span>fetch</span><wbr><span>Public</span><wbr><span><span>Credential</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1392280200%2FFunctions%2F2074461332"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="fetch-public-credential.html"><span class="token function">fetchPublicCredential</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">namespace<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">force<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a></div><div class="brief "><p class="paragraph">Creates or reuses the P-256 key bound to a temporary-pass namespace.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1005204327%2FFunctions%2F2074461332" anchor-label="getPublicKeyHex" id="1005204327%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-public-key-hex.html"><span>get</span><wbr><span>Public</span><wbr><span>Key</span><wbr><span><span>Hex</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1005204327%2FFunctions%2F909228742"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1005204327%2FFunctions%2F2074461332"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="get-public-key-hex.html"><span class="token function">getPublicKeyHex</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Returns the active CredLink public key as a hex string, if available.</p></div></div>                  </div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="get-public-key-hex.html"><span class="token function">getPublicKeyHex</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Returns the wire-format PKOC public key for the current config.phoneKeysAlias, as hex.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1479492682%2FFunctions%2F909228742" anchor-label="getPublicKeyHexForUser" id="1479492682%2FFunctions%2F909228742" data-filterable-set=":bridge/androidMain"></a>
-          <div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain">
+<a data-name="-1888328476%2FFunctions%2F2074461332" anchor-label="getPublicKeyHexForAlias" id="-1888328476%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-public-key-hex-for-alias.html"><span>get</span><wbr><span>Public</span><wbr><span>Key</span><wbr><span>Hex</span><wbr><span>For</span><wbr><span><span>Alias</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1888328476%2FFunctions%2F2074461332"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="get-public-key-hex-for-alias.html"><span class="token function">getPublicKeyHexForAlias</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">alias<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1479492682%2FFunctions%2F2074461332" anchor-label="getPublicKeyHexForUser" id="1479492682%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-public-key-hex-for-user.html"><span>get</span><wbr><span>Public</span><wbr><span>Key</span><wbr><span>Hex</span><wbr><span>For</span><wbr><span><span>User</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1479492682%2FFunctions%2F909228742"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1479492682%2FFunctions%2F2074461332"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="get-public-key-hex-for-user.html"><span class="token function">getPublicKeyHexForUser</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">serverAddress<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Returns the persisted public key hex for <a href="get-public-key-hex-for-user.html">userId</a> and <a href="get-public-key-hex-for-user.html">serverAddress</a> without mutating the active phone key alias or CredLink session state.</p></div></div>                  </div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="get-public-key-hex-for-user.html"><span class="token function">getPublicKeyHexForUser</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">serverAddress<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Returns the persisted public key hex for <a href="get-public-key-hex-for-user.html">userId</a> and <a href="get-public-key-hex-for-user.html">serverAddress</a> without mutating the active phone key alias or CredLink session state.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="121587449%2FFunctions%2F909228742" anchor-label="performCredLinkOperation" id="121587449%2FFunctions%2F909228742" data-filterable-set=":bridge/androidMain"></a>
-          <div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain">
+<a data-name="1547857988%2FFunctions%2F2074461332" anchor-label="getTokenUnlockPass" id="1547857988%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-token-unlock-pass.html"><span>get</span><wbr><span>Token</span><wbr><span>Unlock</span><wbr><span><span>Pass</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1547857988%2FFunctions%2F2074461332"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="get-token-unlock-pass.html"><span class="token function">getTokenUnlockPass</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">namespace<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.lastlock.bridge.credlink.interfaces/-token-unlock-pass/index.html">TokenUnlockPass</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Fetches the persisted token-unlock-pass persisted under the provided <a href="get-token-unlock-pass.html">namespace</a></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2001126668%2FFunctions%2F2074461332" anchor-label="onSessionEnd" id="-2001126668%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-session-end.html"><span>on</span><wbr><span>Session</span><wbr><span><span>End</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2001126668%2FFunctions%2F2074461332"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-session-end.html"><span class="token function">onSessionEnd</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Clears in-memory CredLink state when a Bridge session ends. Long-term keys are preserved.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-501149491%2FFunctions%2F2074461332" anchor-label="onSessionStart" id="-501149491%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-session-start.html"><span>on</span><wbr><span>Session</span><wbr><span><span>Start</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-501149491%2FFunctions%2F2074461332"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-session-start.html"><span class="token function">onSessionStart</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Resets in-memory CredLink state when a Bridge session starts. Long-term keys are preserved.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1396893594%2FFunctions%2F2074461332" anchor-label="performCredLinkOperation" id="1396893594%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="perform-cred-link-operation.html"><span>perform</span><wbr><span>Cred</span><wbr><span>Link</span><wbr><span><span>Operation</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="121587449%2FFunctions%2F909228742"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1396893594%2FFunctions%2F2074461332"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="perform-cred-link-operation.html"><span class="token function">performCredLinkOperation</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">peripheral<span class="token operator">: </span><a href="../../com.lastlock.bridge.bluelink/-bluetooth-device/index.html">BluetoothDevice</a><span class="token punctuation">, </span></span><span class="parameter ">isTimeSync<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Queues a CredLink operation (credential exchange or time sync) for the given device. If the device is busy, credential exchange requests are queued for later execution. Time sync requests are not queued and will be ignored when the device is not ready.</p></div></div>                  </div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="perform-cred-link-operation.html"><span class="token function">performCredLinkOperation</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">peripheral<span class="token operator">: </span><a href="../../com.lastlock.bridge.bluelink/-bluetooth-device/index.html">BluetoothDevice</a><span class="token punctuation">, </span></span><span class="parameter ">operation<span class="token operator">: </span><a href="../../com.lastlock.bridge.credlink.config/-cred-link-operation/index.html">CredLinkOperation</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Queues a credential exchange or offline time-sync operation on BlueLink for <a href="perform-cred-link-operation.html">peripheral</a>.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1839621669%2FFunctions%2F909228742" anchor-label="printPublicKeyForLinkConsole" id="-1839621669%2FFunctions%2F909228742" data-filterable-set=":bridge/androidMain"></a>
-          <div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="print-public-key-for-link-console.html"><span>print</span><wbr><span>Public</span><wbr><span>Key</span><wbr><span>For</span><wbr><span>Link</span><wbr><span><span>Console</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1839621669%2FFunctions%2F909228742"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="print-public-key-for-link-console.html"><span class="token function">printPublicKeyForLinkConsole</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div>                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1797599035%2FFunctions%2F909228742" anchor-label="resetPhoneKeys" id="-1797599035%2FFunctions%2F909228742" data-filterable-set=":bridge/androidMain"></a>
-          <div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain">
+<a data-name="-1797599035%2FFunctions%2F2074461332" anchor-label="resetPhoneKeys" id="-1797599035%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="reset-phone-keys.html"><span>reset</span><wbr><span>Phone</span><wbr><span><span>Keys</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1797599035%2FFunctions%2F909228742"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1797599035%2FFunctions%2F2074461332"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="reset-phone-keys.html"><span class="token function">resetPhoneKeys</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div>                  </div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="reset-phone-keys.html"><span class="token function">resetPhoneKeys</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Clears phone keys asynchronously for legacy callers. Prefer <a href="reset-phone-keys-and-wait.html">resetPhoneKeysAndWait</a>.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1443661651%2FFunctions%2F909228742" anchor-label="scopePhoneKeysForUser" id="-1443661651%2FFunctions%2F909228742" data-filterable-set=":bridge/androidMain"></a>
-          <div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain">
+<a data-name="-1624340631%2FFunctions%2F2074461332" anchor-label="resetPhoneKeysAndWait" id="-1624340631%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="reset-phone-keys-and-wait.html"><span>reset</span><wbr><span>Phone</span><wbr><span>Keys</span><wbr><span>And</span><wbr><span><span>Wait</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1624340631%2FFunctions%2F2074461332"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="reset-phone-keys-and-wait.html"><span class="token function">resetPhoneKeysAndWait</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Clears the in-memory phone key alias and all active exchange sessions. Keystore keys are preserved. The operation completes before this function returns so callers can safely start a new authenticated session afterward.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1443661651%2FFunctions%2F2074461332" anchor-label="scopePhoneKeysForUser" id="-1443661651%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="scope-phone-keys-for-user.html"><span>scope</span><wbr><span>Phone</span><wbr><span>Keys</span><wbr><span>For</span><wbr><span><span>User</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1443661651%2FFunctions%2F909228742"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1443661651%2FFunctions%2F2074461332"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="scope-phone-keys-for-user.html"><span class="token function">scopePhoneKeysForUser</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">serverAddress<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Scopes persisted phone keys to <a href="scope-phone-keys-for-user.html">userId</a> and <a href="scope-phone-keys-for-user.html">serverAddress</a> without generating new keys or contacting the server. Use when resuming an offline session.</p></div></div>                  </div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="scope-phone-keys-for-user.html"><span class="token function">scopePhoneKeysForUser</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">serverAddress<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Scopes persisted phone keys to <a href="scope-phone-keys-for-user.html">userId</a> and <a href="scope-phone-keys-for-user.html">serverAddress</a> without generating new keys or contacting the server. Use when resuming an offline session.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1532551565%2FFunctions%2F909228742" anchor-label="validatePhoneKeys" id="1532551565%2FFunctions%2F909228742" data-filterable-set=":bridge/androidMain"></a>
-          <div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain">
+<a data-name="-1848785406%2FFunctions%2F2074461332" anchor-label="storeEphemeralTokenUnlockPass" id="-1848785406%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
-                  <div><a href="validate-phone-keys.html"><span>validate</span><wbr><span>Phone</span><wbr><span><span>Keys</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1532551565%2FFunctions%2F909228742"></span>
+                  <div><a href="store-ephemeral-token-unlock-pass.html"><span>store</span><wbr><span>Ephemeral</span><wbr><span>Token</span><wbr><span>Unlock</span><wbr><span><span>Pass</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1848785406%2FFunctions%2F2074461332"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="validate-phone-keys.html"><span class="token function">validatePhoneKeys</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">serverAddress<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">forceGeneration<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">callback<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-result/index.html">Result</a><span class="token operator">&lt;</span><a href="../../com.lastlock.bridge.credlink.enums/-validate-phone-keys-result/index.html">ValidatePhoneKeysResult</a><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Validates or generates long-term phone keys and returns the public key via callback. If keys already exist and <a href="validate-phone-keys.html">forceGeneration</a> is false, the existing public key is returned. Otherwise a new key pair is generated, persisted, and returned.</p></div></div>                  </div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="store-ephemeral-token-unlock-pass.html"><span class="token function">storeEphemeralTokenUnlockPass</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">credential<span class="token operator">: </span><a href="../-ephemeral-token-unlock-credential/index.html">EphemeralTokenUnlockCredential</a><span class="token punctuation">, </span></span><span class="parameter ">pass<span class="token operator">: </span><a href="../../com.lastlock.bridge.credlink.interfaces/-token-unlock-pass/index.html">TokenUnlockPass</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Stores <a href="store-ephemeral-token-unlock-pass.html">pass</a> when <a href="store-ephemeral-token-unlock-pass.html">credential</a> identifies the active ephemeral setup session.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="128130913%2FFunctions%2F2074461332" anchor-label="storeTokenUnlockPass" id="128130913%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="store-token-unlock-pass.html"><span>store</span><wbr><span>Token</span><wbr><span>Unlock</span><wbr><span><span>Pass</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="128130913%2FFunctions%2F2074461332"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="store-token-unlock-pass.html"><span class="token function">storeTokenUnlockPass</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">namespace<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">tokenUnlockPass<span class="token operator">: </span><a href="../../com.lastlock.bridge.credlink.interfaces/-token-unlock-pass/index.html">TokenUnlockPass</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Persists the provided token-unlock-pass in platform secure storage under <a href="store-token-unlock-pass.html">namespace</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="358782472%2FFunctions%2F2074461332" anchor-label="validateLegacyPhoneKeys" id="358782472%2FFunctions%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="validate-legacy-phone-keys.html"><span>validate</span><wbr><span>Legacy</span><wbr><span>Phone</span><wbr><span><span>Keys</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="358782472%2FFunctions%2F2074461332"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="validate-legacy-phone-keys.html"><span class="token function">validateLegacyPhoneKeys</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">serverAddress<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">forceGeneration<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">callback<span class="token operator">: </span><span class="token punctuation">(</span><a href="../../com.lastlock.bridge.credlink.enums/-validate-phone-keys-result/index.html">ValidatePhoneKeysResult</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Ensures a P-256 key pair exists for the given user and server, generating and persisting one if needed.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -362,6 +543,7 @@
   function normalizeHeader(){
     var brand = document.querySelector('.navigation .library-name--link');
     if(!brand) return;
+    brand.setAttribute('href', '/');
     brand.replaceChildren();
     var logo = document.createElement('img');
     logo.className = 'doc-logo';

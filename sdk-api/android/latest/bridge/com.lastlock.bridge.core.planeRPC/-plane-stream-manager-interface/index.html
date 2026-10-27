@@ -79,7 +79,7 @@
 <body>
 <div class="root">
     <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
-<a class="library-name--link" href="../../../index.html" tabindex="1">
+<a class="library-name--link" href="/" tabindex="1">
                     <img class="doc-logo" src="../../../branding/logo.png" alt="Link logo">
                     <span>LinkMobile</span>
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
@@ -140,7 +140,7 @@
   <div class="breadcrumbs"><a href="../../index.html">bridge</a><span class="delimiter">/</span><a href="../index.html">com.lastlock.bridge.core.planeRPC</a><span class="delimiter">/</span><span class="current">PlaneStreamManagerInterface</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Plane</span><wbr><span>Stream</span><wbr><span>Manager</span><wbr><span><span>Interface</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="index.html">PlaneStreamManagerInterface</a></div><h4 class="tableheader">Inheritors</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../../bridge/com.lastlock.bridge.core.plane-r-p-c/-plane-stream-manager/index.html">PlaneStreamManager</a></div></span></div><div></div></div></div></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="index.html">PlaneStreamManagerInterface</a></div><h4 class="tableheader">Inheritors</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../../bridge/com.lastlock.bridge.core.planeRPC/-plane-stream-manager/index.html">PlaneStreamManager</a></div></span></div><div></div></div></div></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
@@ -370,6 +370,7 @@
   function normalizeHeader(){
     var brand = document.querySelector('.navigation .library-name--link');
     if(!brand) return;
+    brand.setAttribute('href', '/');
     brand.replaceChildren();
     var logo = document.createElement('img');
     logo.className = 'doc-logo';

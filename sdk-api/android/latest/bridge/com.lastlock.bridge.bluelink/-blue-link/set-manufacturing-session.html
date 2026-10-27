@@ -79,7 +79,7 @@
 <body>
 <div class="root">
     <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
-<a class="library-name--link" href="../../../index.html" tabindex="1">
+<a class="library-name--link" href="/" tabindex="1">
                     <img class="doc-logo" src="../../../branding/logo.png" alt="Link logo">
                     <span>LinkMobile</span>
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
@@ -141,7 +141,7 @@
   <div class="cover ">
     <h1 class="cover"><span>set</span><wbr><span>Manufacturing</span><wbr><span><span>Session</span></span></h1>
   </div>
-  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-manufacturing-session.html"><span class="token function">setManufacturingSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">deviceId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-int/index.html">UInt</a><span class="token punctuation">, </span></span><span class="parameter ">active<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><p class="paragraph"><strong>INTERNAL TESTING ONLY, DO NOT USE</strong> <strong>Manufacturing / bench capture:</strong> When <code class="lang-kotlin">active</code> is true, marks the tracked lock so BlueLink behaves like a “connection requested” session: <a href="../../../bridge/com.lastlock.bridge.bluelink.dtq/-d-t-q-handlers/index.html">DTQHandlers</a> will not auto-disconnect when the operation queue is empty (same idea as a lock asking to stay connected via advertisement). Also sets <a href="../../../bridge/com.lastlock.bridge.bluelink/-device/suppress-connection-timeout-for-manufacturing.html">Device.suppressConnectionTimeoutForManufacturing</a> so the central connection monitor does not tear down a long-running GATT session after the normal idle timeout.</p><p class="paragraph">Android-only orchestration is implemented in the host app (e.g. Seamless manufacturing module); these APIs stay in commonMain so BlueLink can apply device state without referencing <code class="lang-kotlin">BuildConfig</code>.</p></div></div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-manufacturing-session.html"><span class="token function">setManufacturingSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">deviceId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-int/index.html">UInt</a><span class="token punctuation">, </span></span><span class="parameter ">active<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><p class="paragraph"><strong>INTERNAL TESTING ONLY, DO NOT USE</strong> <strong>Manufacturing / bench capture:</strong> When <code class="lang-kotlin">active</code> is true, marks the tracked lock so BlueLink behaves like a “connection requested” session: <code class="lang-kotlin">DTQHandlers</code> will not auto-disconnect when the operation queue is empty (same idea as a lock asking to stay connected via advertisement). Also sets <code class="lang-kotlin">Device.suppressConnectionTimeoutForManufacturing</code> so the central connection monitor does not tear down a long-running GATT session after the normal idle timeout.</p><p class="paragraph">Android-only orchestration is implemented in the host app (e.g. Seamless manufacturing module); these APIs stay in commonMain so BlueLink can apply device state without referencing <code class="lang-kotlin">BuildConfig</code>.</p></div></div>
 </div>
     <div class="footer">
         <div class="footer--container">
@@ -211,6 +211,7 @@
   function normalizeHeader(){
     var brand = document.querySelector('.navigation .library-name--link');
     if(!brand) return;
+    brand.setAttribute('href', '/');
     brand.replaceChildren();
     var logo = document.createElement('img');
     logo.className = 'doc-logo';

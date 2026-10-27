@@ -79,7 +79,7 @@
 <body>
 <div class="root">
     <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
-<a class="library-name--link" href="../../index.html" tabindex="1">
+<a class="library-name--link" href="/" tabindex="1">
                     <img class="doc-logo" src="../../branding/logo.png" alt="Link logo">
                     <span>LinkMobile</span>
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
@@ -90,8 +90,8 @@
         <div class="navigation-controls">
         <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
                 <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":bridge/androidMain">android</button>
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":bridge/appleMain">apple</button>
                 <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":bridge/commonMain">common</button>
-                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":bridge/iosMain">ios</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
                 <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
@@ -109,16 +109,16 @@
                         </li>
                         <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":bridge/commonMain" data-filter=":bridge/commonMain">
+                                <input type="checkbox" class="checkbox--input" id=":bridge/appleMain" data-filter=":bridge/appleMain">
                                 <span class="checkbox--icon"></span>
-                                common
+                                apple
                             </label>
                         </li>
                         <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":bridge/iosMain" data-filter=":bridge/iosMain">
+                                <input type="checkbox" class="checkbox--input" id=":bridge/commonMain" data-filter=":bridge/commonMain">
                                 <span class="checkbox--icon"></span>
-                                ios
+                                common
                             </label>
                         </li>
                 </ul>
@@ -152,14 +152,14 @@
         </nav>
         <div id="resizer" class="resizer" data-item-type="BAR"></div>
         <div id="main" data-item-type="SECTION" role="main">
-<div class="main-content" data-page-type="member" id="content" pageids="bridge::com.lastlock.bridge//loadModules/#/PointingToDeclaration//1068320958">
+<div class="main-content" data-page-type="member" id="content" pageids="bridge::com.lastlock.bridge//loadModules/#/PointingToDeclaration//-752493160">
   <div class="breadcrumbs"><a href="../index.html">bridge</a><span class="delimiter">/</span><a href="index.html">com.lastlock.bridge</a><span class="delimiter">/</span><span class="current">loadModules</span></div>
   <div class="cover ">
     <h1 class="cover"><span>load</span><wbr><span><span>Modules</span></span></h1>
   </div>
   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button><button class="platform-bookmark" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain" data-toggle=":bridge/commonMain">common</button><button class="platform-bookmark" data-filterable-current=":bridge/iosMain" data-filterable-set=":bridge/iosMain" data-toggle=":bridge/iosMain">ios</button></div>
-<div class="content sourceset-dependent-content" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="load-modules.html"><span class="token function">loadModules</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">fun </span><a href="load-modules.html"><span class="token function">loadModules</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div><div class="content sourceset-dependent-content" data-togglable=":bridge/iosMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="load-modules.html"><span class="token function">loadModules</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div>  </div>
+    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button><button class="platform-bookmark" data-filterable-current=":bridge/appleMain" data-filterable-set=":bridge/appleMain" data-toggle=":bridge/appleMain">apple</button><button class="platform-bookmark" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain" data-toggle=":bridge/commonMain">common</button></div>
+<div class="content sourceset-dependent-content" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="load-modules.html"><span class="token function">loadModules</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div><div class="content sourceset-dependent-content" data-togglable=":bridge/appleMain"><div class="symbol monospace"><span class="token keyword">actual </span><span class="token keyword">fun </span><a href="load-modules.html"><span class="token function">loadModules</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">expect </span><span class="token keyword">fun </span><a href="load-modules.html"><span class="token function">loadModules</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div>  </div>
 </div>
     <div class="footer">
         <div class="footer--container">
@@ -229,6 +229,7 @@
   function normalizeHeader(){
     var brand = document.querySelector('.navigation .library-name--link');
     if(!brand) return;
+    brand.setAttribute('href', '/');
     brand.replaceChildren();
     var logo = document.createElement('img');
     logo.className = 'doc-logo';

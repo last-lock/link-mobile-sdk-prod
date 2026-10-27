@@ -79,7 +79,7 @@
 <body>
 <div class="root">
     <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
-<a class="library-name--link" href="../../../../index.html" tabindex="1">
+<a class="library-name--link" href="/" tabindex="1">
                     <img class="doc-logo" src="../../../../branding/logo.png" alt="Link logo">
                     <span>LinkMobile</span>
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
@@ -162,6 +162,21 @@
               </div>
             </div>
           </div>
+<a data-name="-707083334%2FProperties%2F2074461332" anchor-label="PACKET_SIZE_WITH_MODE_STATE" id="-707083334%2FProperties%2F2074461332" data-filterable-set=":bridge/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":bridge/commonMain" data-filterable-set=":bridge/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-p-a-c-k-e-t_-s-i-z-e_-w-i-t-h_-m-o-d-e_-s-t-a-t-e.html"><span>PACKET_</span><wbr><span>SIZE_</span><wbr><span>WITH_</span><wbr><span>MODE_</span><wbr><span>STATE</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-707083334%2FProperties%2F2074461332"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-p-a-c-k-e-t_-s-i-z-e_-w-i-t-h_-m-o-d-e_-s-t-a-t-e.html">PACKET_SIZE_WITH_MODE_STATE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">8</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div data-togglable="FUNCTION">
@@ -176,7 +191,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-adv-pkt.html"><span class="token function">fromAdvPkt</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">bytes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">BluetoothAdvertisement</a></div><div class="brief "><p class="paragraph">Parses advertising packet data into BluetoothAdvertisement. Example V1_5 advertising format (6 bytes): 0-3: deviceId (4 bytes, little-endian) 4: combinedStateCounter (1 byte: DSC0-3, SSC4-7) 5: signalingByte (1 byte)</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-adv-pkt.html"><span class="token function">fromAdvPkt</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">bytes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">BluetoothAdvertisement</a></div><div class="brief "><p class="paragraph">Parses advertising packet data into BluetoothAdvertisement. Manufacturer payload after company ID: 0-3: deviceId (4 bytes, little-endian) 4: combinedStateCounter (1 byte: DSC0-3, SSC4-7) 5: signalingByte (1 byte) 6: deviceModeByte (optional; present when size &gt;= 8) 7: deviceStateByte (optional; present when size &gt;= 8) Trailing bytes beyond 8 are ignored. Size 7 is treated as v1.5 (first 6 bytes).</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -284,6 +299,7 @@
   function normalizeHeader(){
     var brand = document.querySelector('.navigation .library-name--link');
     if(!brand) return;
+    brand.setAttribute('href', '/');
     brand.replaceChildren();
     var logo = document.createElement('img');
     logo.className = 'doc-logo';

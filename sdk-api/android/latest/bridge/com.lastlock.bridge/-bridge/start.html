@@ -79,7 +79,7 @@
 <body>
 <div class="root">
     <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
-<a class="library-name--link" href="../../../index.html" tabindex="1">
+<a class="library-name--link" href="/" tabindex="1">
                     <img class="doc-logo" src="../../../branding/logo.png" alt="Link logo">
                     <span>LinkMobile</span>
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
@@ -143,7 +143,7 @@
   </div>
   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain" data-active="" data-toggle=":bridge/androidMain">android</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="start.html"><span class="token function">start</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">UUID<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Starts scanning for Bluetooth LE peripherals advertising the specified service UUID. Discovery events are delivered to any registered BlueLinkEventListener without duplicate filtering. Each advertisement packet may trigger a callback, so the same device can be reported multiple times.</p><h4 class="tableheader">Parameters</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>UUID</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The service UUID to scan for, as a string.</p></div></div></div></div></div></div>  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":bridge/androidMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="start.html"><span class="token function">start</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">UUID<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">"FC5A"</span></span></span><span class="token punctuation">)</span></div><p class="paragraph">Starts scanning for Bluetooth LE peripherals advertising the specified service UUID.</p><p class="paragraph">This starts a foreground service, which posts a notification while running. The notification content and appearance can be customized as described at: https://developer.lastlock.com/docs/api/link-mobile-sdk-android#foreground-service-notification</p><p class="paragraph">Discovery events are delivered to any registered BlueLinkEventListener without duplicate filtering. Each advertisement packet may trigger a callback, so the same device can be reported multiple times.</p><h4 class="tableheader">Parameters</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":bridge/androidMain" data-filterable-set=":bridge/androidMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>UUID</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The service UUID to scan for, as a string. Defaults to FC5A.</p></div></div></div></div></div></div>  </div>
 </div>
     <div class="footer">
         <div class="footer--container">
@@ -213,6 +213,7 @@
   function normalizeHeader(){
     var brand = document.querySelector('.navigation .library-name--link');
     if(!brand) return;
+    brand.setAttribute('href', '/');
     brand.replaceChildren();
     var logo = document.createElement('img');
     logo.className = 'doc-logo';
